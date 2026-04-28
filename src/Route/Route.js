@@ -1,18 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { auth } from '../Firebase/Firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { getUserProfile } from '../services/store'
 
-// Main
+// main
 import LandingPage from '../views/LandingPage.vue'
-import LoginPage from '../views/Login.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 
 // User
 import PreOrder from '../views/User/PreOrder.vue'
 
-// Admin 
+// Admin
 import Dashboard from '../views/Admin/Dashboard.vue'
+import UserManagement from '../views/Admin/UserManagement.vue'
+import AdminPreOrder from '../views/Admin/Pre-Order.vue'
+import AdminSettings from '../views/Admin/Settings.vue'
 
 const routes = [
-  // Public
+  
+  // main
   {
     path: '/',
     name: 'Landing',
@@ -21,32 +28,61 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: LoginPage
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
 
- // User
+  // user
   {
-    path: '/user',
-    children: [
-      {
-        path: 'pre-order',
-        name: 'PreOrder',
-        component: PreOrder
-      }
-    ]
+    path: '/user/preorder',
+    name: 'PreOrder',
+    component: PreOrder,
+    meta: {
+      requiresAuth: true,
+      role: 'user'
+    }
   },
 
-  // Admin 
+  // admin
   {
-    path: '/admin',
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: Dashboard
-      }
-    ]
+    path: '/admin/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    meta: {
+      requiresAuth: true,
+      role: 'admin'
+    }
+  },
+  {
+    path: '/admin/user-management',
+    name: 'UserManagement',
+    component: UserManagement,
+    meta: {
+      requiresAuth: true,
+      role: 'admin'
+    }
+  },
+  {
+    path: '/admin/pre-order',
+    name: 'AdminPreOrder',
+    component: AdminPreOrder,
+    meta: {
+      requiresAuth: true,
+      role: 'admin'
+    }
+  },
+  {
+    path: '/admin/settings',
+    name: 'AdminSettings',
+    component: AdminSettings,
+    meta: {
+      requiresAuth: true,
+      role: 'admin'
+    }
   }
 ]
 
@@ -55,27 +91,52 @@ const router = createRouter({
   routes
 })
 
+// WAIT FOR FIREBASE AUTH
+// This prevents auto logout issue and keeps user session persistent
+function getCurrentUser() {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe()
+        resolve(user)
+      },
+      reject
+    )
+  })
+}
 
-// Navigation Guard
+// auth + role guard
 
-// Protect admin routes from normal users
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.meta.requiresAuth
+  const requiredRole = to.meta.role
 
-
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-
-  if (requiresAuth) {
-    const user = auth.currentUser
-
-    if (!user) {
-      alert('Please login first as Admin')
-      next('/login')
-    } else {
-      next()
-    }
-  } else {
-    next()
+  // Public routes
+  if (!requiresAuth) {
+    return next()
   }
+
+  // Wait for Firebase auth session
+  const user = await getCurrentUser()
+
+  // Not logged in
+  if (!user) {
+    alert('Please login first')
+    return next('/login')
+  }
+
+  // Check role
+  const profile = await getUserProfile(user.uid)
+  const userRole = profile?.role || 'user'
+
+  // Role mismatch
+  if (requiredRole && userRole !== requiredRole) {
+    alert('Access denied')
+    return next('/')
+  }
+
+  next()
 })
 
 export default router
