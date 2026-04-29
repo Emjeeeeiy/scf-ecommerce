@@ -1,13 +1,13 @@
 <template>
-  <AppShell subtitle="Sign in with Firebase Auth">
+  <AppShell subtitle="Admin access only">
     <div class="mx-auto max-w-md rounded-3xl bg-white p-8 shadow-sm">
       <div class="mb-8">
         <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate-500">
           Welcome back
         </p>
-        <h1 class="mt-2 text-3xl font-bold text-slate-900">Login</h1>
+        <h1 class="mt-2 text-3xl font-bold text-slate-900">Admin Login</h1>
         <p class="mt-2 text-sm text-slate-500">
-          Customer accounts and admin access both use Firebase Auth. Admin rights come from your Firestore profile role.
+          This page is for administrators only. Shoppers can browse products and checkout without creating an account.
         </p>
       </div>
 
@@ -50,28 +50,7 @@
         </button>
       </form>
 
-      <div class="my-6 flex items-center gap-3">
-        <div class="h-px flex-1 bg-slate-200"></div>
-        <span class="text-xs uppercase tracking-[0.25em] text-slate-400">or</span>
-        <div class="h-px flex-1 bg-slate-200"></div>
-      </div>
-
-      <button
-        type="button"
-        :disabled="loading"
-        class="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
-        @click="handleGoogleLogin"
-      >
-        <span class="text-base">G</span>
-        <span>{{ loading ? 'Please wait...' : 'Continue with Google' }}</span>
-      </button>
-
-      <p class="mt-6 text-sm text-slate-500">
-        Need an account?
-        <router-link to="/register" class="font-semibold text-slate-900">
-          Register here
-        </router-link>
-      </p>
+      <p class="mt-6 text-sm text-slate-500">Need to shop? Go back to the storefront and continue as customer.</p>
     </div>
   </AppShell>
 </template>
@@ -80,7 +59,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppShell from '../components/AppShell.vue'
-import { loginUser, loginWithGoogle } from '../services/authService'
+import { loginUser, logoutUser } from '../services/authService'
 import { useSession } from '../composables/useSession'
 
 const router = useRouter()
@@ -97,7 +76,13 @@ const handleLogin = async () => {
 
   try {
     const { profile } = await loginUser(email.value, password.value)
-    router.push(profile.role === 'admin' || isAdmin.value ? '/admin/dashboard' : '/shop')
+    if (profile.role === 'admin' || isAdmin.value) {
+      router.push('/admin/dashboard')
+      return
+    }
+
+    await logoutUser()
+    errorMessage.value = 'Only admin accounts are allowed to sign in here.'
   } catch (error) {
     if (error.code === 'auth/user-not-found') {
       errorMessage.value = 'User not found.'
@@ -109,26 +94,6 @@ const handleLogin = async () => {
       errorMessage.value = 'Invalid email or password.'
     } else {
       errorMessage.value = 'Login failed. Please try again.'
-    }
-  } finally {
-    loading.value = false
-  }
-}
-
-const handleGoogleLogin = async () => {
-  errorMessage.value = ''
-  loading.value = true
-
-  try {
-    const { profile } = await loginWithGoogle()
-    router.push(profile.role === 'admin' || isAdmin.value ? '/admin/dashboard' : '/shop')
-  } catch (error) {
-    if (error.code === 'auth/popup-closed-by-user') {
-      errorMessage.value = 'Google sign-in was cancelled.'
-    } else if (error.code === 'auth/unauthorized-domain') {
-      errorMessage.value = 'This domain is not authorized for Google sign-in in Firebase.'
-    } else {
-      errorMessage.value = 'Google login failed. Please try again.'
     }
   } finally {
     loading.value = false

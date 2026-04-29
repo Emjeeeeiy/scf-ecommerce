@@ -1,64 +1,105 @@
 <template>
   <AppShell subtitle="One more step to place your order">
-    <section class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div class="rounded-[2rem] bg-white p-8 shadow-sm ring-1 ring-slate-200">
-        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Checkout</p>
-        <h1 class="mt-3 text-3xl font-bold text-slate-900">Shipping address</h1>
-        <p class="mt-2 text-sm text-slate-500">
-          Select an existing address or save a new one for this checkout.
+    <div
+      v-if="showExclusiveNotice"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4"
+    >
+      <div class="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl ring-1 ring-slate-200">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">Service advisory</p>
+        <h2 class="mt-2 text-xl font-bold text-slate-900">Delivery area notice</h2>
+        <p class="mt-3 text-sm text-slate-600">
+          Orders are currently exclusive to Oriental Mindoro only.
         </p>
-
-        <div v-if="addresses.length" class="mt-6 grid gap-3">
-          <label
-            v-for="address in addresses"
-            :key="address.id"
-            class="flex cursor-pointer gap-3 rounded-3xl border border-slate-200 p-5 transition hover:border-slate-300 hover:bg-slate-50"
-          >
-            <input v-model="selectedAddressId" :value="address.id" type="radio" class="mt-1" />
-            <div class="text-sm text-slate-600">
-              <p class="font-semibold text-slate-900">{{ address.street }}</p>
-              <p>{{ address.city }}, {{ address.postalCode }}</p>
-              <p>{{ address.country }}</p>
-            </div>
-          </label>
-        </div>
-
-        <div v-else class="mt-6 rounded-3xl bg-slate-50 p-6 text-sm text-slate-600">
-          Add your first address below to continue.
-        </div>
-
-        <div class="mt-10 rounded-3xl bg-slate-50 p-6">
-          <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">New address</p>
-          <h2 class="mt-2 text-xl font-bold text-slate-900">Save an address</h2>
-
-          <form class="mt-6 grid gap-4 md:grid-cols-2" @submit.prevent="handleAddAddress">
-          <label class="block md:col-span-2">
-            <span class="mb-2 block text-sm font-medium text-slate-700">Street</span>
-            <input v-model="form.street" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
-          </label>
-          <label class="block">
-            <span class="mb-2 block text-sm font-medium text-slate-700">City</span>
-            <input v-model="form.city" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
-          </label>
-          <label class="block">
-            <span class="mb-2 block text-sm font-medium text-slate-700">Postal code</span>
-            <input v-model="form.postalCode" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
-          </label>
-          <label class="block md:col-span-2">
-            <span class="mb-2 block text-sm font-medium text-slate-700">Country</span>
-            <input v-model="form.country" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
-          </label>
+        <div class="mt-5 flex justify-end">
           <button
-            type="submit"
-            class="md:col-span-2 rounded-2xl bg-slate-100 px-4 py-3 font-semibold text-slate-700 transition hover:bg-slate-200"
+            type="button"
+            class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            @click="dismissExclusiveNotice"
           >
-            Save address
+            Got it
           </button>
-          </form>
         </div>
       </div>
+    </div>
 
-      <aside class="rounded-[2rem] bg-white p-8 shadow-sm ring-1 ring-slate-200">
+    <section class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="rounded-4xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
+        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Checkout</p>
+        <h1 class="mt-3 text-3xl font-bold text-slate-900">Customer details</h1>
+        <p class="mt-2 text-sm text-slate-500">
+          Enter your details to place the order. We store this in Firestore under `users`.
+        </p>
+        <form class="mt-8 grid gap-4 md:grid-cols-2">
+          <label class="block">
+            <span class="mb-2 block text-sm font-medium text-slate-700">First name</span>
+            <input v-model="form.firstName" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Last name</span>
+            <input v-model="form.lastName" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Email</span>
+            <input v-model="form.email" type="email" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Contact No.</span>
+            <input v-model="form.contactNo" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Landmark - Address (Street/Barangay/Municipality)</span>
+            <textarea
+              v-model="form.addressLine"
+              rows="3"
+              class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+              required
+            ></textarea>
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Province</span>
+            <input
+              value="Oriental Mindoro"
+              readonly
+              class="w-full cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 text-slate-600"
+            />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Seller Contact (Optional)</span>
+            <select v-model="form.sellerContact" class="w-full rounded-2xl border border-slate-200 px-4 py-3">
+              <option value="">I do not know anyone</option>
+              <option v-for="seller in sellerContacts" :key="seller" :value="seller">
+                {{ seller }}
+              </option>
+            </select>
+          </label>
+
+          <fieldset class="md:col-span-2 rounded-2xl border border-slate-200 p-4">
+            <legend class="px-1 text-sm font-semibold text-slate-700">Payment Method</legend>
+            <p class="mb-3 text-xs text-slate-500">Please choose one payment option.</p>
+            <div class="grid gap-2 sm:grid-cols-3">
+              <label class="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2">
+                <input v-model="form.paymentMethod" type="radio" value="cod" />
+                <span class="text-sm text-slate-700">COD</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2">
+                <input v-model="form.paymentMethod" type="radio" value="gcash" />
+                <span class="text-sm text-slate-700">GCash</span>
+              </label>
+              <label class="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2">
+                <input v-model="form.paymentMethod" type="radio" value="bank" />
+                <span class="text-sm text-slate-700">Bank Transfer</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-medium text-slate-700">Notes (Optional)</span>
+            <input v-model="form.notes" class="w-full rounded-2xl border border-slate-200 px-4 py-3" />
+          </label>
+        </form>
+      </div>
+
+      <aside class="rounded-4xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Order summary</p>
         <h2 class="mt-3 text-2xl font-bold text-slate-900">Review</h2>
 
@@ -116,55 +157,63 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppShell from '../../components/AppShell.vue'
-import { useSession } from '../../composables/useSession'
 import { getCart } from '../../services/cartService'
 import { checkoutCart } from '../../services/orderService'
-import { addAddress, listAddresses } from '../../services/userService'
 import { formatCurrency } from '../../utils/format'
 
 const router = useRouter()
-const { authUser } = useSession()
-
-const cart = ref({ items: [], totalAmount: 0 })
-const addresses = ref([])
-const selectedAddressId = ref('')
+const cart = ref({ items: [], totalAmount: 0, totalItems: 0 })
 const message = ref('')
+const showExclusiveNotice = ref(false)
+const sellerContacts = ['Ana Reyes', 'Mark Dela Cruz', 'Jessa Santos', 'Paolo Ramos']
+const CHECKOUT_NOTICE_KEY = 'scf_checkout_oriental_mindoro_notice_seen'
 
 const form = reactive({
-  street: '',
-  city: '',
-  postalCode: '',
-  country: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  contactNo: '',
+  addressLine: '',
+  completeAddress: '',
+  sellerContact: '',
+  paymentMethod: '',
+  notes: '',
 })
 
 const loadCheckout = async () => {
-  if (!authUser.value) {
-    return
-  }
+  cart.value = await getCart()
 
-  cart.value = await getCart(authUser.value.uid)
-  addresses.value = await listAddresses(authUser.value.uid)
-  selectedAddressId.value = addresses.value[0]?.id || ''
+  const hasSeenNotice = localStorage.getItem(CHECKOUT_NOTICE_KEY)
+  showExclusiveNotice.value = !hasSeenNotice
 }
 
-const handleAddAddress = async () => {
-  await addAddress(authUser.value.uid, form)
-  form.street = ''
-  form.city = ''
-  form.postalCode = ''
-  form.country = ''
-  await loadCheckout()
+const dismissExclusiveNotice = () => {
+  showExclusiveNotice.value = false
+  localStorage.setItem(CHECKOUT_NOTICE_KEY, 'true')
 }
 
 const handleCheckout = async () => {
+  if (!cart.value.items.length) {
+    message.value = 'Your cart is empty.'
+    return
+  }
+  if (!form.paymentMethod) {
+    message.value = 'Please select a payment method.'
+    return
+  }
+
   try {
+    const customerDetails = {
+      ...form,
+      completeAddress: `${form.addressLine.trim()}, Oriental Mindoro`,
+    }
+
     const orderId = await checkoutCart({
-      uid: authUser.value.uid,
-      addressId: selectedAddressId.value || null,
+      customerDetails,
     })
 
     message.value = `Order ${orderId} created successfully.`
-    router.push('/account/orders')
+    router.push('/shop')
   } catch (error) {
     message.value = error.message || 'Checkout failed.'
   }

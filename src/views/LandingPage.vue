@@ -20,10 +20,10 @@
           </router-link>
           <router-link
             v-if="!isAuthenticated"
-            to="/register"
+            to="/cart"
             class="rounded-full border border-slate-600 px-6 py-3 font-semibold text-white transition hover:bg-slate-800"
           >
-            Create account
+            Start checkout
           </router-link>
           <router-link
             v-else-if="isAdmin"
@@ -47,9 +47,9 @@
           <p class="text-sm font-medium text-slate-500">Data model</p>
           <h2 class="mt-2 text-xl font-semibold text-slate-900">Firestore collections</h2>
           <ul class="mt-4 space-y-2 text-sm text-slate-600">
-            <li>`users/{uid}` and `addresses` subcollection</li>
+            <li>`users/{customerId}` for checkout customer details</li>
             <li>`categories` and `products` with `variants` subcollections</li>
-            <li>`carts/{uid}/items` for active shopping carts</li>
+            <li>Browser local cart for active shopping session</li>
             <li>`orders/{orderId}/items` for completed checkouts</li>
           </ul>
         </div>

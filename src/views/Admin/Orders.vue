@@ -49,7 +49,18 @@
               <div>
                 <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Order ID</p>
                 <h2 class="text-lg font-semibold text-slate-900">{{ order.id }}</h2>
-                <p class="text-sm text-slate-500">Customer: {{ order.userId }}</p>
+                <p class="text-sm text-slate-500">
+                  Customer: {{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}
+                </p>
+                <p class="text-sm text-slate-500">
+                  {{ order.customerDetails?.email }} | {{ order.customerDetails?.contactNo || order.customerDetails?.contact }}
+                </p>
+                <p class="text-sm text-slate-500">
+                  {{ order.customerDetails?.completeAddress || 'No address provided' }}
+                </p>
+                <p class="text-sm text-slate-500">
+                  Payment: {{ order.paymentMethod || order.customerDetails?.paymentMethod || 'Not set' }}
+                </p>
                 <p class="mt-2 text-sm font-semibold text-slate-900">{{ formatCurrency(order.totalAmount) }}</p>
               </div>
 

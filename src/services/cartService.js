@@ -1,14 +1,6 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore'
-import { db, serverTimestamp } from '../Firebase/Firebase'
 import { getProduct } from './catalogService'
+
+const CART_STORAGE_KEY = 'scf_cart_items'
 
 const calculateCartTotals = (items) => {
   const totalAmount = items.reduce((sum, item) => sum + Number(item.basePrice || 0) * item.quantity, 0)
@@ -20,24 +12,28 @@ const calculateCartTotals = (items) => {
   }
 }
 
-export const getCart = async (uid) => {
-  const cartRef = doc(db, 'carts', uid)
-  const cartSnapshot = await getDoc(cartRef)
-  const itemsSnapshot = await getDocs(collection(db, 'carts', uid, 'items'))
-  const items = itemsSnapshot.docs.map((itemDoc) => ({
-    id: itemDoc.id,
-    ...itemDoc.data(),
-  }))
+const readCartItems = () => {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
 
+const writeCartItems = (items) => {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
+}
+
+export const getCart = async () => {
+  const items = readCartItems()
   return {
-    id: uid,
-    ...(cartSnapshot.exists() ? cartSnapshot.data() : {}),
     items,
     ...calculateCartTotals(items),
   }
 }
 
-export const addToCart = async ({ uid, productId, variantId, quantity = 1 }) => {
+export const addToCart = async ({ productId, variantId, quantity = 1 }) => {
   const product = await getProduct(productId)
   const variant = product?.variants?.find((item) => item.id === variantId)
 
@@ -45,31 +41,17 @@ export const addToCart = async ({ uid, productId, variantId, quantity = 1 }) => 
     throw new Error('Selected product variant was not found.')
   }
 
-  const cartRef = doc(db, 'carts', uid)
-  const itemRef = doc(db, 'carts', uid, 'items', variantId)
-  const existingItemSnapshot = await getDoc(itemRef)
-  const nextQuantity = (existingItemSnapshot.data()?.quantity || 0) + Number(quantity)
+  const items = readCartItems()
+  const itemIndex = items.findIndex((item) => item.id === variantId)
+  const existingQuantity = itemIndex >= 0 ? Number(items[itemIndex].quantity || 0) : 0
+  const nextQuantity = existingQuantity + Number(quantity)
 
   if (nextQuantity > Number(variant.stock || 0)) {
     throw new Error('Requested quantity exceeds available stock.')
   }
 
-  const cartPayload = {
-    userId: uid,
-    updatedAt: serverTimestamp(),
-  }
-
-  const cartSnapshot = await getDoc(cartRef)
-
-  if (!cartSnapshot.exists()) {
-    cartPayload.createdAt = serverTimestamp()
-  }
-
-  await setDoc(cartRef, cartPayload, { merge: true })
-
-  await setDoc(
-    itemRef,
-    {
+  const itemPayload = {
+    id: variantId,
       productId,
       variantId,
       quantity: nextQuantity,
@@ -78,29 +60,42 @@ export const addToCart = async ({ uid, productId, variantId, quantity = 1 }) => 
       base64Image: product.base64Image || '',
       color: variant.color || '',
       size: variant.size || '',
-    },
-    { merge: true },
-  )
+  }
+
+  if (itemIndex >= 0) {
+    items[itemIndex] = itemPayload
+  } else {
+    items.push(itemPayload)
+  }
+
+  writeCartItems(items)
 }
 
-export const updateCartItemQuantity = async ({ uid, variantId, quantity }) => {
-  const itemRef = doc(db, 'carts', uid, 'items', variantId)
+export const updateCartItemQuantity = async ({ variantId, quantity }) => {
+  const items = readCartItems()
+  const itemIndex = items.findIndex((item) => item.id === variantId)
 
-  if (quantity <= 0) {
-    await deleteDoc(itemRef)
+  if (itemIndex < 0) {
     return
   }
 
-  await updateDoc(itemRef, {
-    quantity: Number(quantity),
-  })
+  if (quantity <= 0) {
+    items.splice(itemIndex, 1)
+  } else {
+    items[itemIndex] = {
+      ...items[itemIndex],
+      quantity: Number(quantity),
+    }
+  }
+
+  writeCartItems(items)
 }
 
-export const removeCartItem = async ({ uid, variantId }) => {
-  await deleteDoc(doc(db, 'carts', uid, 'items', variantId))
+export const removeCartItem = async ({ variantId }) => {
+  const items = readCartItems().filter((item) => item.id !== variantId)
+  writeCartItems(items)
 }
 
-export const clearCart = async (uid) => {
-  const itemsSnapshot = await getDocs(collection(db, 'carts', uid, 'items'))
-  await Promise.all(itemsSnapshot.docs.map((itemDoc) => deleteDoc(itemDoc.ref)))
+export const clearCart = async () => {
+  writeCartItems([])
 }

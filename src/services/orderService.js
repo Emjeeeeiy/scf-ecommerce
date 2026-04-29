@@ -10,12 +10,30 @@ import {
 import { db, serverTimestamp } from '../Firebase/Firebase'
 import { clearCart, getCart } from './cartService'
 
-export const checkoutCart = async ({ uid, addressId }) => {
-  const cart = await getCart(uid)
+export const checkoutCart = async ({ customerDetails }) => {
+  const cart = await getCart()
 
   if (!cart.items.length) {
     throw new Error('Your cart is empty.')
   }
+
+  if (
+    !customerDetails?.email ||
+    !customerDetails?.firstName ||
+    !customerDetails?.lastName ||
+    !customerDetails?.contactNo ||
+    !customerDetails?.completeAddress
+  ) {
+    throw new Error('Please complete your customer details before checkout.')
+  }
+  if (!customerDetails?.paymentMethod) {
+    throw new Error('Please select a payment method before checkout.')
+  }
+
+  const customerRef = await addDoc(collection(db, 'users'), {
+    ...customerDetails,
+    createdAt: serverTimestamp(),
+  })
 
   const totalAmount = cart.items.reduce(
     (sum, item) => sum + Number(item.basePrice || 0) * Number(item.quantity || 0),
@@ -23,8 +41,10 @@ export const checkoutCart = async ({ uid, addressId }) => {
   )
 
   const orderRef = await addDoc(collection(db, 'orders'), {
-    userId: uid,
-    addressId: addressId || null,
+    userId: customerRef.id,
+    customerId: customerRef.id,
+    customerDetails,
+    paymentMethod: customerDetails.paymentMethod,
     status: 'received',
     paid: false,
     totalAmount,
@@ -45,7 +65,7 @@ export const checkoutCart = async ({ uid, addressId }) => {
     ),
   )
 
-  await clearCart(uid)
+  await clearCart()
 
   return orderRef.id
 }

@@ -77,10 +77,7 @@ const navigation = computed(() => {
       { to: '/account/orders', label: 'Orders' },
     )
   } else {
-    base.push(
-      { to: '/login', label: 'Login' },
-      { to: '/register', label: 'Register' },
-    )
+    base.push({ to: '/cart', label: 'Cart' }, { to: '/login', label: 'Admin Login' })
   }
 
   if (isAdmin.value) {

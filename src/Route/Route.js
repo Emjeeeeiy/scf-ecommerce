@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useSession, waitForSessionReady } from '../composables/useSession'
 import LandingPage from '../views/LandingPage.vue'
 import LoginPage from '../views/Login.vue'
-import RegisterPage from '../views/Register.vue'
 import CatalogPage from '../views/Shop/Catalog.vue'
 import ProductDetailsPage from '../views/Shop/ProductDetails.vue'
 import CartPage from '../views/Shop/Cart.vue'
@@ -34,25 +33,17 @@ const routes = [
   {
     path: '/cart',
     name: 'Cart',
-    component: CartPage,
-    meta: { requiresAuth: true }
+    component: CartPage
   },
   {
     path: '/checkout',
     name: 'Checkout',
-    component: CheckoutPage,
-    meta: { requiresAuth: true }
+    component: CheckoutPage
   },
   {
     path: '/login',
     name: 'Login',
     component: LoginPage,
-    meta: { guestOnly: true }
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: RegisterPage,
     meta: { guestOnly: true }
   },
   {

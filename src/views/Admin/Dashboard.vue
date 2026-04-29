@@ -1,6 +1,6 @@
 <template>
   <AdminPanelLayout subtitle="Admin overview for catalog and order operations">
-    <section class="rounded-[2rem] bg-slate-950 p-8 text-white shadow-lg">
+    <section class="rounded-4xl bg-slate-950 p-8 text-white shadow-lg">
       <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
         <div class="max-w-2xl">
           <p class="text-sm uppercase tracking-[0.3em] text-amber-300">Control center</p>
@@ -101,7 +101,13 @@
             <div>
               <p class="text-sm text-slate-500">Order</p>
               <p class="font-semibold text-slate-900">{{ order.id }}</p>
-              <p class="text-sm text-slate-500">{{ order.userId }}</p>
+              <p class="text-sm text-slate-500">
+                {{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}
+              </p>
+              <p class="text-sm text-slate-500">{{ order.customerDetails?.email }}</p>
+              <p class="text-sm text-slate-500">
+                {{ order.paymentMethod || order.customerDetails?.paymentMethod || 'Payment not set' }}
+              </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-3">

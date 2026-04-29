@@ -5,7 +5,7 @@
     </div>
 
     <section v-else-if="product" class="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-      <div class="rounded-[2rem] bg-white shadow-sm ring-1 ring-slate-200">
+      <div class="rounded-4xl bg-white shadow-sm ring-1 ring-slate-200">
         <div class="h-80 w-full overflow-hidden rounded-t-3xl bg-slate-200">
           <img
             v-if="product.base64Image"
@@ -43,7 +43,7 @@
       </div>
 
       <div class="space-y-6">
-        <div class="rounded-[2rem] bg-white p-8 shadow-sm ring-1 ring-slate-200">
+        <div class="rounded-4xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
           <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Select variant</p>
           <h2 class="mt-3 text-2xl font-bold text-slate-900">Size & color</h2>
           <p class="mt-2 text-sm text-slate-500">
@@ -84,7 +84,7 @@
           </div>
         </div>
 
-        <div class="rounded-[2rem] bg-white p-8 shadow-sm ring-1 ring-slate-200">
+        <div class="rounded-4xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
           <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Quantity</p>
           <div class="mt-4 flex items-center justify-between gap-4">
             <button
@@ -137,16 +137,13 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import AppShell from '../../components/AppShell.vue'
-import { useSession } from '../../composables/useSession'
 import { getProduct } from '../../services/catalogService'
 import { addToCart } from '../../services/cartService'
 import { formatCurrency } from '../../utils/format'
 
 const route = useRoute()
-const router = useRouter()
-const { authUser } = useSession()
 
 const loading = ref(true)
 const product = ref(null)
@@ -162,11 +159,6 @@ const loadProduct = async () => {
 }
 
 const handleAddToCart = async () => {
-  if (!authUser.value) {
-    router.push('/login')
-    return
-  }
-
   if (!selectedVariantId.value) {
     message.value = 'Select a variant before adding to cart.'
     return
@@ -174,7 +166,6 @@ const handleAddToCart = async () => {
 
   try {
     await addToCart({
-      uid: authUser.value.uid,
       productId: product.value.id,
       variantId: selectedVariantId.value,
       quantity: quantity.value,

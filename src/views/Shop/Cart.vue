@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="A clean cart, ready for checkout">
     <section class="grid gap-6 lg:grid-cols-[1.3fr_0.8fr]">
-      <div class="rounded-[2rem] bg-white p-8 shadow-sm ring-1 ring-slate-200">
+      <div class="rounded-4xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-sm uppercase tracking-[0.25em] text-slate-500">Your cart</p>
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <aside class="rounded-[2rem] bg-white p-8 shadow-sm ring-1 ring-slate-200">
+      <aside class="rounded-4xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <p class="text-sm uppercase tracking-[0.25em] text-slate-500">Summary</p>
         <div class="mt-6 space-y-3 text-sm text-slate-600">
           <div class="flex items-center justify-between">
@@ -114,11 +114,9 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import AppShell from '../../components/AppShell.vue'
-import { useSession } from '../../composables/useSession'
 import { clearCart, getCart, removeCartItem, updateCartItemQuantity } from '../../services/cartService'
 import { formatCurrency } from '../../utils/format'
 
-const { authUser } = useSession()
 const cart = ref({
   items: [],
   totalItems: 0,
@@ -126,16 +124,11 @@ const cart = ref({
 })
 
 const loadCart = async () => {
-  if (!authUser.value) {
-    return
-  }
-
-  cart.value = await getCart(authUser.value.uid)
+  cart.value = await getCart()
 }
 
 const updateQuantity = async (item, event) => {
   await updateCartItemQuantity({
-    uid: authUser.value.uid,
     variantId: item.id,
     quantity: Number(event.target.value),
   })
@@ -143,12 +136,12 @@ const updateQuantity = async (item, event) => {
 }
 
 const handleRemove = async (variantId) => {
-  await removeCartItem({ uid: authUser.value.uid, variantId })
+  await removeCartItem({ variantId })
   await loadCart()
 }
 
 const handleClearCart = async () => {
-  await clearCart(authUser.value.uid)
+  await clearCart()
   await loadCart()
 }
 
