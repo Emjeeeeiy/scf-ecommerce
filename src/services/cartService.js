@@ -2,6 +2,11 @@ import { getProduct } from './catalogService'
 
 const CART_STORAGE_KEY = 'scf_cart_items'
 
+// Helper to notify UI of changes if needed
+let refreshCallback = null
+export const registerCartRefresh = (cb) => { refreshCallback = cb }
+const notifyRefresh = () => { if (refreshCallback) refreshCallback() }
+
 const calculateCartTotals = (items) => {
   const totalAmount = items.reduce((sum, item) => sum + Number(item.basePrice || 0) * item.quantity, 0)
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
@@ -69,6 +74,7 @@ export const addToCart = async ({ productId, variantId, quantity = 1 }) => {
   }
 
   writeCartItems(items)
+  notifyRefresh()
 }
 
 export const updateCartItemQuantity = async ({ variantId, quantity }) => {
@@ -89,13 +95,16 @@ export const updateCartItemQuantity = async ({ variantId, quantity }) => {
   }
 
   writeCartItems(items)
+  notifyRefresh()
 }
 
 export const removeCartItem = async ({ variantId }) => {
   const items = readCartItems().filter((item) => item.id !== variantId)
   writeCartItems(items)
+  notifyRefresh()
 }
 
 export const clearCart = async () => {
   writeCartItems([])
+  notifyRefresh()
 }

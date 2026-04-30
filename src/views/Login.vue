@@ -1,56 +1,81 @@
 <template>
-  <AppShell subtitle="Admin access only">
-    <div class="mx-auto max-w-md rounded-3xl bg-white p-8 shadow-sm">
-      <div class="mb-8">
-        <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate-500">
-          Welcome back
-        </p>
-        <h1 class="mt-2 text-3xl font-bold text-slate-900">Admin Login</h1>
-        <p class="mt-2 text-sm text-slate-500">
-          This page is for administrators only. Shoppers can browse products and checkout without creating an account.
-        </p>
+  <AppShell subtitle="Admin Access">
+    <div class="mx-auto max-w-md">
+      <div class="overflow-hidden rounded-2xl bg-white shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
+        <!-- Header -->
+        <div class="bg-slate-950 p-6 text-white sm:p-8">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 mb-4">
+            <Lock :size="24" class="text-amber-400" />
+          </div>
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-1">Security Portal</p>
+          <h1 class="text-3xl font-black tracking-tighter">Admin Login</h1>
+          <p class="mt-3 text-xs font-medium leading-relaxed text-slate-300">
+            Authorized access only. Enter your credentials to manage the platform.
+          </p>
+        </div>
+
+        <!-- Form -->
+        <div class="p-6 sm:p-8">
+          <div
+            v-if="errorMessage"
+            class="mb-6 flex items-start gap-3 rounded-xl bg-red-50 p-4 text-[11px] font-bold text-red-600 ring-1 ring-red-100"
+          >
+            <AlertCircle :size="16" class="shrink-0" />
+            <p>{{ errorMessage }}</p>
+          </div>
+
+          <form class="space-y-5" @submit.prevent="handleLogin">
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                <Mail :size="12" />
+                Email Address
+              </label>
+              <input
+                v-model="email"
+                type="email"
+                class="w-full rounded-xl border border-slate-100 bg-slate-50/50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                placeholder="admin@scf.org"
+                required
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                <KeyRound :size="12" />
+                Password
+              </label>
+              <input
+                v-model="password"
+                type="password"
+                class="w-full rounded-xl border border-slate-100 bg-slate-50/50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              :disabled="loading"
+              class="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-4 text-xs font-black text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300 shadow-xl shadow-slate-900/10"
+            >
+              <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white"></span>
+              <LogIn v-else :size="18" class="transition-transform group-hover:translate-x-1" />
+              <span>{{ loading ? 'Authenticating...' : 'Sign In' }}</span>
+            </button>
+          </form>
+
+          <div class="mt-8 flex flex-col items-center gap-5 border-t border-slate-100 pt-8 text-center">
+            <div class="flex items-center gap-3 text-slate-300">
+               <ShieldCheck :size="18" />
+               <span class="text-[9px] font-black uppercase tracking-[0.2em]">Encrypted Session</span>
+            </div>
+            <p class="max-w-[16rem] text-[11px] font-medium leading-relaxed text-slate-400">
+              Not an admin? 
+              <router-link to="/shop" class="inline block mt-1 font-black text-slate-900 hover:underline">Return to Storefront</router-link>
+            </p>
+          </div>
+        </div>
       </div>
-
-      <div
-        v-if="errorMessage"
-        class="mb-4 rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700"
-      >
-        {{ errorMessage }}
-      </div>
-
-      <form class="space-y-4" @submit.prevent="handleLogin">
-        <label class="block">
-          <span class="mb-2 block text-sm font-medium text-slate-700">Email</span>
-          <input
-            v-model="email"
-            type="email"
-            class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-slate-400"
-            placeholder="you@example.com"
-            required
-          />
-        </label>
-
-        <label class="block">
-          <span class="mb-2 block text-sm font-medium text-slate-700">Password</span>
-          <input
-            v-model="password"
-            type="password"
-            class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-slate-400"
-            placeholder="Enter your password"
-            required
-          />
-        </label>
-
-        <button
-          type="submit"
-          :disabled="loading"
-          class="w-full rounded-2xl bg-slate-900 px-4 py-3 font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
-        >
-          {{ loading ? 'Signing in...' : 'Login' }}
-        </button>
-      </form>
-
-      <p class="mt-6 text-sm text-slate-500">Need to shop? Go back to the storefront and continue as customer.</p>
     </div>
   </AppShell>
 </template>
@@ -61,6 +86,14 @@ import { useRouter } from 'vue-router'
 import AppShell from '../components/AppShell.vue'
 import { loginUser, logoutUser } from '../services/authService'
 import { useSession } from '../composables/useSession'
+import { 
+  Lock, 
+  Mail, 
+  KeyRound, 
+  LogIn, 
+  AlertCircle, 
+  ShieldCheck 
+} from 'lucide-vue-next'
 
 const router = useRouter()
 const { isAdmin } = useSession()

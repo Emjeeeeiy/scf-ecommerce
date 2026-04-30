@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useSession, waitForSessionReady } from '../composables/useSession'
-import LandingPage from '../views/LandingPage.vue'
 import LoginPage from '../views/Login.vue'
+import LandingPage from '../views/LandingPage.vue'
 import CatalogPage from '../views/Shop/Catalog.vue'
 import ProductDetailsPage from '../views/Shop/ProductDetails.vue'
 import CartPage from '../views/Shop/Cart.vue'
@@ -16,8 +16,8 @@ import AdminOrders from '../views/Admin/Orders.vue'
 const routes = [
   {
     path: '/',
-    name: 'Landing',
-    component: LandingPage
+    name: 'Home',
+    component: LandingPage,
   },
   {
     path: '/shop',
