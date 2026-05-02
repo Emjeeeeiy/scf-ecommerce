@@ -76,7 +76,9 @@ import { onMounted, ref } from 'vue'
 import { PlusCircle, Save, Layers, Tag, Trash2, PackageSearch } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
 import { createCategory, deleteCategory, listCategories } from '../../services/catalogService'
+import { useConfirm } from '../../composables/useConfirm'
 
+const { confirm } = useConfirm()
 const categories = ref([])
 const name = ref('')
 
@@ -92,7 +94,7 @@ const handleCreateCategory = async () => {
 }
 
 const handleDeleteCategory = async (categoryId) => {
-  if (confirm('Are you sure you want to delete this category?')) {
+  if (await confirm('Are you sure you want to delete this category?')) {
     await deleteCategory(categoryId)
     await loadCategories()
   }

@@ -178,6 +178,7 @@ import { onMounted, ref } from 'vue'
 import AppShell from '../../components/AppShell.vue'
 import { clearCart, getCart, removeCartItem, updateCartItemQuantity } from '../../services/cartService'
 import { formatCurrency } from '../../utils/format'
+import { useConfirm } from '../../composables/useConfirm'
 import { 
   ShoppingCart, 
   Trash2, 
@@ -190,12 +191,10 @@ import {
   Palette, 
   Maximize, 
   ReceiptText, 
-  ShieldCheck, 
-  Truck, 
-  Info,
-  ChevronRight
+  Info
 } from 'lucide-vue-next'
 
+const { confirm } = useConfirm()
 const cart = ref({
   items: [],
   totalItems: 0,
@@ -223,7 +222,7 @@ const handleRemove = async (variantId) => {
 }
 
 const handleClearCart = async () => {
-  if (confirm('Are you sure you want to clear your cart?')) {
+  if (await confirm('Are you sure you want to clear your cart?')) {
     await clearCart()
     await loadCart()
   }

@@ -214,6 +214,84 @@
         </div>
       </aside>
     </section>
+
+    <!-- GCash Payment Modal -->
+    <Transition 
+      name="modal"
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95"
+    >
+      <div v-if="showGcashModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="absolute inset-0 bg-slate-900/60" @click="showGcashModal = false"></div>
+        
+        <div class="relative w-full max-w-sm overflow-hidden rounded-[2.5rem] bg-white shadow-2xl">
+          <!-- Header -->
+          <div class="bg-blue-600 p-8 text-center text-white">
+            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20">
+              <Wallet :size="32" />
+            </div>
+            <h3 class="text-2xl font-black tracking-tight">GCash Payment</h3>
+            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">Scan to Pay</p>
+          </div>
+
+          <div class="p-8">
+            <!-- QR Code -->
+            <div class="mx-auto mb-8 aspect-square max-w-[200px] overflow-hidden rounded-3xl bg-slate-50 border-2 border-slate-100 p-2 shadow-inner">
+              <img 
+                v-if="paymentSettings.gcash.qrCodeBase64" 
+                :src="paymentSettings.gcash.qrCodeBase64" 
+                alt="GCash QR Code"
+                class="h-full w-full object-contain"
+              />
+              <div v-else class="flex h-full w-full flex-col items-center justify-center gap-2 text-slate-300">
+                <QrCode :size="48" stroke-width="1.5" />
+                <span class="text-[9px] font-black uppercase">No QR Available</span>
+              </div>
+            </div>
+
+            <!-- Account Details -->
+            <div class="space-y-4 rounded-2xl bg-slate-50 p-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Account Name</span>
+                <span class="text-xs font-black text-slate-900">{{ paymentSettings.gcash.accountName || 'N/A' }}</span>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Account Number</span>
+                <span class="text-xs font-black text-slate-900">{{ paymentSettings.gcash.accountNumber || 'N/A' }}</span>
+              </div>
+            </div>
+
+            <div class="mt-6 flex items-start gap-3 rounded-xl bg-amber-50 p-4 border border-amber-100">
+              <InfoIcon :size="14" class="shrink-0 text-amber-500" />
+              <p class="text-[10px] font-bold leading-relaxed text-amber-800">
+                Please save your proof of payment. Our team will verify your transaction once the order is placed.
+              </p>
+            </div>
+
+            <!-- Action -->
+            <div class="mt-8 flex gap-3">
+              <button 
+                @click="showGcashModal = false"
+                class="flex-1 rounded-2xl border-2 border-slate-100 py-4 text-xs font-black uppercase tracking-widest text-slate-400 transition hover:bg-slate-50"
+              >
+                Back
+              </button>
+              <button 
+                @click="processOrder"
+                class="flex-[2] flex items-center justify-center gap-2 rounded-2xl bg-blue-600 py-4 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 active:scale-95"
+              >
+                <span>Finished Payment</span>
+                <ArrowRight :size="16" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </AppShell>
 </template>
 
@@ -223,6 +301,7 @@ import { useRouter } from 'vue-router'
 import AppShell from '../../components/AppShell.vue'
 import { getCart } from '../../services/cartService'
 import { checkoutCart } from '../../services/orderService'
+import { getPaymentSettings, DEFAULT_PAYMENT_SETTINGS } from '../../services/settingsService'
 import { formatCurrency } from '../../utils/format'
 import { 
   User, 
@@ -242,13 +321,19 @@ import {
   AlertCircle, 
   CheckCircle, 
   ShieldCheck,
-  Package
+  Package,
+  QrCode,
+  X,
+  Info as InfoIcon,
+  ArrowRight
 } from 'lucide-vue-next'
 
 const router = useRouter()
 const cart = ref({ items: [], totalAmount: 0, totalItems: 0 })
 const message = ref('')
 const showExclusiveNotice = ref(false)
+const showGcashModal = ref(false)
+const paymentSettings = ref(DEFAULT_PAYMENT_SETTINGS)
 const sellerContacts = ['Jhoe Anne Ramirez', 'Sandara Calaluan', 'Errold Santos', 'MJ may bitaw']
 const CHECKOUT_NOTICE_KEY = 'scf_checkout_oriental_mindoro_notice_seen'
 
@@ -265,7 +350,12 @@ const form = reactive({
 })
 
 const loadCheckout = async () => {
-  cart.value = await getCart()
+  const [cartData, pSettings] = await Promise.all([
+    getCart(),
+    getPaymentSettings()
+  ])
+  cart.value = cartData
+  paymentSettings.value = pSettings
 
   const hasSeenNotice = localStorage.getItem(CHECKOUT_NOTICE_KEY)
   showExclusiveNotice.value = !hasSeenNotice
@@ -290,6 +380,15 @@ const handleCheckout = async () => {
     return
   }
 
+  if (form.paymentMethod === 'gcash') {
+    showGcashModal.value = true
+    return
+  }
+
+  await processOrder()
+}
+
+const processOrder = async () => {
   try {
     const customerDetails = {
       ...form,
@@ -301,6 +400,7 @@ const handleCheckout = async () => {
     })
 
     message.value = `Order ${orderId} created successfully!`
+    showGcashModal.value = false
     
     // Redirect after a short delay
     setTimeout(() => {

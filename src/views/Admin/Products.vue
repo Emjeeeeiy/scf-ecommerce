@@ -237,7 +237,9 @@ import {
   updateProduct,
 } from '../../services/catalogService'
 import { formatCurrency } from '../../utils/format'
+import { useConfirm } from '../../composables/useConfirm'
 
+const { confirm } = useConfirm()
 const categories = ref([])
 const products = ref([])
 const editingProductId = ref('')
@@ -311,7 +313,7 @@ const handleSaveProduct = async () => {
 }
 
 const handleDeleteProduct = async (productId) => {
-  if (confirm('Delete this product?')) {
+  if (await confirm('Delete this product?')) {
     await deleteProduct(productId)
     await loadData()
   }

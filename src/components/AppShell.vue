@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-amber-100 selection:text-amber-900">
     <!-- Desktop Header -->
-    <header class="sticky top-0 z-40 w-full border-b border-slate-100 bg-white/80 backdrop-blur-xl">
+    <header class="sticky top-0 z-40 w-full border-b border-slate-100 bg-white">
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <!-- Logo -->
         <router-link to="/" class="group flex items-center gap-3 transition-transform active:scale-95">
