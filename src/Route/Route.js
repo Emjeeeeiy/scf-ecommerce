@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useSession, waitForSessionReady } from '../composables/useSession'
 import LoginPage from '../views/Login.vue'
+import RegisterPage from '../views/Register.vue'
 import LandingPage from '../views/LandingPage.vue'
 import CatalogPage from '../views/Shop/Catalog.vue'
 import ProductDetailsPage from '../views/Shop/ProductDetails.vue'
@@ -45,6 +46,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginPage,
+    meta: { guestOnly: true }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterPage,
     meta: { guestOnly: true }
   },
   {

@@ -1,53 +1,53 @@
 <template>
   <AppShell subtitle="Admin Access">
     <div class="mx-auto max-w-md">
-      <div class="overflow-hidden rounded-2xl bg-white shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
+      <div class="overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
         <!-- Header -->
-        <div class="bg-slate-950 p-6 text-white sm:p-8">
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 mb-4">
+        <div class="bg-slate-900 p-8 text-white sm:p-10">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 mb-6 shadow-inner">
             <Lock :size="24" class="text-amber-400" />
           </div>
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-1">Security Portal</p>
-          <h1 class="text-3xl font-black tracking-tighter">Admin Login</h1>
-          <p class="mt-3 text-xs font-medium leading-relaxed text-slate-300">
-            Authorized access only. Enter your credentials to manage the platform.
+          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Welcome Back</p>
+          <h1 class="text-3xl font-black tracking-tight sm:text-4xl">Account Login</h1>
+          <p class="mt-4 text-sm font-medium leading-relaxed text-slate-400">
+            Sign in to access your profile and track your orders.
           </p>
         </div>
 
         <!-- Form -->
-        <div class="p-6 sm:p-8">
+        <div class="p-8 sm:p-10">
           <div
             v-if="errorMessage"
-            class="mb-6 flex items-start gap-3 rounded-xl bg-red-50 p-4 text-[11px] font-bold text-red-600 ring-1 ring-red-100"
+            class="mb-8 flex items-start gap-3 rounded-2xl bg-rose-50 p-4 text-[11px] font-bold text-rose-600 ring-1 ring-rose-100"
           >
             <AlertCircle :size="16" class="shrink-0" />
             <p>{{ errorMessage }}</p>
           </div>
 
-          <form class="space-y-5" @submit.prevent="handleLogin">
+          <form class="space-y-6" @submit.prevent="handleLogin">
             <div class="space-y-2">
-              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
                 <Mail :size="12" />
                 Email Address
               </label>
               <input
                 v-model="email"
                 type="email"
-                class="w-full rounded-xl border border-slate-100 bg-slate-50/50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
-                placeholder="admin@scf.org"
+                class="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                placeholder="you@example.com"
                 required
               />
             </div>
 
             <div class="space-y-2">
-              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
                 <KeyRound :size="12" />
                 Password
               </label>
               <input
                 v-model="password"
                 type="password"
-                class="w-full rounded-xl border border-slate-100 bg-slate-50/50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                class="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                 placeholder="••••••••"
                 required
               />
@@ -56,23 +56,25 @@
             <button
               type="submit"
               :disabled="loading"
-              class="group flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-4 text-xs font-black text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300 shadow-xl shadow-slate-900/10"
+              class="group mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-900 px-6 py-5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300 shadow-xl shadow-slate-900/10"
             >
               <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white"></span>
-              <LogIn v-else :size="18" class="transition-transform group-hover:translate-x-1" />
-              <span>{{ loading ? 'Authenticating...' : 'Sign In' }}</span>
+              <template v-else>
+                <span>Sign In</span>
+                <LogIn :size="18" class="transition-transform group-hover:translate-x-1" />
+              </template>
             </button>
           </form>
 
-          <div class="mt-8 flex flex-col items-center gap-5 border-t border-slate-100 pt-8 text-center">
+          <div class="mt-10 flex flex-col items-center gap-6 border-t border-slate-100 pt-10 text-center">
+             <p class="text-[11px] font-medium leading-relaxed text-slate-400">
+              Don't have an account yet? 
+              <router-link to="/register" class="inline block mt-1 font-black text-slate-900 hover:underline">Create Account</router-link>
+            </p>
             <div class="flex items-center gap-3 text-slate-300">
                <ShieldCheck :size="18" />
                <span class="text-[9px] font-black uppercase tracking-[0.2em]">Encrypted Session</span>
             </div>
-            <p class="max-w-[16rem] text-[11px] font-medium leading-relaxed text-slate-400">
-              Not an admin? 
-              <router-link to="/shop" class="inline block mt-1 font-black text-slate-900 hover:underline">Return to Storefront</router-link>
-            </p>
           </div>
         </div>
       </div>
@@ -109,13 +111,15 @@ const handleLogin = async () => {
 
   try {
     const { profile } = await loginUser(email.value, password.value)
-    if (profile.role === 'admin' || isAdmin.value) {
-      router.push('/admin/dashboard')
-      return
-    }
+    
+    // Check for redirect query param
+    const redirectPath = router.currentRoute.value.query.redirect
 
-    await logoutUser()
-    errorMessage.value = 'Only admin accounts are allowed to sign in here.'
+    if (profile.role === 'admin') {
+      router.push(redirectPath || '/admin/dashboard')
+    } else {
+      router.push(redirectPath || '/shop')
+    }
   } catch (error) {
     if (error.code === 'auth/user-not-found') {
       errorMessage.value = 'User not found.'

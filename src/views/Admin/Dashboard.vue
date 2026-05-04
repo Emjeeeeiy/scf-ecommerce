@@ -1,132 +1,132 @@
 <template>
   <AdminPanelLayout subtitle="Admin overview for catalog and order operations">
-    <section class="rounded-2xl bg-slate-950 p-6 text-white shadow-xl relative overflow-hidden">
-      <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-        <LayoutDashboard :size="120" />
+    <section class="rounded-xl bg-slate-950 p-5 text-white shadow-xl relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
+        <LayoutDashboard :size="80" />
       </div>
-      <div class="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between relative z-10">
+      <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between relative z-10">
         <div class="max-w-2xl">
-          <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.3em] text-amber-400">
-            <ShieldCheck :size="14" />
+          <div class="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400">
+            <ShieldCheck :size="12" />
             <span>Control center</span>
           </div>
-          <h2 class="mt-3 text-2xl font-black leading-tight tracking-tight sm:text-3xl">
+          <h2 class="mt-2 text-xl font-black leading-tight tracking-tight sm:text-2xl">
             Keep products, categories, and order flow aligned.
           </h2>
-          <p class="mt-3 text-sm text-slate-300 font-medium leading-relaxed">
+          <p class="mt-2 text-xs text-slate-300 font-medium leading-relaxed">
             Review storefront health, jump into high-priority tasks, and monitor recent order activity from one central hub.
           </p>
         </div>
       </div>
     </section>
 
-    <section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <section class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
       <article
         v-for="metric in metrics"
         :key="metric.label"
-        class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 flex flex-col justify-between"
+        class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200 flex flex-col justify-between"
       >
         <div>
           <div class="flex items-center justify-between">
-            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{{ metric.label }}</p>
-            <div class="p-2 rounded-lg bg-slate-50 text-slate-400">
-              <component :is="metric.icon" :size="16" />
+            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400">{{ metric.label }}</p>
+            <div class="p-1.5 rounded-md bg-slate-50 text-slate-400">
+              <component :is="metric.icon" :size="14" />
             </div>
           </div>
-          <h3 class="mt-2 text-2xl font-black text-slate-900 tracking-tight">{{ metric.value }}</h3>
+          <h3 class="mt-1.5 text-xl font-black text-slate-900 tracking-tight">{{ metric.value }}</h3>
         </div>
-        <p class="mt-3 text-[11px] font-medium text-slate-500">{{ metric.caption }}</p>
+        <p class="mt-2 text-[10px] font-medium text-slate-500">{{ metric.caption }}</p>
       </article>
     </section>
 
-    <section class="mt-6 grid gap-6 xl:grid-cols-[1fr_0.7fr]">
-      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <section class="mt-5 grid gap-5 xl:grid-cols-[1fr_0.7fr]">
+      <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
         <div class="flex items-center justify-between gap-4">
           <div>
-            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400">Management areas</p>
-            <h3 class="mt-1 text-xl font-black text-slate-900 tracking-tight">Operational workspaces</h3>
+            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400">Management areas</p>
+            <h3 class="mt-0.5 text-lg font-black text-slate-900 tracking-tight">Operational workspaces</h3>
           </div>
         </div>
 
-        <div class="mt-6 grid gap-3 md:grid-cols-3">
+        <div class="mt-5 grid gap-2.5 md:grid-cols-3">
           <router-link
             v-for="workspace in workspaces"
             :key="workspace.to"
             :to="workspace.to"
-            class="group rounded-2xl border border-slate-100 p-5 transition hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
+            class="group rounded-xl border border-slate-100 p-4 transition hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
           >
             <div class="flex items-center justify-between">
-              <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{{ workspace.tag }}</p>
-              <component :is="workspace.icon" :size="14" class="text-slate-300 group-hover:text-slate-900 transition-colors" />
+              <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400">{{ workspace.tag }}</p>
+              <component :is="workspace.icon" :size="12" class="text-slate-300 group-hover:text-slate-900 transition-colors" />
             </div>
-            <h4 class="mt-3 text-base font-bold text-slate-900 group-hover:text-slate-950 transition-colors">{{ workspace.title }}</h4>
-            <p class="mt-2 text-xs font-medium text-slate-500 leading-relaxed">{{ workspace.description }}</p>
+            <h4 class="mt-2 text-sm font-bold text-slate-900 group-hover:text-slate-950 transition-colors">{{ workspace.title }}</h4>
+            <p class="mt-1.5 text-[11px] font-medium text-slate-500 leading-relaxed">{{ workspace.description }}</p>
           </router-link>
         </div>
       </div>
 
-      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-        <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400">Status breakdown</p>
-        <h3 class="mt-1 text-xl font-black text-slate-900 tracking-tight">Order pipeline</h3>
+      <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400">Status breakdown</p>
+        <h3 class="mt-0.5 text-lg font-black text-slate-900 tracking-tight">Order pipeline</h3>
 
-        <div class="mt-6 grid gap-3 grid-cols-2">
+        <div class="mt-5 grid gap-2.5 grid-cols-2">
           <div
             v-for="statusCard in statusCards"
             :key="statusCard.label"
-            class="rounded-xl bg-slate-50 p-4 border border-transparent transition hover:border-slate-200"
+            class="rounded-lg bg-slate-50 p-3 border border-transparent transition hover:border-slate-200"
           >
             <div class="flex items-center justify-between">
-              <p class="text-[11px] font-bold text-slate-600">{{ statusCard.label }}</p>
-              <span class="text-lg font-black text-slate-950">{{ statusCard.value }}</span>
+              <p class="text-[10px] font-bold text-slate-600">{{ statusCard.label }}</p>
+              <span class="text-base font-black text-slate-950">{{ statusCard.value }}</span>
             </div>
           </div>
         </div>
-        <p class="mt-4 text-[10px] font-medium text-slate-400 italic">Live count from fulfillment status pipeline.</p>
+        <p class="mt-3 text-[9px] font-medium text-slate-400 italic">Live count from fulfillment status pipeline.</p>
       </div>
     </section>
 
-    <section class="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <section class="mt-5 rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
       <div class="flex items-center justify-between gap-4">
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400">Recent orders</p>
-          <h3 class="mt-1 text-xl font-black text-slate-900 tracking-tight">Latest activity</h3>
+          <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400">Recent orders</p>
+          <h3 class="mt-0.5 text-lg font-black text-slate-900 tracking-tight">Latest activity</h3>
         </div>
-        <router-link to="/admin/orders" class="flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2 text-xs font-bold text-white transition hover:bg-slate-800 active:scale-95">
-          <ShoppingCart :size="14" />
+        <router-link to="/admin/orders" class="flex items-center gap-1.5 rounded-lg bg-slate-950 px-3.5 py-1.5 text-[10px] font-bold text-white transition hover:bg-slate-800 active:scale-95">
+          <ShoppingCart :size="12" />
           View all
         </router-link>
       </div>
 
-      <div class="mt-6 grid gap-3">
+      <div class="mt-5 grid gap-2.5">
         <div
           v-for="order in recentOrders"
           :key="order.id"
-          class="rounded-xl border border-slate-100 bg-white p-4 transition hover:border-slate-200 hover:shadow-sm"
+          class="rounded-lg border border-slate-100 bg-white p-3.5 transition hover:border-slate-200 hover:shadow-sm"
         >
-          <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div class="flex items-center gap-4">
-              <div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                <User :size="16" />
+          <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div class="flex items-center gap-3">
+              <div class="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                <User :size="14" />
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2">
-                  <p class="text-sm font-black text-slate-950">#{{ order.id.slice(0, 8) }}</p>
-                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">•</span>
-                  <p class="text-xs font-bold text-slate-600">
+                  <p class="text-xs font-black text-slate-950">#{{ order.id.slice(0, 8) }}</p>
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">•</span>
+                  <p class="text-[11px] font-bold text-slate-600">
                     {{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}
                   </p>
                 </div>
                 <div class="flex items-center gap-2 mt-0.5">
-                   <p class="text-[11px] font-medium text-slate-400">{{ order.customerDetails?.email }}</p>
+                   <p class="text-[10px] font-medium text-slate-400">{{ order.customerDetails?.email }}</p>
                 </div>
               </div>
             </div>
 
-            <div class="flex items-center justify-between lg:justify-end gap-6 border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-50">
+            <div class="flex items-center justify-between lg:justify-end gap-5 border-t lg:border-t-0 pt-2.5 lg:pt-0 border-slate-50">
               <div class="flex flex-col items-end">
-                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Status</p>
+                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400">Status</p>
                 <span 
-                  class="mt-0.5 rounded-lg px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+                  class="mt-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider"
                   :class="{
                     'bg-amber-50 text-amber-600': order.status === 'received',
                     'bg-slate-50 text-slate-600': order.status === 'processing',
@@ -138,16 +138,16 @@
                 </span>
               </div>
               <div class="flex flex-col items-end">
-                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Amount</p>
-                <span class="mt-0.5 text-sm font-black text-slate-950">{{ formatCurrency(order.totalAmount) }}</span>
+                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400">Amount</p>
+                <span class="mt-0.5 text-xs font-black text-slate-950">{{ formatCurrency(order.totalAmount) }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div v-if="!recentOrders.length" class="flex flex-col items-center justify-center rounded-2xl bg-slate-50 py-12 text-slate-400">
-          <PackageSearch :size="40" class="opacity-20 mb-3" />
-          <p class="text-sm font-medium">No orders recorded yet</p>
+        <div v-if="!recentOrders.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50 py-10 text-slate-400">
+          <PackageSearch :size="32" class="opacity-20 mb-2" />
+          <p class="text-xs font-medium">No orders recorded yet</p>
         </div>
       </div>
     </section>

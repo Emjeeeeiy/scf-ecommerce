@@ -10,7 +10,7 @@ import {
 import { db, serverTimestamp } from '../Firebase/Firebase'
 import { clearCart, getCart } from './cartService'
 
-export const checkoutCart = async ({ customerDetails }) => {
+export const checkoutCart = async ({ customerDetails, userId = null }) => {
   const cart = await getCart()
 
   if (!cart.items.length) {
@@ -30,10 +30,16 @@ export const checkoutCart = async ({ customerDetails }) => {
     throw new Error('Please select a payment method before checkout.')
   }
 
-  const customerRef = await addDoc(collection(db, 'users'), {
-    ...customerDetails,
-    createdAt: serverTimestamp(),
-  })
+  let finalUserId = userId
+
+  if (!finalUserId) {
+    const customerRef = await addDoc(collection(db, 'users'), {
+      ...customerDetails,
+      role: 'guest',
+      createdAt: serverTimestamp(),
+    })
+    finalUserId = customerRef.id
+  }
 
   const totalAmount = cart.items.reduce(
     (sum, item) => sum + Number(item.basePrice || 0) * Number(item.quantity || 0),
@@ -41,8 +47,8 @@ export const checkoutCart = async ({ customerDetails }) => {
   )
 
   const orderRef = await addDoc(collection(db, 'orders'), {
-    userId: customerRef.id,
-    customerId: customerRef.id,
+    userId: finalUserId,
+    customerId: finalUserId,
     customerDetails,
     paymentMethod: customerDetails.paymentMethod,
     status: 'received',

@@ -94,10 +94,10 @@
                   <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Heading Title</label>
                   <input v-model="settings.hero.title" type="text" class="w-full rounded-xl border-slate-200 bg-slate-50 p-4 text-sm font-medium outline-none focus:ring-2 focus:ring-slate-900" />
                 </div>
-                <div class="space-y-2">
+                <!-- <div class="space-y-2">
                   <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Logo URL (Path)</label>
                   <input v-model="settings.hero.logoUrl" type="text" class="w-full rounded-xl border-slate-200 bg-slate-50 p-4 text-sm font-medium outline-none focus:ring-2 focus:ring-slate-900" />
-                </div>
+                </div> -->
                 <div class="md:col-span-2 space-y-2">
                   <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Description</label>
                   <textarea v-model="settings.hero.description" rows="3" class="w-full rounded-xl border-slate-200 bg-slate-50 p-4 text-sm font-medium outline-none focus:ring-2 focus:ring-slate-900"></textarea>

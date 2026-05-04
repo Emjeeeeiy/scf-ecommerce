@@ -1,5 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import { getCart, registerCartRefresh } from '../services/cartService'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../Firebase/Firebase'
+import { getCart, registerCartRefresh, syncCartOnLogin } from '../services/cartService'
 
 const cartCount = ref(0)
 let isInitialized = false
@@ -18,6 +20,15 @@ export function useCart() {
 
   if (!isInitialized) {
     registerCartRefresh(refreshCartCount)
+    
+    // Listen for auth changes to sync cart and refresh
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await syncCartOnLogin()
+      }
+      refreshCartCount()
+    })
+
     isInitialized = true
   }
 

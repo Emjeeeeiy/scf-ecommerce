@@ -20,6 +20,7 @@ const buildDefaultProfile = (user, overrides = {}) => ({
   firstName: overrides.firstName || '',
   lastName: overrides.lastName || '',
   contact: overrides.contact || '',
+  address: overrides.address || '',
   role: overrides.role || 'customer',
   createdAt: serverTimestamp(),
 })
@@ -31,6 +32,7 @@ export const mapProfile = (uid, data = {}) => ({
   firstName: data.firstName || '',
   lastName: data.lastName || '',
   contact: data.contact || '',
+  address: data.address || '',
   role: data.role || 'customer',
   createdAt: data.createdAt || null,
 })
