@@ -85,3 +85,8 @@ export const addAddress = async (uid, payload) => {
 export const deleteAddress = async (uid, addressId) => {
   await deleteDoc(doc(db, 'users', uid, 'addresses', addressId))
 }
+
+export const listAllUsers = async () => {
+  const snapshots = await getDocs(query(usersCollection, orderBy('createdAt', 'desc')))
+  return snapshots.docs.map((doc) => mapProfile(doc.id, doc.data()))
+}

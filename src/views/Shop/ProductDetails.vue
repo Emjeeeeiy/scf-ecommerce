@@ -17,13 +17,13 @@
 
     <section v-else-if="product" class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
       <!-- Product Main Info -->
-      <div class="overflow-hidden rounded-3xl bg-white p-1.5 shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
+      <div class="overflow-hidden rounded-3xl bg-white p-1.5 border border-slate-300 ring-1 ring-slate-100">
         <div class="relative h-64 w-full overflow-hidden rounded-2xl bg-slate-50 sm:h-96">
           <img
             v-if="product.base64Image"
             :src="product.base64Image"
             :alt="product.name"
-            class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+            class="h-full w-full object-cover"
           />
           <div v-else class="flex h-full flex-col items-center justify-center gap-3 text-slate-300">
             <Image :size="48" />
@@ -32,7 +32,7 @@
           
           <router-link
             to="/shop"
-            class="absolute left-4 top-4 flex items-center gap-2 rounded-xl bg-white/90 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-slate-900 backdrop-blur-md shadow-xl transition-all hover:bg-white active:scale-95"
+            class="absolute left-4 top-4 flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-slate-900"
           >
             <ArrowLeft :size="16" />
             <span>Back</span>
@@ -77,7 +77,7 @@
       <!-- Selection & Action Sidebar -->
       <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
         <!-- Variant Selection -->
-        <div class="rounded-3xl bg-white p-6 shadow-xl shadow-slate-200/50 ring-1 ring-slate-100 sm:p-8">
+        <div class="rounded-3xl bg-white p-6 border border-slate-300 ring-1 ring-slate-100 sm:p-8">
           <div class="flex items-center gap-2 mb-6 border-b border-slate-50 pb-4">
             <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900 text-amber-400 shadow-lg shadow-slate-900/10">
               <Layers :size="16" />
@@ -92,7 +92,7 @@
               type="button"
               class="group flex items-center justify-between gap-3 rounded-2xl border-2 p-4 text-left transition-all duration-300"
               :class="selectedVariantId === variant.id
-                ? 'border-slate-900 bg-slate-900 text-white shadow-2xl shadow-slate-900/20'
+                ? 'border-slate-900 bg-slate-900 text-white'
                 : 'border-slate-50 bg-slate-50 text-slate-900 hover:border-slate-200 hover:bg-white'"
               @click="selectedVariantId = variant.id"
             >

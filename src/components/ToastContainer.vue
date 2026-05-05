@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none w-full max-w-sm">
+  <div class="fixed top-6 right-6 z-9999 flex flex-col gap-3 pointer-events-none w-full max-w-sm">
     <TransitionGroup 
       name="toast"
       enter-active-class="transition duration-300 ease-out"

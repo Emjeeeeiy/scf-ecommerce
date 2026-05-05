@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="Premium collection for your lifestyle">
     <!-- Header Section -->
-    <section class="relative overflow-hidden rounded-3xl bg-slate-900 p-6 sm:p-10 shadow-2xl">
+    <section class="relative overflow-hidden rounded-2xl bg-slate-900 p-6 sm:p-10">
       <div class="relative z-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
         <div class="space-y-1.5">
           <p class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-400">Our Collection</p>
@@ -28,7 +28,7 @@
     <section class="mt-6 sm:mt-10 grid gap-6 lg:grid-cols-[240px_1fr]">
       <!-- Category Sidebar -->
       <aside class="lg:sticky lg:top-24 lg:h-fit">
-        <div class="rounded-2xl bg-white p-4 lg:p-6 shadow-xl shadow-slate-200/50 ring-1 ring-slate-100">
+        <div class="rounded-2xl bg-white p-4 lg:p-6 border border-slate-300 ring-1 ring-slate-100">
           <div class="hidden lg:flex items-center gap-2 mb-6">
             <Filter :size="16" class="text-slate-900" />
             <p class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-900">Filter By Category</p>
@@ -61,7 +61,7 @@
 
       <!-- Product Grid -->
       <div v-if="loading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-3xl bg-white p-1.5 shadow-sm ring-1 ring-slate-100">
+        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-3xl bg-white p-1.5 ring-1 ring-slate-100">
           <div class="h-48 w-full animate-pulse rounded-2xl bg-slate-100"></div>
           <div class="space-y-3 p-4 sm:p-6">
             <div class="h-3 w-20 animate-pulse rounded bg-slate-100"></div>
@@ -75,7 +75,7 @@
         <article
           v-for="product in filteredProducts"
           :key="product.id"
-          class="group flex flex-col overflow-hidden rounded-3xl bg-white p-1.5 shadow-sm ring-1 ring-slate-100 transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 hover:-translate-y-1"
+          class="group flex flex-col overflow-hidden rounded-3xl bg-white p-1.5 ring-1 ring-slate-100 border border-slate-300 "
         >
           <!-- Image Section -->
           <div class="relative h-48 w-full overflow-hidden rounded-2xl bg-slate-50">
@@ -83,7 +83,7 @@
               v-if="product.base64Image"
               :src="product.base64Image"
               :alt="product.name"
-              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              class="h-full w-full object-cover"
             />
             <div v-else class="flex h-full items-center justify-center text-slate-300">
               <Image :size="32" />
@@ -120,7 +120,7 @@
 
               <router-link
                 :to="`/shop/product/${product.id}`"
-                class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white shadow-xl shadow-slate-900/10 transition-all hover:bg-slate-800 active:scale-95"
+                class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95"
               >
                 <span>View Details</span>
                 <ArrowRight :size="16" />

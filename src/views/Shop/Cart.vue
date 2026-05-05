@@ -2,7 +2,7 @@
   <AppShell subtitle="Shopping Cart">
     <section class="grid gap-6 lg:grid-cols-[1.3fr_0.8fr]">
       <!-- Cart Items Section -->
-      <div class="rounded-3xl bg-white p-5 shadow-xl shadow-slate-200/50 ring-1 ring-slate-100 sm:p-8">
+      <div class="rounded-3xl bg-white p-5 border border-slate-300 ring-1 ring-slate-100 sm:p-8">
         <div class="flex flex-wrap items-center justify-between gap-6 border-b border-slate-50 pb-8">
           <div class="flex items-center gap-4">
             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 shadow-inner">
@@ -118,7 +118,7 @@
 
       <!-- Order Summary Sidebar -->
       <aside class="lg:sticky lg:top-24 h-fit">
-        <div class="overflow-hidden rounded-3xl bg-slate-900 p-6 text-white shadow-2xl sm:p-8">
+        <div class="overflow-hidden rounded-3xl bg-slate-900 p-6 text-white sm:p-8">
           <div class="flex items-center gap-3 mb-8 border-b border-white/10 pb-4">
             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-amber-400 shadow-inner">
               <ReceiptText :size="20" />
@@ -154,7 +154,7 @@
 
           <router-link
             to="/checkout"
-            class="group mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-amber-400 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 shadow-xl shadow-amber-400/20 transition-all hover:scale-[1.02] hover:bg-amber-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
+            class="group mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-amber-400 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 transition-all hover:scale-[1.02] hover:bg-amber-300 hover:shadow-xl shadow-amber-400/20  active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
             :class="cart.items.length ? '' : 'pointer-events-none opacity-60'"
           >
             <span>Checkout</span>
@@ -162,7 +162,7 @@
           </router-link>
         </div>
         
-        <div class="mt-6 rounded-2xl bg-white p-6 shadow-xl shadow-slate-200/50 ring-1 ring-slate-100">
+        <div class="mt-6 rounded-2xl bg-white p-6 border border-slate-300 ring-1 ring-slate-100">
            <div class="flex items-start gap-3">
               <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-500 shadow-inner">
                 <Info :size="14" />

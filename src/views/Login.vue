@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="Admin Access">
     <div class="mx-auto max-w-md">
-      <div class="overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
+      <div class="overflow-hidden rounded-4xl bg-white shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
         <!-- Header -->
         <div class="bg-slate-900 p-8 text-white sm:p-10">
           <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 mb-6 shadow-inner">
@@ -69,7 +69,7 @@
           <div class="mt-10 flex flex-col items-center gap-6 border-t border-slate-100 pt-10 text-center">
              <p class="text-[11px] font-medium leading-relaxed text-slate-400">
               Don't have an account yet? 
-              <router-link to="/register" class="inline block mt-1 font-black text-slate-900 hover:underline">Create Account</router-link>
+              <router-link to="/register" class="inline mt-1 font-black text-slate-900 hover:underline">Create Account</router-link>
             </p>
             <div class="flex items-center gap-3 text-slate-300">
                <ShieldCheck :size="18" />

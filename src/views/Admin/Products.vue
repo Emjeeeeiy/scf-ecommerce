@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="min-w-0">
-                  <p class="text-[9px] font-black uppercase tracking-[0.1em] text-amber-600">
+                  <p class="text-[9px] font-black uppercase tracking-widest text-amber-600">
                     {{ categoryName(product.categoryId) || 'Uncategorized' }}
                   </p>
                   <h2 class="truncate text-sm font-black text-slate-950 tracking-tight">{{ product.name }}</h2>

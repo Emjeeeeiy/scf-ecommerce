@@ -141,7 +141,8 @@ import {
   ExternalLink,
   Plus,
   ArrowLeft,
-  Settings2
+  Settings2,
+  Users
 } from 'lucide-vue-next'
 import { useSession } from '../composables/useSession'
 import { logoutUser } from '../services/authService'
@@ -166,6 +167,13 @@ const adminNavigation = [
     tag: 'Hub',
     icon: LayoutDashboard,
     description: 'Monitor metrics, activity, and admin priorities.',
+  },
+  {
+    to: '/admin/users',
+    label: 'Users',
+    tag: 'Community',
+    icon: Users,
+    description: 'Manage accounts and customer profiles.',
   },
   {
     to: '/admin/categories',

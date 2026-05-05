@@ -2,7 +2,7 @@
   <AppShell>
     <div class="space-y-10 pb-16 sm:space-y-16">
       <!-- Hero Section -->
-      <section class="relative overflow-hidden rounded-3xl bg-slate-900 px-6 py-12 text-center text-white shadow-2xl sm:px-10 sm:py-20">
+      <section class="relative overflow-hidden rounded-3xl bg-slate-900 px-6 py-12 text-center text-white sm:px-10 sm:py-20">
         <div class="relative z-10 mx-auto max-w-4xl">
           <h1 class="text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
             <span class="block text-white">{{ settings.hero.title.split(' ')[0] }}</span>
@@ -56,7 +56,7 @@
             :to="`/shop/product/${product.id}`"
             class="group block"
           >
-            <div class="aspect-4/5 overflow-hidden rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-slate-100 transition-all duration-500">
+            <div class="aspect-4/5 overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-slate-100 transition-all duration-500">
               <div class="relative h-full w-full overflow-hidden rounded-xl bg-slate-50 shadow-inner">
                 <img
                   v-if="product.base64Image"
@@ -71,7 +71,7 @@
             </div>
             <div class="mt-3 text-center sm:text-left">
               <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-900 line-clamp-1 group-hover:text-amber-500 transition-colors">{{ product.name }}</h3>
-              <p class="mt-0.5 text-xs font-bold text-slate-400">{{ formatCurrency(product.basePrice) }}</p>
+              <!-- <p class="mt-0.5 text-xs font-bold text-slate-400">{{ formatCurrency(product.basePrice) }}</p> -->
             </div>
           </router-link>
         </div>
@@ -80,7 +80,7 @@
       <!-- Mission & Vision -->
       <section class="grid gap-8 lg:grid-cols-2 lg:items-center">
         <div class="space-y-4">
-          <div class="rounded-2xl bg-white p-6 shadow-xl shadow-slate-200/50 ring-1 ring-slate-100 sm:p-8">
+          <div class="rounded-2xl bg-white p-6 border border-slate-300 ring-1 ring-slate-100 sm:p-8">
             <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
               <Target :size="20" />
             </div>
@@ -91,7 +91,7 @@
               {{ settings.mission.description }}
             </p>
           </div>
-          <div class="rounded-2xl bg-slate-900 p-6 shadow-2xl sm:p-8">
+          <div class="rounded-2xl bg-slate-900 p-6  sm:p-8">
             <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-amber-400">
               <Eye :size="20" />
             </div>
@@ -103,7 +103,7 @@
             </p>
           </div>
         </div>
-        <div class="relative rounded-3xl bg-slate-200 aspect-square overflow-hidden shadow-md flex items-center justify-center">
+        <div class="relative rounded-3xl bg-slate-200 aspect-square overflow-hidden flex items-center justify-center">
             <!-- Background Image -->
             <img 
                 src="/scfphoto.jpg" 
@@ -119,7 +119,7 @@
       </section>
 
       <!-- About Section -->
-      <section id="about" class="rounded-3xl bg-amber-400 px-6 py-12 text-slate-900 shadow-2xl shadow-amber-400/20 sm:px-12 sm:py-16">
+      <section id="about" class="rounded-3xl bg-amber-400 px-6 py-12 text-slate-900 sm:px-12 sm:py-16">
         <div class="mx-auto max-w-3xl text-center">
           <h2 class="text-2xl font-black tracking-tight sm:text-4xl uppercase">{{ settings.about.title }}</h2>
           <div class="mt-6 h-1 w-16 mx-auto rounded-full bg-slate-900"></div>
@@ -130,7 +130,7 @@
       </section>
 
       <!-- Contact Section -->
-      <section class="mx-auto max-w-5xl rounded-3xl bg-white p-6 shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100 sm:p-12">
+      <section class="mx-auto max-w-5xl rounded-3xl bg-white p-6 border border-slate-300 ring-1 ring-slate-100 sm:p-12">
         <div class="grid gap-10 md:grid-cols-2">
           <div class="space-y-6">
             <div>

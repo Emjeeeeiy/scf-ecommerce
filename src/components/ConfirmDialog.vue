@@ -8,10 +8,10 @@
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-if="confirmState.show" class="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+    <div v-if="confirmState.show" class="fixed inset-0 z-10000 flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" @click="onCancel"></div>
       
-      <div class="relative w-full max-w-sm overflow-hidden rounded-[2rem] bg-white shadow-2xl animate-in zoom-in-95 duration-200">
+      <div class="relative w-full max-w-sm overflow-hidden rounded-4xl bg-white shadow-2xl animate-in zoom-in-95 duration-200">
         <div class="p-8 text-center">
           <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-50 text-amber-500">
             <HelpCircle :size="32" />

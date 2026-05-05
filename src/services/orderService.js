@@ -1,11 +1,13 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
   query,
   updateDoc,
+  writeBatch,
 } from 'firebase/firestore'
 import { db, serverTimestamp } from '../Firebase/Firebase'
 import { clearCart, getCart } from './cartService'
@@ -30,15 +32,25 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
     throw new Error('Please select a payment method before checkout.')
   }
 
-  let finalUserId = userId
+  // Validate GCash details if payment method is gcash
+  if (customerDetails.paymentMethod === 'gcash') {
+    if (!customerDetails.referenceNo) {
+      throw new Error('Reference number is required for GCash payments.')
+    }
+    if (!customerDetails.receiptUrl) {
+      throw new Error('Please upload your GCash receipt screenshot.')
+    }
+  }
 
-  if (!finalUserId) {
-    const customerRef = await addDoc(collection(db, 'users'), {
+  let finalUserId = userId
+  let isGuest = !userId
+
+  if (isGuest) {
+    const guestRef = await addDoc(collection(db, 'guests'), {
       ...customerDetails,
-      role: 'guest',
       createdAt: serverTimestamp(),
     })
-    finalUserId = customerRef.id
+    finalUserId = guestRef.id
   }
 
   const totalAmount = cart.items.reduce(
@@ -46,16 +58,25 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
     0,
   )
 
-  const orderRef = await addDoc(collection(db, 'orders'), {
+  const orderData = {
     userId: finalUserId,
     customerId: finalUserId,
+    isGuest,
     customerDetails,
     paymentMethod: customerDetails.paymentMethod,
     status: 'received',
     paid: false,
     totalAmount,
     createdAt: serverTimestamp(),
-  })
+  }
+
+  // Add GCash specific data if present
+  if (customerDetails.paymentMethod === 'gcash') {
+    orderData.referenceNo = customerDetails.referenceNo
+    orderData.receiptUrl = customerDetails.receiptUrl // This will now be the base64 string
+  }
+
+  const orderRef = await addDoc(collection(db, 'orders'), orderData)
 
   await Promise.all(
     cart.items.map((item) =>
@@ -123,3 +144,19 @@ export const updateOrderStatus = async (orderId, status) => {
     status,
   })
 }
+
+export const deleteOrder = async (orderId) => {
+  const batch = writeBatch(db)
+
+  // Get all items in the order's items subcollection
+  const itemsSnapshot = await getDocs(collection(db, 'orders', orderId, 'items'))
+  itemsSnapshot.docs.forEach((itemDoc) => {
+    batch.delete(itemDoc.ref)
+  })
+
+  // Delete the order document itself
+  batch.delete(doc(db, 'orders', orderId))
+
+  await batch.commit()
+}
+

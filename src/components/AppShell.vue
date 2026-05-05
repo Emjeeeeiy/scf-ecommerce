@@ -1,11 +1,10 @@
 <template>
   <div class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-amber-100 selection:text-amber-900">
     <!-- Desktop Header -->
-    <header class="sticky top-0 z-40 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md">
+    <header class="sticky top-0 z-40 w-full border-b border-slate-300 bg-white">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
-        <!-- Logo -->
-        <router-link to="/" class="group flex items-center gap-2 transition-transform active:scale-95">
-          <div class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-slate-900 shadow-lg shadow-slate-900/10">
+        <div class="group flex items-center gap-1">
+          <div class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg">
             <img 
               src="/scfLogo.png" 
               alt="SCF Logo" 
@@ -15,7 +14,7 @@
           <div class="flex flex-col leading-none">
             <span class="text-base font-black tracking-tighter text-slate-900">SCF</span>
           </div>
-        </router-link>
+        </div>
 
         <!-- Main Desktop Nav -->
         <nav class="hidden items-center gap-1 md:flex">
