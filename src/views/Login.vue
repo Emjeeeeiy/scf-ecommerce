@@ -44,19 +44,29 @@
                 <KeyRound :size="12" />
                 Password
               </label>
-              <input
-                v-model="password"
-                type="password"
-                class="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
-                placeholder="••••••••"
-                required
-              />
+              <div class="relative">
+                <input
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="w-full rounded-2xl border-none bg-slate-50 px-6 py-4 pr-14 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  @click="showPassword = !showPassword"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 active:scale-95"
+                >
+                  <Eye v-if="!showPassword" :size="18" />
+                  <EyeOff v-else :size="18" />
+                </button>
+              </div>
             </div>
 
             <button
               type="submit"
               :disabled="loading"
-              class="group mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-900 px-6 py-5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300 shadow-xl shadow-slate-900/10"
+              class="group mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-900 px-6 py-5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300"
             >
               <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white"></span>
               <template v-else>
@@ -94,7 +104,9 @@ import {
   KeyRound, 
   LogIn, 
   AlertCircle, 
-  ShieldCheck 
+  ShieldCheck,
+  Eye,
+  EyeOff
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -102,6 +114,7 @@ const { isAdmin } = useSession()
 
 const email = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const errorMessage = ref('')
 const loading = ref(false)
 

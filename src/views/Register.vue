@@ -100,26 +100,46 @@
                   <KeyRound :size="12" />
                   Password
                 </label>
-                <input
-                  v-model="form.password"
-                  type="password"
-                  class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
-                  placeholder="••••••••"
-                  required
-                />
+                <div class="relative">
+                  <input
+                    v-model="form.password"
+                    :type="showPassword ? 'text' : 'password'"
+                    class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 pr-12 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    @click="showPassword = !showPassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                  >
+                    <Eye v-if="!showPassword" :size="16" />
+                    <EyeOff v-else :size="16" />
+                  </button>
+                </div>
               </div>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
                   <KeyRound :size="12" />
                   Confirm
                 </label>
-                <input
-                  v-model="form.confirmPassword"
-                  type="password"
-                  class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
-                  placeholder="••••••••"
-                  required
-                />
+                <div class="relative">
+                  <input
+                    v-model="form.confirmPassword"
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 pr-12 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    @click="showConfirmPassword = !showConfirmPassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                  >
+                    <Eye v-if="!showConfirmPassword" :size="16" />
+                    <EyeOff v-else :size="16" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -159,12 +179,16 @@ import {
   KeyRound, 
   Phone, 
   MapPin, 
-  AlertCircle 
+  AlertCircle,
+  Eye,
+  EyeOff
 } from 'lucide-vue-next'
 
 const router = useRouter()
 const loading = ref(false)
 const errorMessage = ref('')
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
 const form = reactive({
   firstName: '',
