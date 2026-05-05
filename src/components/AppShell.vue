@@ -45,7 +45,7 @@
             </span>
           </router-link>
 
-          <div class="h-5 w-px bg-slate-100 mx-1.5 hidden md:block"></div>
+          <div class="h-5 w-px bg-slate-300 mx-1.5 hidden md:block"></div>
 
           <!-- User Section -->
           <div class="hidden items-center gap-1.5 md:flex">
@@ -56,7 +56,7 @@
                 :class="route.path === '/account/orders' ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'"
               >
                 <Package :size="12" />
-                <span class="hidden lg:inline">Orders</span>
+                <span class="hidden lg:inline">Order History</span>
               </router-link>
               
               <router-link
@@ -68,13 +68,16 @@
                 <span class="hidden lg:inline">Profile</span>
               </router-link>
 
+              <div class="h-5 w-px bg-slate-300 mx-1.5 hidden md:block"></div>
+
               <button
                 type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-rose-50 hover:text-rose-600 active:scale-95"
+                class="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 transition-all hover:bg-rose-50 hover:text-rose-600 active:scale-95"
                 @click="handleLogout"
                 title="Logout"
               >
-                <LogOut :size="16" />
+                <LogOut :size="12" />
+                <span class="hidden lg:inline">Logout</span>
               </button>
             </template>
 
