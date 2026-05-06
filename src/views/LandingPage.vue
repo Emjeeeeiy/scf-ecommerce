@@ -2,7 +2,10 @@
   <AppShell>
     <div class="space-y-10 pb-16 sm:space-y-16">
       <!-- Hero Section -->
-      <section class="relative overflow-hidden rounded-3xl bg-slate-900 px-6 py-12 text-center text-white sm:px-10 sm:py-20">
+     <section 
+        class="relative overflow-hidden rounded-3xl bg-slate-900 px-6 py-12 text-center text-white sm:px-10 sm:py-20"
+        style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8)), url('/scfphoto2.jpg'); background-size: cover; background-position: center;"
+      >
         <div class="relative z-10 mx-auto max-w-4xl">
           <h1 class="text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
             <span class="block text-white">{{ settings.hero.title.split(' ')[0] }}</span>
@@ -22,7 +25,7 @@
           </div>
         </div>
         
-        <!-- Animated Background Accents -->
+        <!-- Animated Background Accents (Optional: Pwedeng alisin kung masyadong magulo na sa background image) -->
         <div class="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-amber-400/10 blur-[100px]"></div>
         <div class="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-blue-500/10 blur-[100px]"></div>
       </section>
@@ -41,20 +44,20 @@
         </div>
         
         <!-- Product Grid -->
-        <div v-if="loading" class="grid gap-4 grid-cols-2 lg:grid-cols-5">
-          <div v-for="i in 5" :key="i" class="animate-pulse space-y-3">
+        <div v-if="loading" class="flex gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-6 lg:overflow-visible lg:pb-0 scrollbar-hide">
+          <div v-for="i in 6" :key="i" class="min-w-40 flex-1 animate-pulse space-y-3 lg:min-w-0">
             <div class="aspect-4/5 rounded-2xl bg-slate-100"></div>
             <div class="h-3 w-3/4 rounded bg-slate-100"></div>
             <div class="h-3 w-1/2 rounded bg-slate-100"></div>
           </div>
         </div>
 
-        <div v-else-if="latestProducts.length > 0" class="grid gap-4 grid-cols-2 lg:grid-cols-5">
+        <div v-else-if="latestProducts.length > 0" class="flex gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-6 lg:overflow-visible lg:pb-0 scrollbar-hide">
           <router-link 
             v-for="product in latestProducts" 
             :key="product.id" 
             :to="`/shop/product/${product.id}`"
-            class="group block"
+            class="group block min-w-40  flex-1 lg:min-w-0"
           >
             <div class="aspect-4/5 overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-slate-100 transition-all duration-500">
               <div class="relative h-full w-full overflow-hidden rounded-xl bg-slate-50 shadow-inner">
@@ -160,6 +163,19 @@
                    <span class="text-slate-900 font-black text-xs sm:text-sm">{{ settings.contact.address }}</span>
                 </div>
               </div>
+              <a 
+                :href="settings.contact.facebook" 
+                target="_blank" 
+                class="flex items-center gap-4 group"
+              >
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-400 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+                  <Facebook :size="18" />
+                </div>
+                <div>
+                   <p class="text-[7px] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">Follow Us</p>
+                   <span class="text-slate-900 font-black text-xs sm:text-sm group-hover:text-blue-700 transition-colors">Facebook Page</span>
+                </div>
+              </a>
             </div>
           </div>
 
@@ -191,6 +207,7 @@ import {
   Eye, 
   Mail, 
   MapPin, 
+  Facebook,
   CheckCircle, 
   Truck, 
   Palette,
@@ -209,8 +226,8 @@ onMounted(async () => {
       listProducts(),
       getLandingPageSettings()
     ])
-    // Get top 5 latest products
-    latestProducts.value = products.slice(0, 5)
+    // Get top 6 latest products
+    latestProducts.value = products.slice(0, 6)
     settings.value = landingSettings
   } catch (error) {
     console.error('Error fetching data:', error)

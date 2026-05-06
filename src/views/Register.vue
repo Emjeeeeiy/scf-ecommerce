@@ -1,17 +1,35 @@
 <template>
   <AppShell subtitle="Create Account">
     <div class="mx-auto max-w-md">
-      <div class="overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100">
+      <div class="overflow-hidden rounded-4xl bg-white border border-slate-300 ring-1 ring-slate-100">
         <!-- Header -->
-        <div class="bg-slate-900 p-8 text-white sm:p-10">
-          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 mb-6 shadow-inner">
-            <UserPlus :size="24" class="text-amber-400" />
+        <div class="relative overflow-hidden bg-white px-6 py-10 sm:px-8 sm:py-12 border-b border-slate-200">
+          <!-- Subtle Background Accent (Optional: para sa modern touch) -->
+          <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-slate-50/50 blur-3xl"></div>
+
+          <div class="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-3">
+              <!-- Icon & Label Row -->
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 shadow-sm">
+                  <UserPlus :size="20" class="text-white" />
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                 — Join Us
+                </span>
+              </div>
+
+              <!-- Heading & Subtext -->
+              <div class="space-y-1">
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                  Create Account
+                </h1>
+                <p class="max-w-sm text-sm font-medium leading-snug text-slate-500">
+                  Save your details and track orders in one place.
+                </p>
+              </div>
+            </div>
           </div>
-          <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Join Us</p>
-          <h1 class="text-3xl font-black tracking-tight sm:text-4xl">Create Account</h1>
-          <p class="mt-4 text-sm font-medium leading-relaxed text-slate-400">
-            Register to save your details and track your orders easily.
-          </p>
         </div>
 
         <!-- Form -->
@@ -33,7 +51,7 @@
                 <input
                   v-model="form.firstName"
                   type="text"
-                  class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                  class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                   placeholder="John"
                   required
                 />
@@ -45,7 +63,7 @@
                 <input
                   v-model="form.lastName"
                   type="text"
-                  class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                  class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                   placeholder="Doe"
                   required
                 />
@@ -60,7 +78,7 @@
               <input
                 v-model="form.email"
                 type="email"
-                class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                 placeholder="john@example.com"
                 required
               />
@@ -74,7 +92,7 @@
               <input
                 v-model="form.contact"
                 type="tel"
-                class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                 placeholder="0912 345 6789"
                 required
               />
@@ -88,7 +106,7 @@
               <textarea
                 v-model="form.address"
                 rows="2"
-                class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 text-sm font-bold text-slate-900  outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                 placeholder="Street, Barangay, Municipality"
                 required
               ></textarea>
@@ -104,7 +122,7 @@
                   <input
                     v-model="form.password"
                     :type="showPassword ? 'text' : 'password'"
-                    class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 pr-12 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                    class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 pr-12 text-sm font-bold text-slate-900 outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                     placeholder="••••••••"
                     required
                   />
@@ -127,7 +145,7 @@
                   <input
                     v-model="form.confirmPassword"
                     :type="showConfirmPassword ? 'text' : 'password'"
-                    class="w-full rounded-2xl border-none bg-slate-50 px-5 py-3.5 pr-12 text-sm font-bold text-slate-900 shadow-sm outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
+                    class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3.5 pr-12 text-sm font-bold text-slate-900 outline-none ring-1 ring-slate-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400"
                     placeholder="••••••••"
                     required
                   />
@@ -146,7 +164,7 @@
             <button
               type="submit"
               :disabled="loading"
-              class="group mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-900 px-6 py-5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300 shadow-xl shadow-slate-900/10"
+              class="group mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-900 px-6 py-5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95 disabled:bg-slate-100 disabled:text-slate-300"
             >
               <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white"></span>
               <template v-else>
@@ -156,10 +174,10 @@
             </button>
           </form>
 
-          <div class="mt-10 flex flex-col items-center gap-6 border-t border-slate-100 pt-10 text-center">
+          <div class="mt-5 flex flex-col items-center gap-6 border-t border-slate-300 pt-3 text-center">
             <p class="text-[11px] font-medium leading-relaxed text-slate-400">
               Already have an account? 
-              <router-link to="/login" class="inline block mt-1 font-black text-slate-900 hover:underline">Sign In</router-link>
+              <router-link to="/login" class="block mt-1 font-black text-slate-900 hover:underline">Sign In</router-link>
             </p>
           </div>
         </div>

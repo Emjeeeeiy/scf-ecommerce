@@ -1,38 +1,38 @@
 <template>
   <AdminPanelLayout subtitle="Create and remove storefront categories">
     <section class="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
-        <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400">
+      <div class="rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-800">
+        <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
           <PlusCircle :size="14" />
           <span>Taxonomy setup</span>
         </div>
-        <h2 class="mt-2 text-xl font-black text-slate-900 tracking-tight">Add category</h2>
-        <p class="mt-2 text-xs font-medium text-slate-500 leading-relaxed">
+        <h2 class="mt-2 text-xl font-black text-slate-900 dark:text-white tracking-tight">Add category</h2>
+        <p class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400 leading-relaxed">
           Create customer-facing categories that keep the storefront organized.
         </p>
 
         <form class="mt-6 space-y-4" @submit.prevent="handleCreateCategory">
           <label class="block">
-            <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400">Category name</span>
-            <input v-model="name" class="w-full rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-3 text-sm font-semibold text-slate-900 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all" placeholder="Example: Accessories" required />
+            <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Category name</span>
+            <input v-model="name" class="w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all" placeholder="Example: Accessories" required />
           </label>
-          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold text-white transition hover:bg-slate-800 active:scale-[0.98] shadow-md shadow-slate-100">
+          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-4 py-3.5 text-sm font-bold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-[0.98] shadow-md shadow-slate-100 dark:shadow-none">
             <Save :size="16" />
             Save category
           </button>
         </form>
       </div>
 
-      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+      <div class="rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-800">
         <div class="flex items-center justify-between gap-4">
           <div>
-            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400">
+            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
               <Layers :size="14" />
               <span>Existing categories</span>
             </div>
-            <h2 class="mt-1 text-xl font-black text-slate-900 tracking-tight">{{ categories.length }} categories</h2>
+            <h2 class="mt-1 text-xl font-black text-slate-900 dark:text-white tracking-tight">{{ categories.length }} categories</h2>
           </div>
-          <div class="rounded-xl bg-slate-50 px-4 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-tight border border-slate-100">
+          <div class="rounded-xl bg-slate-50 dark:bg-slate-800 px-4 py-2 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight border border-slate-100 dark:border-slate-800">
             Storefront Labels
           </div>
         </div>
@@ -41,19 +41,19 @@
           <div
             v-for="category in categories"
             :key="category.id"
-            class="group flex items-center justify-between rounded-xl border border-slate-50 bg-white p-4 transition hover:border-slate-200 hover:bg-slate-50/30"
+            class="group flex items-center justify-between rounded-xl border border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 transition hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50/30 dark:hover:bg-slate-800/50"
           >
             <div class="flex items-center gap-3">
-              <div class="h-8 w-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-slate-900 transition-colors">
+              <div class="h-8 w-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                 <Tag :size="14" />
               </div>
               <div>
-                <span class="block text-sm font-bold text-slate-900">{{ category.name }}</span>
+                <span class="block text-sm font-bold text-slate-900 dark:text-white">{{ category.name }}</span>
               </div>
             </div>
             <button
               type="button"
-              class="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-[10px] font-bold text-red-600 transition hover:bg-red-100 active:scale-95"
+              class="flex items-center gap-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-[10px] font-bold text-red-600 dark:text-red-400 transition hover:bg-red-100 dark:hover:bg-red-500/20 active:scale-95"
               @click="handleDeleteCategory(category.id)"
             >
               <Trash2 :size="12" />
@@ -61,7 +61,7 @@
             </button>
           </div>
 
-          <div v-if="!categories.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50/50 py-12 text-slate-300 border border-dashed border-slate-200">
+          <div v-if="!categories.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50/50 dark:bg-slate-800/50 py-12 text-slate-300 dark:text-slate-600 border border-dashed border-slate-200 dark:border-slate-700">
             <PackageSearch :size="32" class="opacity-20 mb-2" />
             <p class="text-xs font-medium">No categories created yet</p>
           </div>

@@ -24,7 +24,8 @@ export const DEFAULT_LANDING_PAGE_SETTINGS = {
   },
   contact: {
     email: 'hello@silanganchristian.org',
-    address: 'Silangan, Philippines'
+    address: 'Silangan, Philippines',
+    facebook: 'https://www.facebook.com/scfellowsh1p'
   }
 }
 
