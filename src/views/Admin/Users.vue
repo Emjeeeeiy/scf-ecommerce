@@ -103,7 +103,7 @@
       leave-from-class="opacity-100 translate-y-0 scale-100"
       leave-to-class="opacity-0 translate-y-8 scale-95"
     >
-      <div v-if="selectedUser" class="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-md">
+      <div v-if="selectedUser" class="fixed inset-0 z-100 flex items-center justify-center p-4 backdrop-blur-md">
         <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60" @click="selectedUser = null"></div>
         
         <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-slate-900 shadow-2xl flex flex-col">
