@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import { getAuth, setPersistence, browserSessionPersistence } from 'firebase/auth'
 import { getFirestore, serverTimestamp, Timestamp } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -13,6 +13,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
+
+// Set persistence to SESSION so it doesn't stay logged in forever across browser restarts
+setPersistence(auth, browserSessionPersistence)
+  .catch((err) => console.error("Auth persistence error:", err))
+
 const db = getFirestore(app)
 
 export { app, auth, db, serverTimestamp, Timestamp }
