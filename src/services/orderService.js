@@ -144,29 +144,39 @@ export const listAllOrders = async () => {
 
 export const subscribeToAllOrders = (callback) => {
   const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'))
-  return onSnapshot(q, async (snapshot) => {
-    const orders = await Promise.all(
-      snapshot.docs.map(async (orderDoc) => {
-        const itemSnapshots = await getDocs(collection(db, 'orders', orderDoc.id, 'items'))
-        return {
-          id: orderDoc.id,
-          ...orderDoc.data(),
-          items: itemSnapshots.docs.map((itemDoc) => ({
-            id: itemDoc.id,
-            ...itemDoc.data(),
-          })),
-        }
-      })
-    )
-    callback(orders)
-  })
+  return onSnapshot(q, 
+    async (snapshot) => {
+      const orders = await Promise.all(
+        snapshot.docs.map(async (orderDoc) => {
+          const itemSnapshots = await getDocs(collection(db, 'orders', orderDoc.id, 'items'))
+          return {
+            id: orderDoc.id,
+            ...orderDoc.data(),
+            items: itemSnapshots.docs.map((itemDoc) => ({
+              id: itemDoc.id,
+              ...itemDoc.data(),
+            })),
+          }
+        })
+      )
+      callback(orders)
+    },
+    (error) => {
+      console.error("Firestore Orders Subscription Error:", error.code, error.message)
+    }
+  )
 }
 
 export const subscribeToUnseenOrdersCount = (callback) => {
   const q = query(collection(db, 'orders'), where('seenByAdmin', '==', false))
-  return onSnapshot(q, (snapshot) => {
-    callback(snapshot.size)
-  })
+  return onSnapshot(q, 
+    (snapshot) => {
+      callback(snapshot.size)
+    },
+    (error) => {
+      console.error("Firestore Notification Error:", error.code, error.message)
+    }
+  )
 }
 
 export const markOrderAsSeen = async (orderId) => {
