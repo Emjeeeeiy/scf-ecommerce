@@ -42,7 +42,15 @@
                 ? 'bg-slate-900 dark:bg-amber-400 text-white dark:text-slate-950 shadow-md'
                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-950 dark:hover:text-white'"
             >
-              <component :is="item.icon" :size="16" :class="isActive(item.to) ? '' : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'" />
+              <div class="relative">
+                <component :is="item.icon" :size="16" :class="isActive(item.to) ? '' : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'" />
+                <span 
+                  v-if="item.label === 'Orders' && unseenOrdersCount > 0" 
+                  class="absolute -top-1.5 -right-1.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-slate-900"
+                >
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                </span>
+              </div>
               <div class="flex-1 min-w-0">
                 <p class="text-[13px] font-semibold tracking-tight">{{ item.label }}</p>
               </div>
@@ -147,6 +155,7 @@ import {
 import { useSession } from '../composables/useSession'
 import { logoutUser } from '../services/authService'
 import { useAdminTheme } from '../composables/useAdminTheme'
+import { useOrderNotification } from '../composables/useOrderNotification'
 
 defineProps({
   subtitle: {
@@ -159,6 +168,7 @@ const route = useRoute()
 const router = useRouter()
 const { profile } = useSession()
 const { isDarkMode } = useAdminTheme()
+const { unseenOrdersCount } = useOrderNotification()
 
 const adminNavigation = [
   {

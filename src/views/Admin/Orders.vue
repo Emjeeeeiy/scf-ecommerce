@@ -111,9 +111,16 @@
                 @click="openDetails(order)"
               >
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="bg-slate-900 dark:bg-amber-400 text-white dark:text-slate-950 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter">
-                    #{{ order.id.slice(0, 8) }}
-                  </span>
+                  <div class="flex items-center gap-2">
+                    <span 
+                      v-if="!order.seenByAdmin" 
+                      class="flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+                      title="New Order"
+                    ></span>
+                    <span class="bg-slate-900 dark:bg-amber-400 text-white dark:text-slate-950 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter">
+                      #{{ order.id.slice(0, 8) }}
+                    </span>
+                  </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="max-w-50">
@@ -373,7 +380,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { 
   User, 
   MapPin, 
@@ -388,10 +395,11 @@ import {
   ShieldCheck,
   Eye,
   Phone,
-  Maximize2
+  Maximize2,
+  Bell
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { listAllOrders, updateOrderStatus, deleteOrder } from '../../services/orderService'
+import { subscribeToAllOrders, updateOrderStatus, deleteOrder, markOrderAsSeen } from '../../services/orderService'
 import { formatCurrency } from '../../utils/format'
 import { useConfirm } from '../../composables/useConfirm'
 import { useToast } from '../../composables/useToast'
@@ -403,27 +411,27 @@ const startDate = ref('')
 const endDate = ref('')
 const selectedOrder = ref(null)
 const previewImage = ref(null)
+let unsubscribeOrders = null
 
 const { confirm } = useConfirm()
 const toast = useToast()
 
-const loadOrders = async () => {
-  try {
-    orders.value = await listAllOrders()
-  } catch (error) {
-    toast.error('Failed to load orders')
-    console.error(error)
-  }
+const loadOrders = () => {
+  unsubscribeOrders = subscribeToAllOrders((newOrders) => {
+    orders.value = newOrders
+    
+    // If an order is currently selected, update its data from the fresh list
+    if (selectedOrder.value) {
+      const updated = newOrders.find(o => o.id === selectedOrder.value.id)
+      if (updated) selectedOrder.value = updated
+    }
+  })
 }
 
 const handleUpdateStatus = async (orderId, status) => {
   try {
     await updateOrderStatus(orderId, status)
     toast.success('Order status updated')
-    if (selectedOrder.value && selectedOrder.value.id === orderId) {
-      selectedOrder.value.status = status
-    }
-    await loadOrders()
   } catch (error) {
     toast.error('Failed to update status')
   }
@@ -439,7 +447,6 @@ const handleDeleteOrder = async (orderId) => {
     if (selectedOrder.value && selectedOrder.value.id === orderId) {
       selectedOrder.value = null
     }
-    await loadOrders()
   } catch (error) {
     toast.error('Failed to delete order')
   }
@@ -452,8 +459,15 @@ const resetFilters = () => {
   endDate.value = ''
 }
 
-const openDetails = (order) => {
+const openDetails = async (order) => {
   selectedOrder.value = order
+  if (!order.seenByAdmin) {
+    try {
+      await markOrderAsSeen(order.id)
+    } catch (error) {
+      console.error('Failed to mark order as seen:', error)
+    }
+  }
 }
 
 const viewFullImage = (url) => {
@@ -512,7 +526,17 @@ const filteredOrders = computed(() => {
 
 const countByStatus = (status) => orders.value.filter((order) => order.status === status).length
 
+const summaries = computed(() => [
+  { label: 'Total Volume', value: orders.value.length },
+  { label: 'Pending', value: countByStatus('received') },
+  { label: 'Processing', value: countByStatus('processing') },
+  { label: 'Unread', value: orders.value.filter(o => !o.seenByAdmin).length },
+])
+
 onMounted(loadOrders)
+onUnmounted(() => {
+  if (unsubscribeOrders) unsubscribeOrders()
+})
 </script>
 
 <style scoped>

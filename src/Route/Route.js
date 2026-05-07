@@ -103,6 +103,14 @@ const routes = [
     component: AdminSettings,
     meta: { requiresAuth: true, requiresAdmin: true }
   },
+  {
+    path: '/admin',
+    redirect: '/admin/dashboard'
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
+  }
 ]
 
 const router = createRouter({

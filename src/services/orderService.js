@@ -4,9 +4,11 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   orderBy,
   query,
   updateDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore'
 import { db, serverTimestamp } from '../Firebase/Firebase'
@@ -66,6 +68,7 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
     paymentMethod: customerDetails.paymentMethod,
     status: 'received',
     paid: false,
+    seenByAdmin: false,
     totalAmount,
     createdAt: serverTimestamp(),
   }
@@ -137,6 +140,39 @@ export const listAllOrders = async () => {
       }
     }),
   )
+}
+
+export const subscribeToAllOrders = (callback) => {
+  const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'))
+  return onSnapshot(q, async (snapshot) => {
+    const orders = await Promise.all(
+      snapshot.docs.map(async (orderDoc) => {
+        const itemSnapshots = await getDocs(collection(db, 'orders', orderDoc.id, 'items'))
+        return {
+          id: orderDoc.id,
+          ...orderDoc.data(),
+          items: itemSnapshots.docs.map((itemDoc) => ({
+            id: itemDoc.id,
+            ...itemDoc.data(),
+          })),
+        }
+      })
+    )
+    callback(orders)
+  })
+}
+
+export const subscribeToUnseenOrdersCount = (callback) => {
+  const q = query(collection(db, 'orders'), where('seenByAdmin', '==', false))
+  return onSnapshot(q, (snapshot) => {
+    callback(snapshot.size)
+  })
+}
+
+export const markOrderAsSeen = async (orderId) => {
+  await updateDoc(doc(db, 'orders', orderId), {
+    seenByAdmin: true,
+  })
 }
 
 export const updateOrderStatus = async (orderId, status) => {
