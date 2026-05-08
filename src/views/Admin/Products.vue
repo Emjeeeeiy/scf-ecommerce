@@ -136,7 +136,7 @@
                 <div class="space-y-2">
                   <div class="flex items-center justify-between">
                     <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Sizes & Stocks</p>
-                    <button type="button" class="text-[9px] font-black uppercase tracking-widest text-amber-500 hover:text-amber-600 font-bold" @click="addOptionRow(vIndex)">+ Add size</button>
+                    <button type="button" class="text-[9px] font-black uppercase tracking-widest text-amber-500 hover:text-amber-600" @click="addOptionRow(vIndex)">+ Add size</button>
                   </div>
                   <div 
                     v-for="(option, oIndex) in variant.options" 

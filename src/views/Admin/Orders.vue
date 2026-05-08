@@ -136,10 +136,10 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center gap-2 max-w-50">
                     <span class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">
-                      {{ order.items?.[0]?.productName || 'No Items' }}
+                      {{ order.firstItemName || 'No Items' }}
                     </span>
-                    <span v-if="order.items?.length > 1" class="px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[8px] font-black text-slate-400 dark:text-slate-500 shrink-0">
-                      +{{ order.items.length - 1 }}
+                    <span v-if="order.itemCount > 1" class="px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[8px] font-black text-slate-400 dark:text-slate-500 shrink-0">
+                      +{{ order.itemCount - 1 }}
                     </span>
                   </div>
                 </td>
@@ -399,7 +399,7 @@ import {
   Bell
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { subscribeToAllOrders, updateOrderStatus, deleteOrder, markOrderAsSeen } from '../../services/orderService'
+import { subscribeToAllOrders, updateOrderStatus, deleteOrder, markOrderAsSeen, getOrderItems } from '../../services/orderService'
 import { formatCurrency } from '../../utils/format'
 import { useConfirm } from '../../composables/useConfirm'
 import { useToast } from '../../composables/useToast'
@@ -423,7 +423,11 @@ const loadOrders = () => {
     // If an order is currently selected, update its data from the fresh list
     if (selectedOrder.value) {
       const updated = newOrders.find(o => o.id === selectedOrder.value.id)
-      if (updated) selectedOrder.value = updated
+      if (updated) {
+        // Keep the items from the previously fetched details if they exist
+        const items = selectedOrder.value.items
+        selectedOrder.value = { ...updated, items }
+      }
     }
   })
 }
@@ -460,13 +464,20 @@ const resetFilters = () => {
 }
 
 const openDetails = async (order) => {
-  selectedOrder.value = order
-  if (!order.seenByAdmin) {
-    try {
+  // Set basic info first for immediate UI feedback
+  selectedOrder.value = { ...order, items: [] }
+  
+  try {
+    // Fetch full items only when needed
+    const items = await getOrderItems(order.id)
+    selectedOrder.value = { ...order, items }
+    
+    if (!order.seenByAdmin) {
       await markOrderAsSeen(order.id)
-    } catch (error) {
-      console.error('Failed to mark order as seen:', error)
     }
+  } catch (error) {
+    console.error('Failed to load order details:', error)
+    toast.error('Could not load order items')
   }
 }
 
@@ -506,7 +517,8 @@ const filteredOrders = computed(() => {
       order.id.toLowerCase().includes(searchLower) ||
       `${order.customerDetails?.firstName} ${order.customerDetails?.lastName}`.toLowerCase().includes(searchLower) ||
       order.customerDetails?.email?.toLowerCase().includes(searchLower) ||
-      order.referenceNo?.toLowerCase().includes(searchLower)
+      order.referenceNo?.toLowerCase().includes(searchLower) ||
+      order.firstItemName?.toLowerCase().includes(searchLower)
 
     const matchesStatus = statusFilter.value === 'all' || order.status === statusFilter.value
 

@@ -71,6 +71,9 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
     seenByAdmin: false,
     totalAmount,
     createdAt: serverTimestamp(),
+    // Summary fields for list view optimization
+    itemCount: cart.items.reduce((sum, item) => sum + item.quantity, 0),
+    firstItemName: cart.items[0]?.productName || '',
   }
 
   // Add GCash specific data if present
@@ -101,64 +104,41 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
 }
 
 export const listUserOrders = async (uid) => {
-  const orderSnapshots = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')))
-  const orders = orderSnapshots.docs
-    .map((orderDoc) => ({
-      id: orderDoc.id,
-      ...orderDoc.data(),
-    }))
-    .filter((order) => order.userId === uid)
-
-  return Promise.all(
-    orders.map(async (order) => {
-      const itemSnapshots = await getDocs(collection(db, 'orders', order.id, 'items'))
-      return {
-        ...order,
-        items: itemSnapshots.docs.map((itemDoc) => ({
-          id: itemDoc.id,
-          ...itemDoc.data(),
-        })),
-      }
-    }),
-  )
+  const q = query(collection(db, 'orders'), where('userId', '==', uid), orderBy('createdAt', 'desc'))
+  const orderSnapshots = await getDocs(q)
+  
+  return orderSnapshots.docs.map((orderDoc) => ({
+    id: orderDoc.id,
+    ...orderDoc.data(),
+  }))
 }
 
 export const listAllOrders = async () => {
-  const orderSnapshots = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')))
+  const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'))
+  const orderSnapshots = await getDocs(q)
 
-  return Promise.all(
-    orderSnapshots.docs.map(async (orderDoc) => {
-      const itemSnapshots = await getDocs(collection(db, 'orders', orderDoc.id, 'items'))
+  return orderSnapshots.docs.map((orderDoc) => ({
+    id: orderDoc.id,
+    ...orderDoc.data(),
+  }))
+}
 
-      return {
-        id: orderDoc.id,
-        ...orderDoc.data(),
-        items: itemSnapshots.docs.map((itemDoc) => ({
-          id: itemDoc.id,
-          ...itemDoc.data(),
-        })),
-      }
-    }),
-  )
+export const getOrderItems = async (orderId) => {
+  const itemSnapshots = await getDocs(collection(db, 'orders', orderId, 'items'))
+  return itemSnapshots.docs.map((itemDoc) => ({
+    id: itemDoc.id,
+    ...itemDoc.data(),
+  }))
 }
 
 export const subscribeToAllOrders = (callback) => {
   const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'))
   return onSnapshot(q, 
-    async (snapshot) => {
-      const orders = await Promise.all(
-        snapshot.docs.map(async (orderDoc) => {
-          const itemSnapshots = await getDocs(collection(db, 'orders', orderDoc.id, 'items'))
-          return {
-            id: orderDoc.id,
-            ...orderDoc.data(),
-            items: itemSnapshots.docs.map((itemDoc) => ({
-              id: itemDoc.id,
-              ...itemDoc.data(),
-            })),
-          }
-        })
-      )
+    (snapshot) => {
+      const orders = snapshot.docs.map((orderDoc) => ({
+        id: orderDoc.id,
+        ...orderDoc.data(),
+      }))
       callback(orders)
     },
     (error) => {
@@ -171,6 +151,8 @@ export const subscribeToUnseenOrdersCount = (callback) => {
   const q = query(collection(db, 'orders'), where('seenByAdmin', '==', false))
   return onSnapshot(q, 
     (snapshot) => {
+      // Use docChanges to detect new additions more explicitly if needed, 
+      // but size is fine for a basic count.
       callback(snapshot.size)
     },
     (error) => {

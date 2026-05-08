@@ -40,6 +40,11 @@ service cloud.firestore {
       }
     }
 
+    match /guests/{guestId} {
+      allow create: if true;
+      allow read: if isAdmin();
+    }
+
     match /categories/{categoryId} {
       allow read: if true;
       allow write: if isAdmin();
@@ -64,18 +69,13 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
-      allow create: if isSignedIn();
-      allow read: if isSignedIn() && (
-        resource.data.userId == request.auth.uid || isAdmin()
-      );
+      allow create: if true; // Allow guest checkout
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
       allow update: if isAdmin();
 
       match /items/{itemId} {
-        allow create: if isSignedIn();
-        allow read: if isSignedIn() && (
-          get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid
-          || isAdmin()
-        );
+        allow create: if true; // Allow guest items
+        allow read: if isAdmin() || (isSignedIn() && get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid);
         allow update: if isAdmin();
       }
     }
