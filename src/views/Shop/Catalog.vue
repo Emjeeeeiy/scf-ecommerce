@@ -1,58 +1,74 @@
 <template>
   <AppShell subtitle="Premium collection for your lifestyle">
     <!-- Header Section -->
-    <section class="relative overflow-hidden rounded-2xl bg-slate-900 p-6 sm:p-10">
+    <section class="relative overflow-hidden rounded-2xl bg-slate-950 p-6 border border-slate-900 sm:p-10">
       <div class="relative z-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-        <div class="space-y-1.5">
-          <p class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-400">Our Collection</p>
-          <h1 class="text-2xl font-black tracking-tight text-white sm:text-4xl">Shop Catalog</h1>
-          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Discover {{ filteredProducts.length }} premium items handpicked for you.</p>
+        
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5">
+            <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Our Collection</p>
+          </div>
+          <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">Shop Catalog</h1>
+          <p class="text-xs text-slate-400 font-medium">
+            Discover <span class="text-slate-200 font-semibold">{{ filteredProducts.length }}</span> premium items handpicked for you.
+          </p>
         </div>
         
-        <div class="relative w-full lg:max-w-md">
-          <Search class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" :size="18" />
+        <div class="relative w-full lg:max-w-sm">
+          <Search 
+            class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-slate-200" 
+            :size="16" 
+            stroke-width="1.5"
+          />
           <input
             v-model="query"
             type="text"
             placeholder="Search products..."
-            class="w-full rounded-xl bg-white/5 border border-white/10 px-12 py-3 text-xs text-white placeholder:text-slate-500 outline-none focus:bg-white/10 focus:border-amber-400/50 transition-all shadow-inner backdrop-blur-sm"
+            class="w-full rounded-xl bg-white/[0.03] border border-white/10 px-11 py-3.5 text-xs text-white placeholder:text-slate-500 outline-none transition-all duration-200 focus:bg-white/[0.06] focus:border-white/20 focus:ring-2 focus:ring-white/5"
           />
         </div>
       </div>
-      <!-- Background accents -->
-      <div class="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-amber-400/10 blur-3xl"></div>
-      <div class="absolute -left-10 -bottom-10 h-48 w-48 rounded-full bg-blue-500/10 blur-3xl"></div>
+
+      <div class="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 h-64 w-64 rounded-full bg-amber-400/[0.03] blur-[80px] pointer-events-none"></div>
+      <div class="absolute left-0 bottom-0 translate-y-1/4 -translate-x-1/4 h-64 w-64 rounded-full bg-slate-400/[0.02] blur-[80px] pointer-events-none"></div>
     </section>
 
     <!-- Main Content Grid -->
     <section class="mt-6 sm:mt-10 grid gap-6 lg:grid-cols-[240px_1fr]">
       <!-- Category Sidebar/Top Bar -->
-      <aside class="sticky top-16 z-30 -mx-4 px-4 bg-slate-50/80 backdrop-blur-md py-1 lg:sticky lg:top-24 lg:h-fit lg:p-0 lg:bg-transparent lg:backdrop-blur-none lg:mx-0">
-        <div class="rounded-2xl bg-white p-2 lg:p-6 border border-slate-300 lg:border-slate-300 ring-1 ring-slate-100">
-          <div class="hidden lg:flex items-center gap-2 mb-6">
-            <Filter :size="16" class="text-slate-900" />
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-900">Filter By Category</p>
+      <aside class="sticky top-16 z-30 -mx-4 px-4 bg-slate-50/80 backdrop-blur-md py-1.5 lg:sticky lg:top-24 lg:h-fit lg:p-0 lg:bg-transparent lg:backdrop-blur-none lg:mx-0">
+        <div class="rounded-xl border border-slate-200 bg-white p-1.5 lg:p-4 shadow-sm">
+          
+          <div class="hidden lg:flex items-center gap-2 mb-4">
+            <Filter :size="12" class="text-slate-400" />
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Filter By Category</p>
           </div>
           
-          <div class="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0 scrollbar-hide">
+          <div class="flex gap-1.5 overflow-x-auto pb-0.5 lg:flex-col lg:overflow-visible lg:pb-0 scrollbar-hide">
             <button
               type="button"
-              class="flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-[10px]  border border-slate-300 font-black uppercase tracking-widest transition-all lg:w-full lg:rounded-lg lg:py-2.5"
-              :class="selectedCategory === '' ? 'bg-slate-900 text-white ' : 'bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-900'"
+              class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
+              :class="selectedCategory === '' 
+                ? 'border-slate-950 bg-slate-950 text-white shadow-sm' 
+                : 'border-slate-100 bg-slate-50 text-slate-600 hover:border-slate-200 hover:bg-slate-100 hover:text-slate-900'"
               @click="selectedCategory = ''"
             >
-              <LayoutGrid :size="14" />
-              <span>All</span>
+              <LayoutGrid :size="12" stroke-width="1.5" />
+              <span>All Products</span>
             </button>
+
             <button
               v-for="category in categories"
               :key="category.id"
               type="button"
-              class="flex shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-[10px] border border-slate-300 font-black uppercase tracking-widest transition-all lg:w-full lg:rounded-lg lg:py-2.5"
-              :class="selectedCategory === category.id ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-900'"
+              class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
+              :class="selectedCategory === category.id 
+                ? 'border-slate-950 bg-slate-950 text-white shadow-sm' 
+                : 'border-slate-100 bg-slate-50 text-slate-600 hover:border-slate-200 hover:bg-slate-100 hover:text-slate-900'"
               @click="selectedCategory = category.id"
             >
-              <Tag :size="14" />
+              <Tag :size="12" stroke-width="1.5" />
               <span>{{ category.name }}</span>
             </button>
           </div>

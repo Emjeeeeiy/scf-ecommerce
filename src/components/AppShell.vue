@@ -110,13 +110,13 @@
 
     <!-- Mobile Navigation -->
     <nav class="fixed inset-x-0 bottom-4 z-40 mx-auto w-[85%] max-w-sm md:hidden">
-      <div class="flex items-center justify-around rounded-2xl border border-white/10 bg-slate-900/90 p-1.5 shadow-2xl backdrop-blur-xl">
+      <div class="flex items-center justify-around rounded-full border border-white/10 bg-slate-900/90 p-1.5 shadow-2xl backdrop-blur-xl">
         <router-link
           v-for="item in mobileNavigation"
           :key="item.to"
           :to="item.to"
-          class="relative flex h-12 w-12 items-center justify-center rounded-xl transition-all active:scale-90"
-          :class="route.path === item.to ? 'bg-amber-400 text-slate-900 shadow-lg shadow-amber-400/20' : 'text-slate-400 hover:text-white'"
+          class="relative flex h-12 w-12 items-center justify-center rounded-full transition-all active:scale-90"
+          :class="route.path === item.to ? 'bg-slate-500 text-slate-900' : 'text-slate-400 hover:text-white'"
         >
           <template v-if="item.to === '/'"><Home :size="18" /></template>
           <template v-else-if="item.to === '/shop'"><Store :size="18" /></template>

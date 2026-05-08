@@ -103,10 +103,16 @@
                 v-for="item in adminNavigation"
                 :key="`mobile-${item.to}`"
                 :to="item.to"
-                class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-[10px] font-bold text-slate-700 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700"
+                class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-[10px] font-bold text-slate-700 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700 relative"
               >
                 <component :is="item.icon" :size="12" />
                 {{ item.label }}
+                <span 
+                  v-if="item.label === 'Orders' && unseenOrdersCount > 0" 
+                  class="absolute -top-1 -right-1 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900"
+                >
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                </span>
               </router-link>
             </div>
 

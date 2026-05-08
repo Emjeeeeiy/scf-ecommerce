@@ -151,8 +151,8 @@ export const subscribeToUnseenOrdersCount = (callback) => {
   const q = query(collection(db, 'orders'), where('seenByAdmin', '==', false))
   return onSnapshot(q, 
     (snapshot) => {
-      // Use docChanges to detect new additions more explicitly if needed, 
-      // but size is fine for a basic count.
+      // Helpful for debugging in hosted environments
+      console.log(`[OrderNotification] Unseen count update: ${snapshot.size}`)
       callback(snapshot.size)
     },
     (error) => {
