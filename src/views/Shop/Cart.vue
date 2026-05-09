@@ -100,7 +100,7 @@
                   <button
                     type="button"
                     class="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-rose-500 transition hover:text-rose-600 active:scale-95"
-                    @click="handleRemove(item.id)"
+                    @click="handleRemove(item)"
                   >
                     <X :size="12" />
                     <span>Remove</span>
@@ -205,13 +205,17 @@ const updateQuantity = async (item, event) => {
   
   await updateCartItemQuantity({
     variantId: item.id,
+    cartKey: item.cartKey,
     quantity: newQty,
   })
   await loadCart()
 }
 
-const handleRemove = async (variantId) => {
-  await removeCartItem({ variantId })
+const handleRemove = async (item) => {
+  await removeCartItem({ 
+    variantId: item.id,
+    cartKey: item.cartKey 
+  })
   await loadCart()
 }
 

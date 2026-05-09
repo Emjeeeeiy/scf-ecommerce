@@ -168,22 +168,33 @@
               <List :size="14" />
               <span>Catalog list</span>
             </div>
-            <h2 class="mt-1 text-xl font-black text-slate-900 dark:text-white tracking-tight">{{ products.length }} products</h2>
+            <h2 class="mt-1 text-xl font-black text-slate-900 dark:text-white tracking-tight">{{ filteredProducts.length }} products</h2>
           </div>
-          <button
-            v-if="editingProductId"
-            type="button"
-            class="flex items-center gap-2 rounded-xl bg-slate-100 dark:bg-slate-800 px-4 py-2 text-[10px] font-bold text-slate-600 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 uppercase"
-            @click="resetForm"
-          >
-            <X :size="12" />
-            Cancel Edit
-          </button>
+          
+          <div class="flex items-center gap-2">
+            <select 
+              v-model="selectedCategoryId" 
+              class="rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-[10px] font-bold text-slate-600 dark:text-slate-400 focus:ring-1 focus:ring-amber-400 outline-none"
+            >
+              <option value="">All Categories</option>
+              <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+            </select>
+
+            <button
+              v-if="editingProductId"
+              type="button"
+              class="flex items-center gap-2 rounded-xl bg-slate-100 dark:bg-slate-800 px-4 py-2 text-[10px] font-bold text-slate-600 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 uppercase"
+              @click="resetForm"
+            >
+              <X :size="12" />
+              Cancel Edit
+            </button>
+          </div>
         </div>
 
         <div class="mt-8 space-y-3">
           <article
-            v-for="product in products"
+            v-for="product in filteredProducts"
             :key="product.id"
             class="group rounded-xl border border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 transition-all hover:border-amber-400 dark:hover:border-amber-400 hover:shadow-md"
           >
@@ -236,7 +247,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { 
   PackagePlus, 
   Image, 
@@ -264,6 +275,12 @@ const { confirm } = useConfirm()
 const categories = ref([])
 const products = ref([])
 const editingProductId = ref('')
+const selectedCategoryId = ref('')
+
+const filteredProducts = computed(() => {
+  if (!selectedCategoryId.value) return products.value
+  return products.value.filter(p => p.categoryId === selectedCategoryId.value)
+})
 
 const createBlankOption = () => ({ size: '', stock: 0 })
 const createBlankVariant = () => ({ color: '', options: [createBlankOption()] })

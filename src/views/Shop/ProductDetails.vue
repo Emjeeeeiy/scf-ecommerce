@@ -17,7 +17,7 @@
 
     <section v-else-if="product" class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
       <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
-        <div class="relative h-80 w-full overflow-hidden rounded-xl bg-slate-50 sm:h-[420px]">
+        <div class="relative h-80 w-full overflow-hidden rounded-xl bg-slate-50 sm:h-105">  
           <img
             v-if="product.base64Image"
             :src="product.base64Image"
@@ -158,11 +158,13 @@
             <div class="grid gap-2 pt-2">
               <button
                 type="button"
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 text-xs font-semibold text-white transition-all hover:bg-slate-800 active:scale-[0.99] shadow-sm shadow-slate-950/10"
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 text-xs font-semibold text-white transition-all hover:bg-slate-800 active:scale-[0.99] shadow-sm shadow-slate-950/10 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="adding"
                 @click="handleAddToCart"
               >
-                <ShoppingCart :size="16" />
-                <span>Add to Selection</span>
+                <ShoppingCart v-if="!adding" :size="16" />
+                <span v-else class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white"></span>
+                <span>{{ adding ? 'Adding to Selection...' : 'Add to Selection' }}</span>
               </button>
 
               <router-link
@@ -226,6 +228,7 @@ const product = ref(null)
 const selectedVariantId = ref('')
 const quantity = ref(1)
 const message = ref('')
+const adding = ref(false)
 
 const loadProduct = async () => {
   loading.value = true
@@ -240,6 +243,7 @@ const handleAddToCart = async () => {
     return
   }
 
+  adding.value = true
   try {
     await addToCart({
       productId: product.value.id,
@@ -254,6 +258,8 @@ const handleAddToCart = async () => {
     }, 3000)
   } catch (error) {
     message.value = error.message || 'Unable to add item to cart.'
+  } finally {
+    adding.value = false
   }
 }
 
