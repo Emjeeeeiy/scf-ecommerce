@@ -55,7 +55,7 @@
               @click="selectedCategory = ''"
             >
               <LayoutGrid :size="12" stroke-width="1.5" />
-              <span>All Products</span>
+              <span>All</span>
             </button>
 
             <button

@@ -305,7 +305,7 @@
 
     <!-- GCash Payment Modal -->
     <Transition name="fade">
-      <div v-if="showGcashModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm">
+      <div v-if="showGcashModal" class="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm">
         <!-- Backdrop -->
         <div 
           class="absolute inset-0 bg-slate-900/60 transition-opacity" 
