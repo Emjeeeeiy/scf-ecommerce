@@ -25,13 +25,13 @@
             v-model="query"
             type="text"
             placeholder="Search products..."
-            class="w-full rounded-xl bg-white/[0.03] border border-white/10 px-11 py-3.5 text-xs text-white placeholder:text-slate-500 outline-none transition-all duration-200 focus:bg-white/[0.06] focus:border-white/20 focus:ring-2 focus:ring-white/5"
+            class="w-full rounded-xl bg-white/3 border border-white/10 px-11 py-3.5 text-xs text-white placeholder:text-slate-500 outline-none transition-all duration-200 focus:bg-white/6 focus:border-white/20 focus:ring-2 focus:ring-white/5"
           />
         </div>
       </div>
 
-      <div class="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 h-64 w-64 rounded-full bg-amber-400/[0.03] blur-[80px] pointer-events-none"></div>
-      <div class="absolute left-0 bottom-0 translate-y-1/4 -translate-x-1/4 h-64 w-64 rounded-full bg-slate-400/[0.02] blur-[80px] pointer-events-none"></div>
+      <div class="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 h-64 w-64 rounded-full bg-amber-400/3 blur-[80px] pointer-events-none"></div>
+      <div class="absolute left-0 bottom-0 translate-y-1/4 -translate-x-1/4 h-64 w-64 rounded-full bg-slate-400/2 blur-[80px] pointer-events-none"></div>
     </section>
 
     <!-- Main Content Grid -->

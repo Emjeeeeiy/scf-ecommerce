@@ -66,25 +66,60 @@
             </div>
           </div>
 
-          <!-- Status Quick Filters -->
-          <div class="flex flex-wrap gap-2">
-            <button 
-              v-for="status in ['all', 'received', 'processing', 'shipped', 'completed']" 
-              :key="status"
-              @click="statusFilter = status"
-              class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
-              :class="statusFilter === status 
-                ? 'bg-slate-900 dark:bg-amber-400 text-white dark:text-slate-950 border-slate-900 dark:border-amber-400 shadow-md' 
-                : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700'"
-            >
-              {{ status }}
-              <span 
-                class="ml-2 px-1.5 py-0.5 rounded-md text-[8px]"
-                :class="statusFilter === status ? 'bg-white/20 dark:bg-black/10' : 'bg-slate-100 dark:bg-slate-800'"
+          <!-- Status Quick Filters & Bulk Actions -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex flex-wrap gap-2">
+              <button 
+                v-for="status in ['all', 'received', 'processing', 'shipped', 'completed']" 
+                :key="status"
+                @click="statusFilter = status"
+                class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
+                :class="statusFilter === status 
+                  ? 'bg-slate-900 dark:bg-amber-400 text-white dark:text-slate-950 border-slate-900 dark:border-amber-400 shadow-md' 
+                  : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700'"
               >
-                {{ status === 'all' ? orders.length : countByStatus(status) }}
-              </span>
-            </button>
+                {{ status }}
+                <span 
+                  class="ml-2 px-1.5 py-0.5 rounded-md text-[8px]"
+                  :class="statusFilter === status ? 'bg-white/20 dark:bg-black/10' : 'bg-slate-100 dark:bg-slate-800'"
+                >
+                  {{ status === 'all' ? orders.length : countByStatus(status) }}
+                </span>
+              </button>
+            </div>
+
+            <!-- Bulk Actions Bar -->
+            <Transition
+              enter-active-class="transition duration-300 ease-out"
+              enter-from-class="opacity-0 translate-y-2"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition duration-200 ease-in"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 translate-y-2"
+            >
+              <div v-if="selectedOrders.length" class="flex items-center gap-2 bg-slate-900 dark:bg-amber-400 p-1.5 pl-4 rounded-2xl shadow-lg border border-slate-800 dark:border-amber-500">
+                <span class="text-[10px] font-black uppercase tracking-wider text-white dark:text-slate-950 mr-2">
+                  {{ selectedOrders.length }} Selected
+                </span>
+                <div class="h-6 w-px bg-white/10 dark:bg-slate-950/10 mx-1"></div>
+                <div class="flex items-center gap-1">
+                  <button 
+                    v-for="status in ['received', 'processing', 'shipped', 'completed']"
+                    :key="status"
+                    @click="handleBulkUpdate(status)"
+                    class="px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all hover:bg-white/10 dark:hover:bg-black/10 text-white dark:text-slate-950"
+                  >
+                    {{ status }}
+                  </button>
+                </div>
+                <button 
+                  @click="selectedOrders = []"
+                  class="p-1.5 rounded-lg hover:bg-white/10 dark:hover:bg-black/10 text-white dark:text-slate-950 ml-1"
+                >
+                  <X :size="14" />
+                </button>
+              </div>
+            </Transition>
           </div>
         </div>
       </section>
@@ -95,7 +130,18 @@
           <table class="w-full text-left border-collapse border-spacing-0">
             <thead>
               <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+                <th class="pl-6 py-4 w-10">
+                  <div class="flex items-center justify-center">
+                    <input 
+                      type="checkbox" 
+                      :checked="isAllSelected"
+                      @change="toggleSelectAll"
+                      class="h-4 w-4 rounded border-slate-200 dark:border-slate-700 text-slate-900 dark:text-amber-400 focus:ring-amber-400/20 dark:bg-slate-800"
+                    >
+                  </div>
+                </th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 whitespace-nowrap">Order ID</th>
+                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 whitespace-nowrap">Status</th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 whitespace-nowrap">Customer</th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 whitespace-nowrap">Product</th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 whitespace-nowrap">Date</th>
@@ -108,8 +154,19 @@
                 v-for="order in filteredOrders" 
                 :key="order.id"
                 class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer group"
+                :class="selectedOrders.includes(order.id) ? 'bg-slate-50/80 dark:bg-slate-800/50' : ''"
                 @click="openDetails(order)"
               >
+                <td class="pl-6 py-4" @click.stop>
+                  <div class="flex items-center justify-center">
+                    <input 
+                      type="checkbox" 
+                      :value="order.id"
+                      v-model="selectedOrders"
+                      class="h-4 w-4 rounded border-slate-200 dark:border-slate-700 text-slate-900 dark:text-amber-400 focus:ring-amber-400/20 dark:bg-slate-800"
+                    >
+                  </div>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center gap-2">
                     <span 
@@ -121,6 +178,14 @@
                       #{{ order.id.slice(0, 8) }}
                     </span>
                   </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span 
+                    class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border"
+                    :class="getStatusClass(order.status)"
+                  >
+                    {{ order.status }}
+                  </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="max-w-50">
@@ -399,7 +464,7 @@ import {
   Bell
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { subscribeToAllOrders, updateOrderStatus, deleteOrder, markOrderAsSeen, getOrderItems } from '../../services/orderService'
+import { subscribeToAllOrders, updateOrderStatus, deleteOrder, markOrderAsSeen, getOrderItems, updateMultipleOrderStatuses } from '../../services/orderService'
 import { formatCurrency } from '../../utils/format'
 import { useConfirm } from '../../composables/useConfirm'
 import { useToast } from '../../composables/useToast'
@@ -411,10 +476,39 @@ const startDate = ref('')
 const endDate = ref('')
 const selectedOrder = ref(null)
 const previewImage = ref(null)
+const selectedOrders = ref([])
 let unsubscribeOrders = null
 
 const { confirm } = useConfirm()
 const toast = useToast()
+
+const isAllSelected = computed(() => {
+  return filteredOrders.value.length > 0 && selectedOrders.value.length === filteredOrders.value.length
+})
+
+const toggleSelectAll = () => {
+  if (isAllSelected.value) {
+    selectedOrders.value = []
+  } else {
+    selectedOrders.value = filteredOrders.value.map(o => o.id)
+  }
+}
+
+const handleBulkUpdate = async (status) => {
+  if (!selectedOrders.value.length) return
+  
+  const confirmed = await confirm(`Are you sure you want to update ${selectedOrders.value.length} orders to ${status}?`, 'Bulk Update')
+  if (!confirmed) return
+
+  try {
+    await updateMultipleOrderStatuses(selectedOrders.value, status)
+    toast.success(`${selectedOrders.value.length} orders updated to ${status}`)
+    selectedOrders.value = []
+  } catch (error) {
+    console.error('Bulk update error:', error)
+    toast.error('Failed to update orders')
+  }
+}
 
 const loadOrders = () => {
   unsubscribeOrders = subscribeToAllOrders((newOrders) => {

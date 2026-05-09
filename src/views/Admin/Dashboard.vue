@@ -62,7 +62,7 @@
           </div>
         </div>
         
-        <div class="h-[280px] w-full">
+        <div class="h-70 w-full">
           <Line v-if="chartData.labels.length" :data="chartData" :options="chartOptions" />
           <div v-else class="flex h-full items-center justify-center text-xs text-slate-400 font-medium">
             Generating chart data...
@@ -82,13 +82,13 @@
           </span>
         </div>
 
-        <div class="flex-1 space-y-3 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
+        <div class="flex-1 space-y-3 overflow-y-auto max-h-75 pr-2 custom-scrollbar">
           <div 
             v-for="item in lowStockItems" 
             :key="item.variantKey"
             class="group flex items-center gap-3 rounded-lg border border-slate-100 dark:border-slate-800 p-2.5 transition hover:border-rose-200 dark:hover:border-rose-900/30 hover:bg-rose-50/30 dark:hover:bg-rose-500/5"
           >
-            <div class="h-10 w-10 flex-shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800">
+            <div class="h-10 w-10 shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800">
               <img v-if="item.image" :src="item.image" class="h-full w-full object-cover" />
               <div v-else class="flex h-full items-center justify-center text-slate-300"><Package :size="16" /></div>
             </div>

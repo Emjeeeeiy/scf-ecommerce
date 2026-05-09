@@ -173,6 +173,14 @@ export const updateOrderStatus = async (orderId, status) => {
   })
 }
 
+export const updateMultipleOrderStatuses = async (orderIds, status) => {
+  const batch = writeBatch(db)
+  orderIds.forEach((orderId) => {
+    batch.update(doc(db, 'orders', orderId), { status })
+  })
+  await batch.commit()
+}
+
 export const deleteOrder = async (orderId) => {
   const batch = writeBatch(db)
 
