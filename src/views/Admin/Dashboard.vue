@@ -1,6 +1,6 @@
 <template>
   <AdminPanelLayout subtitle="Admin overview for catalog and order operations">
-    <section class="rounded-xl bg-slate-950 p-5 text-white shadow-xl relative overflow-hidden">
+    <section class="rounded-xl bg-neutral-950 p-5 text-white shadow-xl relative overflow-hidden">
       <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
         <LayoutDashboard :size="80" />
       </div>
@@ -25,37 +25,37 @@
       <article
         v-for="metric in metrics"
         :key="metric.label"
-        class="rounded-xl bg-white dark:bg-slate-900 p-4 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 flex flex-col justify-between"
+        class="rounded-xl bg-white dark:bg-neutral-900 p-4 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800 flex flex-col justify-between"
       >
         <div>
           <div class="flex items-center justify-between">
-            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{{ metric.label }}</p>
-            <div class="p-1.5 rounded-md bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500">
+            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-neutral-500">{{ metric.label }}</p>
+            <div class="p-1.5 rounded-md bg-slate-50 dark:bg-neutral-800 text-slate-400 dark:text-neutral-500">
               <component :is="metric.icon" :size="14" />
             </div>
           </div>
           <h3 class="mt-1.5 text-xl font-black text-slate-900 dark:text-white tracking-tight">{{ metric.value }}</h3>
         </div>
-        <p class="mt-2 text-[10px] font-medium text-slate-500 dark:text-slate-400">{{ metric.caption }}</p>
+        <p class="mt-2 text-[10px] font-medium text-slate-500 dark:text-neutral-400">{{ metric.caption }}</p>
       </article>
     </section>
 
     <!-- Charts and Low Stock Section -->
     <section class="mt-5 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
       <!-- Sales Chart -->
-      <div class="rounded-xl bg-white dark:bg-slate-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
-            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">Performance</p>
+            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Performance</p>
             <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Sales Trends</h3>
           </div>
-          <div class="flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-slate-800 p-1">
+          <div class="flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-neutral-800 p-1">
             <button 
               v-for="f in filters" 
               :key="f.id"
               @click="activeFilter = f.id"
               class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-all rounded-md"
-              :class="activeFilter === f.id ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'"
+              :class="activeFilter === f.id ? 'bg-white dark:bg-neutral-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'"
             >
               {{ f.label }}
             </button>
@@ -71,7 +71,7 @@
       </div>
 
       <!-- Low Stock Warnings -->
-      <div class="rounded-xl bg-white dark:bg-slate-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 flex flex-col">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800 flex flex-col">
         <div class="flex items-center justify-between mb-5">
           <div>
             <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-rose-500">Inventory Alert</p>
@@ -86,15 +86,15 @@
           <div 
             v-for="item in lowStockItems" 
             :key="item.variantKey"
-            class="group flex items-center gap-3 rounded-lg border border-slate-100 dark:border-slate-800 p-2.5 transition hover:border-rose-200 dark:hover:border-rose-900/30 hover:bg-rose-50/30 dark:hover:bg-rose-500/5"
+            class="group flex items-center gap-3 rounded-lg border border-slate-100 dark:border-neutral-800 p-2.5 transition hover:border-rose-200 dark:hover:border-rose-900/30 hover:bg-rose-50/30 dark:hover:bg-rose-500/5"
           >
-            <div class="h-10 w-10 shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800">
+            <div class="h-10 w-10 shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-neutral-800 border border-slate-100 dark:border-neutral-800">
               <img v-if="item.image" :src="item.image" class="h-full w-full object-cover" />
               <div v-else class="flex h-full items-center justify-center text-slate-300"><Package :size="16" /></div>
             </div>
             <div class="min-w-0 flex-1">
               <p class="truncate text-[11px] font-bold text-slate-900 dark:text-white">{{ item.name }}</p>
-              <p class="text-[9px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <p class="text-[9px] font-medium text-slate-500 dark:text-neutral-400 uppercase tracking-wider">
                 {{ item.color }} / {{ item.size }}
               </p>
             </div>
@@ -104,13 +104,13 @@
             </div>
           </div>
 
-          <div v-if="!lowStockItems.length" class="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-slate-600">
+          <div v-if="!lowStockItems.length" class="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-neutral-600">
             <ShieldCheck :size="24" class="opacity-20 mb-2" />
             <p class="text-[10px] font-bold uppercase tracking-widest">Stock levels healthy</p>
           </div>
         </div>
         
-        <router-link to="/admin/products" class="mt-5 flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-800 py-2 text-[10px] font-bold text-slate-600 dark:text-slate-400 transition hover:bg-slate-50 dark:hover:bg-slate-800">
+        <router-link to="/admin/products" class="mt-5 flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-neutral-800 py-2 text-[10px] font-bold text-slate-600 dark:text-neutral-400 transition hover:bg-slate-50 dark:hover:bg-neutral-800">
           Manage Inventory
         </router-link>
       </div>
@@ -118,10 +118,10 @@
 
     <!-- Operational Workspaces & Pipeline -->
     <section class="mt-5 grid gap-5 xl:grid-cols-[1fr_0.7fr]">
-      <div class="rounded-xl bg-white dark:bg-slate-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
         <div class="flex items-center justify-between gap-4">
           <div>
-            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">Management areas</p>
+            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Management areas</p>
             <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Operational workspaces</h3>
           </div>
         </div>
@@ -131,46 +131,46 @@
             v-for="workspace in workspaces"
             :key="workspace.to"
             :to="workspace.to"
-            class="group rounded-xl border border-slate-100 dark:border-slate-800 p-4 transition hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98]"
+            class="group rounded-xl border border-slate-100 dark:border-neutral-800 p-4 transition hover:border-slate-300 dark:hover:border-neutral-700 hover:bg-slate-50 dark:hover:bg-neutral-800 active:scale-[0.98]"
           >
             <div class="flex items-center justify-between">
-              <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">{{ workspace.tag }}</p>
-              <component :is="workspace.icon" :size="12" class="text-slate-300 dark:text-slate-600 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+              <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-neutral-500">{{ workspace.tag }}</p>
+              <component :is="workspace.icon" :size="12" class="text-slate-300 dark:text-neutral-600 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
             </div>
             <h4 class="mt-2 text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-950 dark:group-hover:text-amber-400 transition-colors">{{ workspace.title }}</h4>
-            <p class="mt-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 leading-relaxed">{{ workspace.description }}</p>
+            <p class="mt-1.5 text-[11px] font-medium text-slate-500 dark:text-neutral-400 leading-relaxed">{{ workspace.description }}</p>
           </router-link>
         </div>
       </div>
 
-      <div class="rounded-xl bg-white dark:bg-slate-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
-        <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">Status breakdown</p>
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
+        <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Status breakdown</p>
         <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Order pipeline</h3>
 
         <div class="mt-5 grid gap-2.5 grid-cols-2">
           <div
             v-for="statusCard in statusCards"
             :key="statusCard.label"
-            class="rounded-lg bg-slate-50 dark:bg-slate-800/50 p-3 border border-transparent transition hover:border-slate-200 dark:hover:border-slate-700"
+            class="rounded-lg bg-slate-50 dark:bg-neutral-800/50 p-3 border border-transparent transition hover:border-slate-200 dark:hover:border-neutral-700"
           >
             <div class="flex items-center justify-between">
-              <p class="text-[10px] font-bold text-slate-600 dark:text-slate-400">{{ statusCard.label }}</p>
+              <p class="text-[10px] font-bold text-slate-600 dark:text-neutral-400">{{ statusCard.label }}</p>
               <span class="text-base font-black text-slate-950 dark:text-white">{{ statusCard.value }}</span>
             </div>
           </div>
         </div>
-        <p class="mt-3 text-[9px] font-medium text-slate-400 dark:text-slate-500 italic">Live count from fulfillment status pipeline.</p>
+        <p class="mt-3 text-[9px] font-medium text-slate-400 dark:text-neutral-500 italic">Live count from fulfillment status pipeline.</p>
       </div>
     </section>
 
     <!-- Recent Activity -->
-    <section class="mt-5 rounded-xl bg-white dark:bg-slate-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800">
+    <section class="mt-5 rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
       <div class="flex items-center justify-between gap-4">
         <div>
-          <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">Recent orders</p>
+          <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Recent orders</p>
           <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Latest activity</h3>
         </div>
-        <router-link to="/admin/orders" class="flex items-center gap-1.5 rounded-lg bg-slate-950 dark:bg-amber-400 px-3.5 py-1.5 text-[10px] font-bold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95">
+        <router-link to="/admin/orders" class="flex items-center gap-1.5 rounded-lg bg-slate-950 dark:bg-amber-400 px-3.5 py-1.5 text-[10px] font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95">
           <ShoppingCart :size="12" />
           View all
         </router-link>
@@ -180,35 +180,35 @@
         <div
           v-for="order in recentOrders"
           :key="order.id"
-          class="rounded-lg border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-3.5 transition hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm"
+          class="rounded-lg border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3.5 transition hover:border-slate-200 dark:hover:border-neutral-700 hover:shadow-sm"
         >
           <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div class="flex items-center gap-3">
-              <div class="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+              <div class="h-8 w-8 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-500 dark:text-neutral-400">
                 <User :size="14" />
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2">
                   <p class="text-xs font-black text-slate-950 dark:text-white">#{{ order.id.slice(0, 8) }}</p>
-                  <span class="text-[9px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest">•</span>
-                  <p class="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                  <span class="text-[9px] font-bold text-slate-400 dark:text-neutral-600 uppercase tracking-widest">•</span>
+                  <p class="text-[11px] font-bold text-slate-600 dark:text-neutral-300">
                     {{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}
                   </p>
                 </div>
                 <div class="flex items-center gap-2 mt-0.5">
-                   <p class="text-[10px] font-medium text-slate-400 dark:text-slate-500">{{ order.customerDetails?.email }}</p>
+                   <p class="text-[10px] font-medium text-slate-400 dark:text-neutral-500">{{ order.customerDetails?.email }}</p>
                 </div>
               </div>
             </div>
 
-            <div class="flex items-center justify-between lg:justify-end gap-5 border-t lg:border-t-0 pt-2.5 lg:pt-0 border-slate-50 dark:border-slate-800">
+            <div class="flex items-center justify-between lg:justify-end gap-5 border-t lg:border-t-0 pt-2.5 lg:pt-0 border-slate-50 dark:border-neutral-800">
               <div class="flex flex-col items-end">
-                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Status</p>
+                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500">Status</p>
                 <span 
                   class="mt-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider"
                   :class="{
                     'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400': order.status === 'received',
-                    'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400': order.status === 'processing',
+                    'bg-slate-50 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400': order.status === 'processing',
                     'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400': order.status === 'shipped',
                     'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400': order.status === 'completed'
                   }"
@@ -217,14 +217,14 @@
                 </span>
               </div>
               <div class="flex flex-col items-end">
-                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Amount</p>
+                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500">Amount</p>
                 <span class="mt-0.5 text-xs font-black text-slate-950 dark:text-white">{{ formatCurrency(order.totalAmount) }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div v-if="!recentOrders.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-800/50 py-10 text-slate-400 dark:text-slate-600">
+        <div v-if="!recentOrders.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50 dark:bg-neutral-800/50 py-10 text-slate-400 dark:text-neutral-600">
           <PackageSearch :size="32" class="opacity-20 mb-2" />
           <p class="text-xs font-medium">No orders recorded yet</p>
         </div>
@@ -264,6 +264,8 @@ import { listCategories, listProducts } from '../../services/catalogService'
 import { listAllOrders } from '../../services/orderService'
 import { formatCurrency } from '../../utils/format'
 
+import { useAdminTheme } from '../../composables/useAdminTheme'
+
 ChartJS.register(
   Title,
   Tooltip,
@@ -275,6 +277,7 @@ ChartJS.register(
   Filler
 )
 
+const { isDarkMode } = useAdminTheme()
 const categories = ref([])
 const products = ref([])
 const orders = ref([])
@@ -342,6 +345,14 @@ const chartData = computed(() => {
   const labels = []
   const values = []
   const now = new Date()
+
+  // Helper to get ms from firestore timestamp or date
+  const getMs = (timestamp) => {
+    if (!timestamp) return 0
+    if (typeof timestamp.toMillis === 'function') return timestamp.toMillis()
+    if (timestamp.seconds) return timestamp.seconds * 1000
+    return new Date(timestamp).getTime()
+  }
   
   if (activeFilter.value === 'today') {
     for (let i = 0; i < 24; i++) {
@@ -349,7 +360,10 @@ const chartData = computed(() => {
       const hourStart = new Date(now).setHours(i, 0, 0, 0)
       const hourEnd = new Date(now).setHours(i, 59, 59, 999)
       const total = orders.value
-        .filter(o => o.createdAt >= hourStart && o.createdAt <= hourEnd)
+        .filter(o => {
+          const ms = getMs(o.createdAt)
+          return ms >= hourStart && ms <= hourEnd
+        })
         .reduce((sum, o) => sum + o.totalAmount, 0)
       values.push(total)
     }
@@ -361,7 +375,10 @@ const chartData = computed(() => {
       const start = new Date(d).setHours(0, 0, 0, 0)
       const end = new Date(d).setHours(23, 59, 59, 999)
       const total = orders.value
-        .filter(o => o.createdAt >= start && o.createdAt <= end)
+        .filter(o => {
+          const ms = getMs(o.createdAt)
+          return ms >= start && ms <= end
+        })
         .reduce((sum, o) => sum + o.totalAmount, 0)
       values.push(total)
     }
@@ -372,7 +389,10 @@ const chartData = computed(() => {
       const start = new Date(now.getFullYear(), now.getMonth(), i, 0, 0, 0, 0).getTime()
       const end = new Date(now.getFullYear(), now.getMonth(), i, 23, 59, 59, 999).getTime()
       const total = orders.value
-        .filter(o => o.createdAt >= start && o.createdAt <= end)
+        .filter(o => {
+          const ms = getMs(o.createdAt)
+          return ms >= start && ms <= end
+        })
         .reduce((sum, o) => sum + o.totalAmount, 0)
       values.push(total)
     }
@@ -383,29 +403,35 @@ const chartData = computed(() => {
       const start = new Date(now.getFullYear(), idx, 1, 0, 0, 0, 0).getTime()
       const end = new Date(now.getFullYear(), idx + 1, 0, 23, 59, 59, 999).getTime()
       const total = orders.value
-        .filter(o => o.createdAt >= start && o.createdAt <= end)
+        .filter(o => {
+          const ms = getMs(o.createdAt)
+          return ms >= start && ms <= end
+        })
         .reduce((sum, o) => sum + o.totalAmount, 0)
       values.push(total)
     })
   }
+
+  const primaryColor = isDarkMode.value ? '#fbbf24' : '#0f172a'
+  const bgColor = isDarkMode.value ? 'rgba(251, 191, 36, 0.05)' : 'rgba(15, 23, 42, 0.05)'
 
   return {
     labels,
     datasets: [{
       label: 'Sales Revenue',
       data: values,
-      borderColor: '#0f172a',
-      backgroundColor: 'rgba(15, 23, 42, 0.05)',
+      borderColor: primaryColor,
+      backgroundColor: bgColor,
       borderWidth: 2,
       pointRadius: 3,
-      pointBackgroundColor: '#0f172a',
+      pointBackgroundColor: primaryColor,
       tension: 0.4,
       fill: true
     }]
   }
 })
 
-const chartOptions = {
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -413,7 +439,8 @@ const chartOptions = {
     tooltip: {
       mode: 'index',
       intersect: false,
-      backgroundColor: '#0f172a',
+      backgroundColor: isDarkMode.value ? '#171717' : '#0f172a',
+      titleColor: isDarkMode.value ? '#fbbf24' : '#fff',
       titleFont: { size: 10, weight: 'bold' },
       bodyFont: { size: 12 },
       callbacks: {
@@ -424,18 +451,22 @@ const chartOptions = {
   scales: {
     y: {
       beginAtZero: true,
-      grid: { color: 'rgba(0,0,0,0.03)' },
+      grid: { color: isDarkMode.value ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)' },
       ticks: { 
         font: { size: 9 },
+        color: isDarkMode.value ? '#737373' : '#64748b',
         callback: (value) => formatCurrency(value)
       }
     },
     x: {
       grid: { display: false },
-      ticks: { font: { size: 9 } }
+      ticks: { 
+        font: { size: 9 },
+        color: isDarkMode.value ? '#737373' : '#64748b'
+      }
     }
   }
-}
+}))
 
 const metrics = computed(() => [
   {

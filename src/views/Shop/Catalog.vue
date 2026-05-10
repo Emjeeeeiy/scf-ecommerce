@@ -11,7 +11,7 @@
           </div>
           <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">Shop Catalog</h1>
           <p class="text-xs text-slate-400 font-medium">
-            Discover <span class="text-slate-200 font-semibold">{{ filteredProducts.length }}</span> premium items handpicked for you.
+            Discover <span class="text-slate-200 font-semibold">{{ loading ? '...' : filteredProducts.length }}</span> premium items handpicked for you.
           </p>
         </div>
         
@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 px-4 py-6">  
+      <div v-else class="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 px-4 py-6">  
         <article
           v-for="product in filteredProducts"
           :key="product.id"

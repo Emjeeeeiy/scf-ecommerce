@@ -1,37 +1,37 @@
 <template>
   <AdminPanelLayout subtitle="Create products and variant inventory entries">
     <section class="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-      <div class="rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-800">
+      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-neutral-800">
         <div class="flex items-start justify-between gap-4">
           <div>
-            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
+            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">
               <PackagePlus :size="14" />
               <span>Product editor</span>
             </div>
             <h2 class="mt-2 text-xl font-black text-slate-900 dark:text-white tracking-tight">
               {{ editingProductId ? 'Edit product' : 'Create product' }}
             </h2>
-            <p class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p class="mt-2 text-xs font-medium text-slate-500 dark:text-neutral-400 leading-relaxed">
               Manage pricing, descriptions, and variant-level stock.
             </p>
           </div>
-          <div class="rounded-xl bg-slate-50 dark:bg-slate-800 px-4 py-2 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight border border-slate-100 dark:border-slate-800">
+          <div class="rounded-xl bg-slate-50 dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-slate-500 dark:text-neutral-400 uppercase tracking-tight border border-slate-100 dark:border-neutral-800">
             {{ categories.length }} categories
           </div>
         </div>
 
         <form class="mt-8 space-y-6" @submit.prevent="handleSaveProduct">
           <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
-            <div class="rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 p-4">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3 text-center">Preview</p>
-              <div class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-800 aspect-square shadow-inner flex items-center justify-center border border-slate-100 dark:border-slate-800">
+            <div class="rounded-2xl border border-dashed border-slate-200 dark:border-neutral-700 bg-slate-50/50 dark:bg-neutral-800/30 p-4">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-neutral-500 mb-3 text-center">Preview</p>
+              <div class="relative overflow-hidden rounded-xl bg-white dark:bg-neutral-800 aspect-square shadow-inner flex items-center justify-center border border-slate-100 dark:border-neutral-800">
                 <img
                   v-if="form.base64Image"
                   :src="form.base64Image"
                   alt="Product preview"
                   class="h-full w-full object-cover"
                 />
-                <div v-else class="flex flex-col items-center gap-2 text-slate-200 dark:text-slate-700">
+                <div v-else class="flex flex-col items-center gap-2 text-slate-200 dark:text-neutral-700">
                   <Image :size="32" class="opacity-20" />
                   <span class="text-[10px] font-bold uppercase">No image</span>
                 </div>
@@ -40,22 +40,22 @@
 
             <div class="space-y-4">
               <label class="block">
-                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Upload image</span>
+                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Upload image</span>
                 <div class="relative">
                   <input
                     type="file"
                     accept="image/*"
-                    class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-[11px] file:font-bold file:bg-slate-900 dark:file:bg-amber-400 file:text-white dark:file:text-slate-950 hover:file:bg-slate-800 dark:hover:file:bg-amber-300 transition-all cursor-pointer"
+                    class="block w-full text-xs text-slate-500 dark:text-neutral-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-[11px] file:font-bold file:bg-slate-900 dark:file:bg-amber-400 file:text-white dark:file:text-neutral-950 hover:file:bg-slate-800 dark:hover:file:bg-amber-300 transition-all cursor-pointer"
                     @change="handleImageUpload"
                   />
                 </div>
               </label>
 
               <label class="block">
-                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Base64 string (optional)</span>
+                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Base64 string (optional)</span>
                 <textarea
                   v-model="form.base64Image"
-                  class="min-h-24 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 py-3 font-mono text-[10px] text-slate-500 dark:text-slate-400 focus:ring-1 focus:ring-amber-400"
+                  class="min-h-24 w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-4 py-3 font-mono text-[10px] text-slate-500 dark:text-neutral-400 focus:ring-1 focus:ring-amber-400"
                   placeholder="Paste image string..."
                 ></textarea>
               </label>
@@ -64,29 +64,29 @@
 
           <div class="space-y-4">
             <label class="block">
-              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Product Name</span>
-              <input v-model="form.name" class="w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" required />
+              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Product Name</span>
+              <input v-model="form.name" class="w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" required />
             </label>
 
             <label class="block">
-              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Description</span>
-              <textarea v-model="form.description" class="min-h-24 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 focus:ring-1 focus:ring-amber-400"></textarea>
+              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Description</span>
+              <textarea v-model="form.description" class="min-h-24 w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-medium text-slate-700 dark:text-neutral-300 focus:ring-1 focus:ring-amber-400"></textarea>
             </label>
 
             <div class="grid gap-4 md:grid-cols-2">
               <label class="block">
-                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Base price</span>
+                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Base price</span>
                 <div class="relative">
-                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 dark:text-neutral-500">
                     <span class="text-sm font-bold">₱</span>
                   </div>
-                  <input v-model.number="form.basePrice" type="number" min="0" class="w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 pl-8 pr-4 py-3 text-sm font-black text-slate-950 dark:text-white focus:ring-1 focus:ring-amber-400" required />
+                  <input v-model.number="form.basePrice" type="number" min="0" class="w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 pl-8 pr-4 py-3 text-sm font-black text-slate-950 dark:text-white focus:ring-1 focus:ring-amber-400" required />
                 </div>
               </label>
 
               <label class="block">
-                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Status</span>
-                <select v-model="form.status" class="w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 py-3 text-sm font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400">
+                <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Status</span>
+                <select v-model="form.status" class="w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400">
                   <option class="text-slate-900" value="active">Active</option>
                   <option class="text-slate-900" value="draft">Draft</option>
                   <option class="text-slate-900" value="archived">Archived</option>
@@ -95,8 +95,8 @@
             </div>
 
             <label class="block">
-              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Category</span>
-              <select v-model="form.categoryId" class="w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 px-4 py-3 text-sm font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400">
+              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Category</span>
+              <select v-model="form.categoryId" class="w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400">
                 <option class="text-slate-900" value="">Uncategorized</option>
                 <option class="text-slate-900" v-for="category in categories" :key="category.id" :value="category.id">
                   {{ category.name }}
@@ -105,13 +105,13 @@
             </label>
           </div>
 
-          <div class="rounded-xl bg-slate-50/50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 p-5">
+          <div class="rounded-xl bg-slate-50/50 dark:bg-neutral-800/50 border border-slate-100 dark:border-neutral-800 p-5">
             <div class="mb-4 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <Boxes :size="14" class="text-slate-400 dark:text-slate-500" />
-                <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Inventory Variants</p>
+                <Boxes :size="14" class="text-slate-400 dark:text-neutral-500" />
+                <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400">Inventory Variants</p>
               </div>
-              <button type="button" class="flex items-center gap-1.5 rounded-lg bg-slate-900 dark:bg-amber-400 px-3 py-1.5 text-[10px] font-bold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95" @click="addVariantRow">
+              <button type="button" class="flex items-center gap-1.5 rounded-lg bg-slate-900 dark:bg-amber-400 px-3 py-1.5 text-[10px] font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95" @click="addVariantRow">
                 <Plus :size="12" />
                 Add color
               </button>
@@ -121,12 +121,12 @@
               <div
                 v-for="(variant, vIndex) in form.variants"
                 :key="vIndex"
-                class="rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm"
+                class="rounded-xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-sm"
               >
                 <div class="mb-4 flex items-center justify-between gap-4">
                   <div class="flex-1">
-                    <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1 block">Color name</label>
-                    <input v-model="variant.color" placeholder="e.g. Midnight Black" class="w-full bg-slate-50/50 dark:bg-slate-800/50 rounded-lg border-none px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" />
+                    <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 mb-1 block">Color name</label>
+                    <input v-model="variant.color" placeholder="e.g. Midnight Black" class="w-full bg-slate-50/50 dark:bg-neutral-800/50 rounded-lg border-none px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" />
                   </div>
                   <button type="button" class="mt-5 p-2 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors" @click="removeVariantRow(vIndex)">
                     <Trash2 :size="14" />
@@ -143,8 +143,8 @@
                     :key="oIndex"
                     class="grid grid-cols-[1fr_80px_auto] gap-2 items-center"
                   >
-                    <input v-model="option.size" placeholder="Size (e.g. S, M, L)" class="w-full bg-slate-50/50 dark:bg-slate-800/50 rounded-lg border-none px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" />
-                    <input v-model.number="option.stock" type="number" min="0" placeholder="0" class="w-full bg-slate-50/50 dark:bg-slate-800/50 rounded-lg border-none px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" />
+                    <input v-model="option.size" placeholder="Size (e.g. S, M, L)" class="w-full bg-slate-50/50 dark:bg-neutral-800/50 rounded-lg border-none px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" />
+                    <input v-model.number="option.stock" type="number" min="0" placeholder="0" class="w-full bg-slate-50/50 dark:bg-neutral-800/50 rounded-lg border-none px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-400" />
                     <button type="button" class="p-2 text-slate-400 hover:text-red-500 transition-colors" @click="removeOptionRow(vIndex, oIndex)">
                       <X :size="14" />
                     </button>
@@ -154,17 +154,17 @@
             </div>
           </div>
 
-          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-4 py-4 text-sm font-black text-white dark:text-slate-950 shadow-xl shadow-slate-100 dark:shadow-none transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-[0.98]">
+          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-4 py-4 text-sm font-black text-white dark:text-neutral-950 shadow-xl shadow-slate-100 dark:shadow-none transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-[0.98]">
             <Save :size="18" />
             {{ editingProductId ? 'Update product' : 'Create product' }}
           </button>
         </form>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-slate-800">
+      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-neutral-800">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
+            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">
               <List :size="14" />
               <span>Catalog list</span>
             </div>
@@ -174,7 +174,7 @@
           <div class="flex items-center gap-2">
             <select 
               v-model="selectedCategoryId" 
-              class="rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-[10px] font-bold text-slate-600 dark:text-slate-400 focus:ring-1 focus:ring-amber-400 outline-none"
+              class="rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800 px-3 py-2 text-[10px] font-bold text-slate-600 dark:text-neutral-400 focus:ring-1 focus:ring-amber-400 outline-none"
             >
               <option value="">All Categories</option>
               <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -183,7 +183,7 @@
             <button
               v-if="editingProductId"
               type="button"
-              class="flex items-center gap-2 rounded-xl bg-slate-100 dark:bg-slate-800 px-4 py-2 text-[10px] font-bold text-slate-600 dark:text-slate-400 transition hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 uppercase"
+              class="flex items-center gap-2 rounded-xl bg-slate-100 dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-slate-600 dark:text-neutral-400 transition hover:bg-slate-200 dark:hover:bg-neutral-700 active:scale-95 uppercase"
               @click="resetForm"
             >
               <X :size="12" />
@@ -193,53 +193,58 @@
         </div>
 
         <div class="mt-8 space-y-3">
-          <article
-            v-for="product in filteredProducts"
-            :key="product.id"
-            class="group rounded-xl border border-slate-50 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 transition-all hover:border-amber-400 dark:hover:border-amber-400 hover:shadow-md"
-          >
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div class="flex min-w-0 gap-4">
-                <div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-slate-50/50 dark:bg-slate-800/50 shadow-inner border border-slate-50 dark:border-slate-800">
-                  <img
-                    v-if="product.base64Image"
-                    :src="product.base64Image"
-                    :alt="product.name"
-                    class="h-full w-full object-cover"
-                  />
-                  <div v-else class="flex h-full items-center justify-center text-slate-200 dark:text-slate-700">
-                    <Image :size="16" />
-                  </div>
-                </div>
-
-                <div class="min-w-0">
-                  <p class="text-[9px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
-                    {{ categoryName(product.categoryId) || 'Uncategorized' }}
-                  </p>
-                  <h2 class="truncate text-sm font-black text-slate-950 dark:text-white tracking-tight">{{ product.name }}</h2>
-                  <div class="mt-1 flex items-center gap-3">
-                    <span class="text-sm font-black text-slate-900 dark:text-white">{{ formatCurrency(product.basePrice) }}</span>
-                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-slate-800/50 px-2 py-0.5 rounded-lg border border-slate-50 dark:border-slate-800">{{ product.variants?.length || 0 }} SKUs</span>
-                  </div>
-                </div>
-              </div>
-              <div class="flex gap-2">
-                <button type="button" class="flex-1 rounded-lg bg-slate-900 dark:bg-amber-400 px-3 py-2 text-[10px] font-bold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95 flex items-center gap-1.5" @click="startEdit(product)">
-                  <Edit3 :size="12" />
-                  Edit
-                </button>
-                <button type="button" class="flex-1 rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-[10px] font-bold text-red-600 dark:text-red-400 transition hover:bg-red-100 dark:hover:bg-red-500/20 active:scale-95 flex items-center gap-1.5" @click="handleDeleteProduct(product.id)">
-                  <Trash2 :size="12" />
-                  Delete
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <div v-if="!products.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50/30 dark:bg-slate-800/30 py-12 text-slate-200 dark:text-slate-700 border border-dashed border-slate-200 dark:border-slate-700">
-            <PackageSearch :size="32" class="opacity-20 mb-2" />
-            <p class="text-xs font-medium">Empty catalog</p>
+          <div v-if="loading" class="space-y-3">
+            <div v-for="i in 4" :key="i" class="h-24 w-full animate-pulse rounded-xl bg-slate-50 dark:bg-neutral-800 border border-slate-100 dark:border-neutral-800"></div>
           </div>
+          <template v-else>
+            <article
+              v-for="product in filteredProducts"
+              :key="product.id"
+              class="group rounded-xl border border-slate-50 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3 transition-all hover:border-amber-400 dark:hover:border-amber-400 hover:shadow-md"
+            >
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex min-w-0 gap-4">
+                  <div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-slate-50/50 dark:bg-neutral-800/50 shadow-inner border border-slate-50 dark:border-neutral-800">
+                    <img
+                      v-if="product.base64Image"
+                      :src="product.base64Image"
+                      :alt="product.name"
+                      class="h-full w-full object-cover"
+                    />
+                    <div v-else class="flex h-full items-center justify-center text-slate-200 dark:text-neutral-700">
+                      <Image :size="16" />
+                    </div>
+                  </div>
+
+                  <div class="min-w-0">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
+                      {{ categoryName(product.categoryId) || 'Uncategorized' }}
+                    </p>
+                    <h2 class="truncate text-sm font-black text-slate-950 dark:text-white tracking-tight">{{ product.name }}</h2>
+                    <div class="mt-1 flex items-center gap-3">
+                      <span class="text-sm font-black text-slate-900 dark:text-white">{{ formatCurrency(product.basePrice) }}</span>
+                      <span class="text-[10px] font-bold text-slate-400 dark:text-neutral-500 bg-slate-50/50 dark:bg-neutral-800/50 px-2 py-0.5 rounded-lg border border-slate-50 dark:border-neutral-800">{{ product.variants?.length || 0 }} SKUs</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" class="flex-1 rounded-lg bg-slate-900 dark:bg-amber-400 px-3 py-2 text-[10px] font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95 flex items-center gap-1.5" @click="startEdit(product)">
+                    <Edit3 :size="12" />
+                    Edit
+                  </button>
+                  <button type="button" class="flex-1 rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-[10px] font-bold text-red-600 dark:text-red-400 transition hover:bg-red-100 dark:hover:bg-red-500/20 active:scale-95 flex items-center gap-1.5" @click="handleDeleteProduct(product.id)">
+                    <Trash2 :size="12" />
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <div v-if="!products.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50/30 dark:bg-neutral-800/30 py-12 text-slate-200 dark:text-neutral-700 border border-dashed border-slate-200 dark:border-neutral-700">
+              <PackageSearch :size="32" class="opacity-20 mb-2" />
+              <p class="text-xs font-medium">Empty catalog</p>
+            </div>
+          </template>
         </div>
       </div>
     </section>
@@ -272,6 +277,7 @@ import { formatCurrency } from '../../utils/format'
 import { useConfirm } from '../../composables/useConfirm'
 
 const { confirm } = useConfirm()
+const loading = ref(true)
 const categories = ref([])
 const products = ref([])
 const editingProductId = ref('')
@@ -296,8 +302,10 @@ const form = reactive({
 })
 
 const loadData = async () => {
+  loading.value = true
   categories.value = await listCategories()
   products.value = await listProducts()
+  loading.value = false
 }
 
 const categoryName = (categoryId) =>
@@ -423,4 +431,5 @@ const handleImageUpload = (event) => {
 
 onMounted(loadData)
 </script>
+
 
