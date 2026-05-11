@@ -155,8 +155,12 @@
               </button>
             </div>
 
-            <div v-if="message" class="flex items-start gap-2.5 rounded-xl border border-amber-100 bg-amber-50/50 p-3.5 text-xs text-amber-800">
-              <AlertCircle :size="14" class="shrink-0 text-amber-600 mt-0.5" />
+            <div v-if="message" 
+              class="flex items-start gap-2.5 rounded-xl border p-3.5 text-xs transition-all duration-300"
+              :class="isSuccess ? 'border-emerald-100 bg-emerald-50/50 text-emerald-800' : 'border-amber-100 bg-amber-50/50 text-amber-800'"
+            >
+              <Check v-if="isSuccess" :size="14" class="shrink-0 text-emerald-600 mt-0.5" />
+              <AlertCircle v-else :size="14" class="shrink-0 text-amber-600 mt-0.5" />
               <p class="font-medium leading-relaxed">{{ message }}</p>
             </div>
 
@@ -221,6 +225,7 @@ import {
   Palette, 
   Layers, 
   AlertCircle, 
+  Check,
   PackageX,
   Image
 } from 'lucide-vue-next'
@@ -232,6 +237,7 @@ const product = ref(null)
 const selectedVariantId = ref('')
 const quantity = ref(1)
 const message = ref('')
+const isSuccess = ref(false)
 const adding = ref(false)
 
 const selectedColor = ref('')
@@ -288,6 +294,7 @@ const loadProduct = async () => {
 const handleAddToCart = async () => {
   if (!selectedVariantId.value) {
     message.value = 'Select a variant before adding to cart.'
+    isSuccess.value = false
     return
   }
 
@@ -299,13 +306,16 @@ const handleAddToCart = async () => {
       quantity: quantity.value,
     })
     message.value = 'Item added to cart successfully!'
+    isSuccess.value = true
     
     // Clear message after 3 seconds
     setTimeout(() => {
       message.value = ''
+      isSuccess.value = false
     }, 3000)
   } catch (error) {
     message.value = error.message || 'Unable to add item to cart.'
+    isSuccess.value = false
   } finally {
     adding.value = false
   }
