@@ -105,9 +105,15 @@ export const subscribeToAllUsers = (callback) => {
 
 export const subscribeToUnseenUsersCount = (callback) => {
   const q = query(usersCollection, where('seenByAdmin', '==', false))
-  return onSnapshot(q, (snapshot) => {
-    callback(snapshot.size)
-  })
+  return onSnapshot(q, 
+    (snapshot) => {
+      console.log(`[UserNotification] Unseen count update: ${snapshot.size}`)
+      callback(snapshot.size)
+    },
+    (error) => {
+      console.error("Firestore User Notification Error:", error.code, error.message)
+    }
+  )
 }
 
 export const markUserAsSeen = async (uid) => {
