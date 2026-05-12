@@ -22,6 +22,7 @@ const buildDefaultProfile = (user, overrides = {}) => ({
   contact: overrides.contact || '',
   address: overrides.address || '',
   role: overrides.role || 'customer',
+  seenByAdmin: false,
   createdAt: serverTimestamp(),
 })
 
@@ -34,6 +35,7 @@ export const mapProfile = (uid, data = {}) => ({
   contact: data.contact || '',
   address: data.address || '',
   role: data.role || 'customer',
+  seenByAdmin: data.seenByAdmin || false,
   createdAt: data.createdAt || null,
 })
 
@@ -89,4 +91,26 @@ export const deleteAddress = async (uid, addressId) => {
 export const listAllUsers = async () => {
   const snapshots = await getDocs(query(usersCollection, orderBy('createdAt', 'desc')))
   return snapshots.docs.map((doc) => mapProfile(doc.id, doc.data()))
+}
+
+export const subscribeToAllUsers = (callback) => {
+  const q = query(usersCollection, orderBy('createdAt', 'desc'))
+  return onSnapshot(q, (snapshot) => {
+    const users = snapshot.docs.map((doc) => mapProfile(doc.id, doc.data()))
+    callback(users)
+  })
+}
+
+export const subscribeToUnseenUsersCount = (callback) => {
+  const q = query(usersCollection, where('seenByAdmin', '==', false))
+  return onSnapshot(q, (snapshot) => {
+    callback(snapshot.size)
+  })
+}
+
+export const markUserAsSeen = async (uid) => {
+  const userRef = doc(usersCollection, uid)
+  await updateDoc(userRef, {
+    seenByAdmin: true,
+  })
 }

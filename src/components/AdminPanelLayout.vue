@@ -50,6 +50,12 @@
                 >
                   <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
                 </span>
+                <span 
+                  v-if="item.label === 'Users' && unseenUsersCount > 0" 
+                  class="absolute -top-1.5 -right-1.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900"
+                >
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                </span>
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-[13px] font-semibold tracking-tight">{{ item.label }}</p>
@@ -161,6 +167,13 @@
             >
               {{ unseenOrdersCount }}
             </span>
+
+            <span 
+              v-if="item.label === 'Users' && unseenUsersCount > 0" 
+              class="absolute top-0 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900 shadow-sm"
+            >
+              {{ unseenUsersCount }}
+            </span>
             
             <div 
               v-if="isActive(item.to)"
@@ -193,6 +206,7 @@ import { useSession } from '../composables/useSession'
 import { logoutUser } from '../services/authService'
 import { useAdminTheme } from '../composables/useAdminTheme'
 import { useOrderNotification } from '../composables/useOrderNotification'
+import { useUserNotification } from '../composables/useUserNotification'
 
 defineProps({
   subtitle: {
@@ -206,6 +220,7 @@ const router = useRouter()
 const { profile } = useSession()
 const { isDarkMode } = useAdminTheme()
 const { unseenOrdersCount } = useOrderNotification()
+const { unseenUsersCount } = useUserNotification()
 
 const adminNavigation = [
   {

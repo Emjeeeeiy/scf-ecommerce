@@ -37,7 +37,7 @@
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap text-center">Details</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50 dark:divide-neutral-800">
+            <tbody class="divide-y divide-slate-50 dark:divide-neutral-800/50">
               <tr 
                 v-for="user in filteredUsers" 
                 :key="user.id"
@@ -46,11 +46,20 @@
               >
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-400 dark:text-neutral-500 border border-slate-200 dark:border-neutral-700">
-                      <UserIcon :size="18" />
+                    <div class="relative">
+                      <div class="h-9 w-9 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-400 dark:text-neutral-500 border border-slate-200 dark:border-neutral-700">
+                        <UserIcon :size="18" />
+                      </div>
+                      <span 
+                        v-if="!user.seenByAdmin" 
+                        class="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-red-500 ring-2 ring-white dark:ring-neutral-900"
+                      ></span>
                     </div>
                     <div>
-                      <p class="text-xs font-bold text-slate-900 dark:text-white">{{ user.firstName }} {{ user.lastName }}</p>
+                      <p class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        {{ user.firstName }} {{ user.lastName }}
+                        <span v-if="!user.seenByAdmin" class="inline-flex items-center rounded-full bg-red-50 dark:bg-red-500/10 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-red-600 dark:text-red-400 border border-red-100 dark:border-red-500/20">New</span>
+                      </p>
                       <p class="text-[10px] font-medium text-slate-400 dark:text-neutral-500">@{{ user.username }}</p>
                     </div>
                   </div>
@@ -196,7 +205,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { 
   User as UserIcon, 
   Users as UsersIcon,
@@ -208,26 +217,36 @@ import {
   MapPin
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { listAllUsers } from '../../services/userService'
+import { subscribeToAllUsers, markUserAsSeen } from '../../services/userService'
 import { useToast } from '../../composables/useToast'
 
 const users = ref([])
 const searchQuery = ref('')
 const selectedUser = ref(null)
+let unsubscribe = null
 
 const toast = useToast()
 
-const loadUsers = async () => {
+const loadUsers = () => {
   try {
-    users.value = await listAllUsers()
+    unsubscribe = subscribeToAllUsers((data) => {
+      users.value = data
+    })
   } catch (error) {
     toast.error('Failed to load users')
     console.error(error)
   }
 }
 
-const openDetails = (user) => {
+const openDetails = async (user) => {
   selectedUser.value = user
+  if (!user.seenByAdmin) {
+    try {
+      await markUserAsSeen(user.id)
+    } catch (error) {
+      console.error('Failed to mark user as seen:', error)
+    }
+  }
 }
 
 const getRoleClass = (role) => {
@@ -260,6 +279,9 @@ const filteredUsers = computed(() => {
 })
 
 onMounted(loadUsers)
+onUnmounted(() => {
+  if (unsubscribe) unsubscribe()
+})
 </script>
 
 <style scoped>
@@ -268,4 +290,3 @@ onMounted(loadUsers)
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
-
