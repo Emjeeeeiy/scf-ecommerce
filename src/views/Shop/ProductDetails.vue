@@ -305,8 +305,11 @@ const handleAddToCart = async () => {
       variantId: selectedVariantId.value,
       quantity: quantity.value,
     })
-    message.value = 'Item added to cart successfully!'
+    message.value = 'Item added to selection!'
     isSuccess.value = true
+    
+    // Reset quantity to 1 for the next selection
+    quantity.value = 1
     
     // Clear message after 3 seconds
     setTimeout(() => {
@@ -314,7 +317,7 @@ const handleAddToCart = async () => {
       isSuccess.value = false
     }, 3000)
   } catch (error) {
-    message.value = error.message || 'Unable to add item to cart.'
+    message.value = error.message || 'Unable to add item to selection.'
     isSuccess.value = false
   } finally {
     adding.value = false
