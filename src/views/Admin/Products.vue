@@ -273,8 +273,14 @@
               <button @click="closeEditor" type="button" class="flex-1 rounded-xl border-2 border-slate-100 dark:border-neutral-800 py-3 text-xs font-black text-slate-400 hover:border-slate-200 transition-all">
                 Cancel
               </button>
-              <button form="product-form" type="submit" class="flex-[1.5] rounded-xl bg-slate-900 dark:bg-amber-400 py-3 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition-all hover:-translate-y-0.5 active:translate-y-0">
-                {{ editingProductId ? 'Save Changes' : 'Publish Product' }}
+              <button :disabled="saving" form="product-form" type="submit" class="flex-[1.5] rounded-xl bg-slate-900 dark:bg-amber-400 py-3 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span v-if="saving" class="flex items-center justify-center gap-2">
+                  <Loader2 class="animate-spin" :size="16" />
+                  Saving...
+                </span>
+                <span v-else>
+                  {{ editingProductId ? 'Save Changes' : 'Publish Product' }}
+                </span>
               </button>
             </div>
           </div>
@@ -296,7 +302,8 @@ import {
   PackageSearch,
   Search,
   Upload,
-  Camera
+  Camera,
+  Loader2
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
 import {
@@ -308,9 +315,12 @@ import {
 } from '../../services/catalogService'
 import { formatCurrency } from '../../utils/format'
 import { useConfirm } from '../../composables/useConfirm'
+import { useToast } from '../../composables/useToast'
 
 const { confirm } = useConfirm()
+const toast = useToast()
 const loading = ref(true)
+const saving = ref(false)
 const isEditorOpen = ref(false)
 const searchQuery = ref('')
 const categories = ref([])
@@ -357,6 +367,7 @@ const loadData = async () => {
     products.value = prods
   } catch (error) {
     console.error('Failed to load data:', error)
+    toast.error('Failed to load catalog data.')
   } finally {
     loading.value = false
   }
@@ -371,6 +382,7 @@ const openAddModal = () => {
 }
 
 const closeEditor = () => {
+  if (saving.value) return
   isEditorOpen.value = false
   resetForm()
 }
@@ -414,11 +426,12 @@ const sanitizedVariants = () => {
   const flattened = []
   form.variants.forEach(v => {
     v.options.forEach(o => {
-      if (v.color || o.size || Number(o.stock) > 0) {
+      // Only include variants that have at least a color OR a size OR stock > 0
+      if ((v.color && v.color.trim()) || (o.size && o.size.trim()) || Number(o.stock) > 0) {
         flattened.push({
-          color: v.color || '',
-          size: o.size || '',
-          stock: Number(o.stock || 0)
+          color: (v.color || '').trim(),
+          size: (o.size || '').trim(),
+          stock: Math.max(0, Number(o.stock || 0))
         })
       }
     })
@@ -426,34 +439,99 @@ const sanitizedVariants = () => {
   return flattened
 }
 
+const compressImage = (base64Str, maxWidth = 800, maxHeight = 800) => {
+  return new Promise((resolve) => {
+    if (!base64Str || base64Str.startsWith('data:image/svg+xml')) {
+      resolve(base64Str)
+      return
+    }
+
+    const img = new window.Image()
+    img.src = base64Str
+    img.onerror = () => resolve(base64Str)
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      let width = img.width
+      let height = img.height
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height *= maxWidth / width
+          width = maxWidth
+        }
+      } else {
+        if (height > maxHeight) {
+          width *= maxHeight / height
+          height = maxHeight
+        }
+      }
+
+      canvas.width = width
+      canvas.height = height
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, width, height)
+      resolve(canvas.toDataURL('image/jpeg', 0.8))
+    }
+  })
+}
+
 const handleSaveProduct = async () => {
-  const payload = {
-    name: form.name,
-    description: form.description,
-    basePrice: form.basePrice,
-    status: form.status,
-    categoryId: form.categoryId,
-    base64Image: form.base64Image.trim(),
-    variants: sanitizedVariants(),
+  if (saving.value) return
+  
+  const variants = sanitizedVariants()
+  if (variants.length === 0) {
+    toast.warning('Please add at least one variant (color/size/stock).')
+    return
   }
 
+  saving.value = true
+  
   try {
+    const finalImage = await compressImage(form.base64Image)
+    
+    const payload = {
+      name: form.name.trim(),
+      description: (form.description || '').trim(),
+      basePrice: Number(form.basePrice || 0),
+      status: form.status,
+      categoryId: form.categoryId,
+      base64Image: (finalImage || '').trim(),
+      variants: variants,
+    }
+
     if (editingProductId.value) {
       await updateProduct(editingProductId.value, payload)
+      toast.success('Product updated successfully.')
     } else {
       await createProduct(payload)
+      toast.success('Product published successfully.')
     }
-    closeEditor()
+    
+    isEditorOpen.value = false
+    resetForm()
     await loadData()
   } catch (error) {
     console.error('Failed to save product:', error)
+    if (error.code === 'resource-exhausted') {
+      toast.error('Product data too large. Try a smaller image or fewer variants.')
+    } else {
+      toast.error('Failed to save product. Please try again.')
+    }
+  } finally {
+    saving.value = false
   }
 }
 
 const handleDeleteProduct = async (productId) => {
-  if (await confirm('Delete this product?')) {
-    await deleteProduct(productId)
-    await loadData()
+  if (await confirm('Delete this product? This will also remove all its variants.')) {
+    try {
+      await deleteProduct(productId)
+      toast.success('Product deleted.')
+      await loadData()
+    } catch (error) {
+      console.error('Delete failed:', error)
+      toast.error('Failed to delete product.')
+    }
   }
 }
 

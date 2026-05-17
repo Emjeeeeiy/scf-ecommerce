@@ -75,50 +75,60 @@
           <div class="space-y-6">
             <!-- Color Selection -->
             <div>
-              <div class="flex items-center gap-2 mb-3">
-                <Palette :size="14" class="text-slate-400" />
-                <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Color</h2>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <Palette :size="14" class="text-slate-400" />
+                  <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Color</h2>
+                </div>
+                <span v-if="selectedColor" class="text-[10px] font-semibold text-slate-900 bg-slate-100 px-2 py-0.5 rounded-md">
+                  {{ selectedColor }}
+                </span>
               </div>
               <div class="flex flex-wrap gap-2">
                 <button
                   v-for="color in availableColors"
                   :key="color"
                   type="button"
-                  class="flex items-center gap-2 rounded-xl border px-4 py-2 text-left transition-all duration-200"
+                  class="relative group flex items-center justify-center min-w-[3rem] px-3 py-2 rounded-lg border transition-all duration-200"
                   :class="selectedColor === color
-                    ? 'border-slate-900 bg-slate-950 text-white shadow-sm'
-                    : 'border-slate-100 bg-slate-50/50 text-slate-800 hover:border-slate-200 hover:bg-slate-50'"
+                    ? 'border-slate-950 bg-slate-950 text-white'
+                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50'"
                   @click="selectedColor = color"
                 >
-                  <span class="text-[11px] font-bold uppercase tracking-tight">{{ color }}</span>
+                  <span class="text-[10px] font-bold uppercase tracking-tight">{{ color }}</span>
                 </button>
               </div>
             </div>
 
-            <!-- Size Selection -->
-            <div>
-              <div class="flex items-center gap-2 mb-3">
-                <Layers :size="14" class="text-slate-400" />
-                <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Size</h2>
+            <!-- Size Selection (Only visible if color is selected) -->
+            <div v-if="selectedColor" class="animate-in fade-in slide-in-from-top-2 duration-300">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <Layers :size="14" class="text-slate-400" />
+                  <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Size</h2>
+                </div>
+                <span v-if="selectedSize" class="text-[10px] font-semibold text-slate-900 bg-slate-100 px-2 py-0.5 rounded-md">
+                  {{ selectedSize }}
+                </span>
               </div>
-              <div class="grid grid-cols-2 gap-2">
+              <div class="grid grid-cols-3 gap-2">
                 <button
                   v-for="v in availableSizesForSelectedColor"
                   :key="v.id"
                   type="button"
-                  class="group flex flex-col items-center justify-center rounded-xl border p-3 text-center transition-all duration-200"
+                  class="flex flex-col items-center justify-center rounded-lg border p-2.5 text-center transition-all duration-200"
                   :class="[
                     selectedSize === v.size
-                      ? 'border-slate-900 bg-slate-950 text-white shadow-sm'
-                      : 'border-slate-100 bg-slate-50/50 text-slate-800 hover:border-slate-200 hover:bg-slate-50',
-                    v.stock <= 0 ? 'opacity-50 cursor-not-allowed grayscale' : ''
+                      ? 'border-slate-950 bg-slate-950 text-white'
+                      : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50',
+                    v.stock <= 0 ? 'opacity-40 cursor-not-allowed bg-slate-50' : ''
                   ]"
                   :disabled="v.stock <= 0"
                   @click="selectedSize = v.size"
                 >
-                  <span class="text-[11px] font-extrabold uppercase tracking-tight">{{ v.size }}</span>
-                  <span class="text-[9px] font-medium mt-0.5" :class="selectedSize === v.size ? 'text-slate-400' : 'text-slate-500'">
-                    {{ v.stock > 0 ? `${v.stock} in stock` : 'Sold Out' }}
+                  <span class="text-[10px] font-bold uppercase tracking-tight">{{ v.size }}</span>
+                  <span class="text-[8px] font-medium mt-0.5" :class="selectedSize === v.size ? 'text-slate-400' : 'text-slate-500'">
+                    {{ v.stock > 0 ? `${v.stock}` : 'Out' }}
                   </span>
                 </button>
               </div>
@@ -261,14 +271,7 @@ const availableSizesForSelectedColor = computed(() => {
 })
 
 watch(selectedColor, (newColor) => {
-  if (!newColor) return
-  const sizes = availableSizesForSelectedColor.value
-  if (sizes.length > 0) {
-    const currentSizeExists = sizes.some(s => s.size === selectedSize.value)
-    if (!currentSizeExists) {
-      selectedSize.value = sizes[0].size
-    }
-  }
+  selectedSize.value = ''
 })
 
 watch([selectedColor, selectedSize], () => {
@@ -283,17 +286,12 @@ watch([selectedColor, selectedSize], () => {
 const loadProduct = async () => {
   loading.value = true
   product.value = await getProduct(route.params.productId)
-  if (product.value?.variants?.length > 0) {
-    const firstVariant = product.value.variants[0]
-    selectedColor.value = firstVariant.color || 'Standard'
-    selectedSize.value = firstVariant.size || 'Free size'
-  }
   loading.value = false
 }
 
 const handleAddToCart = async () => {
-  if (!selectedVariantId.value) {
-    message.value = 'Select a variant before adding to cart.'
+  if (!selectedColor.value || !selectedSize.value || !selectedVariantId.value) {
+    message.value = 'Please select both color and size.'
     isSuccess.value = false
     return
   }

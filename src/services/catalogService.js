@@ -9,6 +9,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  writeBatch,
 } from 'firebase/firestore'
 import { db, serverTimestamp } from '../Firebase/Firebase'
 
@@ -113,15 +114,18 @@ export const createProduct = async ({
     createdAt: serverTimestamp(),
   })
 
-  await Promise.all(
-    (variants || []).map((variant) =>
-      addDoc(collection(db, 'products', productRef.id, 'variants'), {
+  if (variants && variants.length > 0) {
+    const batch = writeBatch(db)
+    variants.forEach((variant) => {
+      const vRef = doc(collection(db, 'products', productRef.id, 'variants'))
+      batch.set(vRef, {
         color: variant.color || '',
         size: variant.size || '',
         stock: Number(variant.stock || 0),
-      }),
-    ),
-  )
+      })
+    })
+    await batch.commit()
+  }
 
   return productRef.id
 }
@@ -143,23 +147,37 @@ export const updateProduct = async (
   const variantsRef = collection(db, 'products', productId, 'variants')
   const existingVariants = await getDocs(variantsRef)
 
-  await Promise.all(existingVariants.docs.map((variantDoc) => deleteDoc(variantDoc.ref)))
-  await Promise.all(
-    variants.map((variant) =>
-      addDoc(variantsRef, {
-        color: variant.color || '',
-        size: variant.size || '',
-        stock: Number(variant.stock || 0),
-      }),
-    ),
-  )
+  const batch = writeBatch(db)
+  
+  // Delete existing variants
+  existingVariants.docs.forEach((variantDoc) => {
+    batch.delete(variantDoc.ref)
+  })
+
+  // Add new variants
+  variants.forEach((variant) => {
+    const vRef = doc(variantsRef)
+    batch.set(vRef, {
+      color: variant.color || '',
+      size: variant.size || '',
+      stock: Number(variant.stock || 0),
+    })
+  })
+
+  await batch.commit()
 }
 
 export const deleteProduct = async (productId) => {
   const variantsRef = collection(db, 'products', productId, 'variants')
   const variantsSnapshot = await getDocs(variantsRef)
-  await Promise.all(variantsSnapshot.docs.map((variantDoc) => deleteDoc(variantDoc.ref)))
-  await deleteDoc(doc(db, 'products', productId))
+  
+  const batch = writeBatch(db)
+  variantsSnapshot.docs.forEach((variantDoc) => {
+    batch.delete(variantDoc.ref)
+  })
+  batch.delete(doc(db, 'products', productId))
+  
+  await batch.commit()
 }
 
 export const ensureDemoCatalog = async () => {
