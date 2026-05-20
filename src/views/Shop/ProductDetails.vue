@@ -271,7 +271,7 @@ import { useRoute } from 'vue-router'
 import AppShell from '../../components/AppShell.vue'
 import { getProduct } from '../../services/catalogService'
 import { addToCart } from '../../services/cartService'
-import { formatCurrency } from '../../utils/format'
+import { formatCurrency, sortSizes } from '../../utils/format'
 import { useSession } from '../../composables/useSession'
 import { 
   ArrowLeft, 
@@ -318,13 +318,15 @@ const availableColors = computed(() => {
 
 const availableSizesForSelectedColor = computed(() => {
   if (!product.value?.variants || !selectedColor.value) return []
-  return product.value.variants
+  const sizes = product.value.variants
     .filter(v => (v.color || 'Standard') === selectedColor.value)
     .map(v => ({ 
       id: v.id, 
       size: v.size || 'Free size', 
       stock: v.stock 
     }))
+    
+  return sortSizes(sizes)
 })
 
 watch(selectedColor, (newColor) => {

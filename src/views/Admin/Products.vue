@@ -325,7 +325,7 @@ import {
   listProducts,
   updateProduct,
 } from '../../services/catalogService'
-import { formatCurrency } from '../../utils/format'
+import { formatCurrency, sortSizes } from '../../utils/format'
 import { useConfirm } from '../../composables/useConfirm'
 import { useToast } from '../../composables/useToast'
 
@@ -358,8 +358,14 @@ const filteredProducts = computed(() => {
   return items
 })
 
-const createBlankOption = () => ({ size: '', stock: 0 })
-const createBlankVariant = () => ({ color: '', options: [createBlankOption()] })
+const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+const DEFAULT_STOCK = 10
+
+const createBlankOption = (size = '', stock = DEFAULT_STOCK) => ({ size, stock })
+const createBlankVariant = () => ({ 
+  color: '', 
+  options: DEFAULT_SIZES.map(size => createBlankOption(size, DEFAULT_STOCK)) 
+})
 
 const form = reactive({
   name: '',
@@ -570,6 +576,11 @@ const startEdit = (product) => {
         grouped.push(group)
       }
       group.options.push({ size: v.size || '', stock: Number(v.stock || 0) })
+    })
+    
+    // Sort options in each group
+    grouped.forEach(g => {
+      g.options = sortSizes(g.options)
     })
   }
 
