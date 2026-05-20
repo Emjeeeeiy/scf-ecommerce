@@ -112,6 +112,18 @@
               ></textarea>
             </div>
 
+            <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50/50 p-4">
+              <input
+                id="isStudent"
+                v-model="form.isStudent"
+                type="checkbox"
+                class="h-5 w-5 rounded border-slate-300 text-amber-500 focus:ring-amber-400"
+              />
+              <label for="isStudent" class="text-xs font-bold text-slate-600 cursor-pointer select-none">
+                I am a student (Eligible for student pricing)
+              </label>
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
               <div class="space-y-2">
                 <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -214,6 +226,7 @@ const form = reactive({
   email: '',
   contact: '',
   address: '',
+  isStudent: false,
   password: '',
   confirmPassword: ''
 })
@@ -238,7 +251,8 @@ const handleRegister = async () => {
       firstName: form.firstName,
       lastName: form.lastName,
       contact: form.contact,
-      address: form.address
+      address: form.address,
+      isStudent: form.isStudent
     }
     
     await registerUser(form.email, form.password, profileData)

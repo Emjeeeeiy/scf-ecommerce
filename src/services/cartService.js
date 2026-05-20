@@ -1,6 +1,7 @@
 import { doc, getDoc, setDoc, runTransaction } from 'firebase/firestore'
 import { auth, db } from '../Firebase/Firebase'
 import { getProduct } from './catalogService'
+import { getUserProfile } from './userService'
 
 const CART_STORAGE_KEY = 'scf_cart_items'
 
@@ -15,7 +16,7 @@ const createItemKey = (productId, variantId, color, size) => {
 }
 
 const calculateCartTotals = (items) => {
-  const totalAmount = items.reduce((sum, item) => sum + Number(item.basePrice || 0) * item.quantity, 0)
+  const totalAmount = items.reduce((sum, item) => sum + Number(item.price || 0) * item.quantity, 0)
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return {
@@ -63,6 +64,12 @@ const readCartItemsFromFirestore = async () => {
  */
 const hydrateCartItems = async (items) => {
   const productCache = {}
+  let userIsStudent = false
+
+  if (auth.currentUser) {
+    const profile = await getUserProfile(auth.currentUser.uid)
+    userIsStudent = profile?.isStudent || false
+  }
   
   return Promise.all(items.map(async (item) => {
     try {
@@ -71,10 +78,18 @@ const hydrateCartItems = async (items) => {
       }
       const product = productCache[item.productId]
       
+      // Use the price stored in the item (which reflects the user's choice at add-to-cart)
+      // but fallback to a fresh calculation if missing
+      let price = item.price
+      if (!price && product) {
+        const useStudent = item.isStudentPrice !== undefined ? item.isStudentPrice : userIsStudent
+        price = useStudent ? product.studentPrice : product.nonStudentPrice
+      }
+      
       return {
         ...item,
         productName: product?.name || item.productName,
-        basePrice: product?.basePrice || item.basePrice,
+        price: price || 0,
         base64Image: product?.base64Image || '',
       }
     } catch (error) {
@@ -106,7 +121,7 @@ export const getCart = async () => {
   }
 }
 
-export const addToCart = async ({ productId, variantId, quantity = 1 }) => {
+export const addToCart = async ({ productId, variantId, quantity = 1, useStudentPrice = null }) => {
   const product = await getProduct(productId)
   const variant = product?.variants?.find((item) => item.id === variantId)
 
@@ -114,9 +129,23 @@ export const addToCart = async ({ productId, variantId, quantity = 1 }) => {
     throw new Error('Selected product variant was not found.')
   }
 
+  // Determine which price to use. If not specified, default to user profile.
+  let isStudent = useStudentPrice
+  if (isStudent === null) {
+    if (auth.currentUser) {
+      const profile = await getUserProfile(auth.currentUser.uid)
+      isStudent = profile?.isStudent || false
+    } else {
+      isStudent = false
+    }
+  }
+
+  const price = isStudent ? (product.studentPrice || 0) : (product.nonStudentPrice || 0)
+
   // Create clean payload without the heavy image
   const createPayload = (items, existingIndex) => {
-    const itemKey = createItemKey(productId, variantId, variant.color, variant.size)
+    // Include isStudentPrice in the key to separate same variants with different pricing tiers
+    const itemKey = `${createItemKey(productId, variantId, variant.color, variant.size)}__${isStudent ? 'stud' : 'reg'}`
     const existingQuantity = existingIndex >= 0 ? Number(items[existingIndex].quantity || 0) : 0
     const nextQuantity = existingQuantity + Number(quantity)
 
@@ -131,8 +160,8 @@ export const addToCart = async ({ productId, variantId, quantity = 1 }) => {
       variantId,
       quantity: nextQuantity,
       productName: product.name,
-      basePrice: Number(product.basePrice || 0),
-      // base64Image removed to save space
+      price: Number(price),
+      isStudentPrice: isStudent,
       color: variant.color || '',
       size: variant.size || '',
     }

@@ -31,10 +31,11 @@
             <thead>
               <tr class="bg-slate-50/50 dark:bg-neutral-800/50 border-b border-slate-100 dark:border-neutral-800">
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">User</th>
+                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Tier</th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Role</th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Email</th>
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Registration Date</th>
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap text-center">Details</th>
+                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap text-center">Actions</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 dark:divide-neutral-800/50">
@@ -42,9 +43,8 @@
                 v-for="user in filteredUsers" 
                 :key="user.id"
                 class="hover:bg-slate-50/50 dark:hover:bg-neutral-800/30 transition-colors cursor-pointer group"
-                @click="openDetails(user)"
               >
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
                   <div class="flex items-center gap-3">
                     <div class="relative">
                       <div class="h-9 w-9 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-400 dark:text-neutral-500 border border-slate-200 dark:border-neutral-700">
@@ -64,7 +64,15 @@
                     </div>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
+                  <span 
+                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
+                    :class="user.isStudent ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
+                  >
+                    {{ user.isStudent ? 'Student' : 'Regular' }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
                   <span 
                     class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
                     :class="getRoleClass(user.role)"
@@ -72,19 +80,28 @@
                     {{ user.role }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
                   <p class="text-xs font-semibold text-slate-500 dark:text-neutral-400">{{ user.email }}</p>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
                   <p class="text-xs font-semibold text-slate-400 dark:text-neutral-500">{{ formatDate(user.createdAt) }}</p>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center justify-center">
+                  <div class="flex items-center justify-center gap-1">
                     <button 
-                      class="p-2 text-slate-300 dark:text-neutral-700 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors"
+                      @click.stop="openDetails(user)"
+                      class="p-2 text-slate-300 dark:text-neutral-700 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
                       title="View Profile"
                     >
                       <Eye :size="16" />
+                    </button>
+                    <button 
+                      v-if="user.role !== 'admin'"
+                      @click.stop="handleDeleteUser(user)"
+                      class="p-2 text-slate-300 dark:text-neutral-700 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                      title="Delete User"
+                    >
+                      <Trash2 :size="16" />
                     </button>
                   </div>
                 </td>
@@ -155,6 +172,15 @@
                     {{ selectedUser.role }}
                   </span>
                 </div>
+                <div class="bg-slate-50 dark:bg-neutral-800/50 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800">
+                  <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Account Tier</p>
+                  <span 
+                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
+                    :class="selectedUser.isStudent ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
+                  >
+                    {{ selectedUser.isStudent ? 'Student Pricing' : 'Regular Pricing' }}
+                  </span>
+                </div>
               </div>
 
               <div class="space-y-4">
@@ -212,13 +238,15 @@ import {
   Search,
   X,
   Eye,
+  Trash2,
   Calendar,
   Phone,
   MapPin
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { subscribeToAllUsers, markUserAsSeen } from '../../services/userService'
+import { subscribeToAllUsers, markUserAsSeen, deleteUser } from '../../services/userService'
 import { useToast } from '../../composables/useToast'
+import { useConfirm } from '../../composables/useConfirm'
 
 const users = ref([])
 const searchQuery = ref('')
@@ -226,6 +254,7 @@ const selectedUser = ref(null)
 let unsubscribe = null
 
 const toast = useToast()
+const { confirm } = useConfirm()
 
 const loadUsers = () => {
   try {
@@ -245,6 +274,28 @@ const openDetails = async (user) => {
       await markUserAsSeen(user.id)
     } catch (error) {
       console.error('Failed to mark user as seen:', error)
+    }
+  }
+}
+
+const handleDeleteUser = async (user) => {
+  if (user.role === 'admin') {
+    toast.error('Admin accounts cannot be deleted')
+    return
+  }
+
+  const isConfirmed = await confirm(
+    `Are you sure you want to delete ${user.firstName} ${user.lastName}? This action cannot be undone.`,
+    'Delete User'
+  )
+
+  if (isConfirmed) {
+    try {
+      await deleteUser(user.id)
+      toast.success('User deleted successfully')
+    } catch (error) {
+      toast.error('Failed to delete user')
+      console.error(error)
     }
   }
 }

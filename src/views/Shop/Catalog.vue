@@ -135,15 +135,32 @@
                   </h2>
                 </router-link>
                 
-                <p class="text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
-                  {{ formatCurrency(product.basePrice) }}
-                </p>
+              <div class="flex flex-col gap-1 items-end">
+                <div class="flex flex-col items-end">
+                  <p class="text-[9px] font-black text-amber-600 uppercase tracking-tighter">Student</p>
+                  <p class="text-xs sm:text-sm font-black text-slate-950">{{ formatCurrency(product.studentPrice) }}</p>
+                </div>
+                <div class="flex flex-col items-end">
+                  <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Regular</p>
+                  <p class="text-xs sm:text-sm font-black text-slate-950">{{ formatCurrency(product.nonStudentPrice) }}</p>
+                </div>
               </div>
-              
-              <p class="line-clamp-1 text-[10px] sm:text-[11px] text-gray-500">
-                {{ product.description }}
-              </p>
             </div>
+            
+            <p class="mt-1 line-clamp-1 text-[10px] sm:text-[11px] text-gray-500">
+              {{ product.description }}
+            </p>
+          </div>
+
+          <!-- Highlight applied price if logged in -->
+          <div v-if="isAuthenticated" class="px-3 pb-2">
+            <span v-if="isStudent" class="text-[8px] font-black text-amber-600 uppercase tracking-widest bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
+              Eligible for Student Price
+            </span>
+            <span v-else class="text-[8px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100">
+              Regular Price Applied
+            </span>
+          </div>
 
             <!-- Variant/Style Footer -->
             <div class="mt-2 flex items-center gap-2">
@@ -188,14 +205,19 @@ import { computed, onMounted, ref } from 'vue'
 import AppShell from '../../components/AppShell.vue'
 import { ensureDemoCatalog, listCategories, listProducts } from '../../services/catalogService'
 import { formatCurrency } from '../../utils/format'
+import { useSession } from '../../composables/useSession'
 import { 
   Search, 
   Filter, 
   Tag, 
   LayoutGrid, 
   ArrowRight, 
-  SearchX 
+  SearchX,
+  Image
 } from 'lucide-vue-next'
+
+const { profile } = useSession()
+const isStudent = computed(() => profile.value?.isStudent || false)
 
 const loading = ref(true)
 const categories = ref([])

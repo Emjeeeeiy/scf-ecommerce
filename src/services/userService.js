@@ -24,6 +24,7 @@ const buildDefaultProfile = (user, overrides = {}) => ({
   contact: overrides.contact || '',
   address: overrides.address || '',
   role: overrides.role || 'customer',
+  isStudent: overrides.isStudent || false,
   seenByAdmin: false,
   createdAt: serverTimestamp(),
 })
@@ -37,6 +38,7 @@ export const mapProfile = (uid, data = {}) => ({
   contact: data.contact || '',
   address: data.address || '',
   role: data.role || 'customer',
+  isStudent: data.isStudent || false,
   seenByAdmin: data.seenByAdmin || false,
   createdAt: data.createdAt || null,
 })
@@ -121,4 +123,8 @@ export const markUserAsSeen = async (uid) => {
   await updateDoc(userRef, {
     seenByAdmin: true,
   })
+}
+
+export const deleteUser = async (uid) => {
+  await deleteDoc(doc(usersCollection, uid))
 }

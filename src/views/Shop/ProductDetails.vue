@@ -52,9 +52,13 @@
               </h1>
             </div>
             <div class="text-left sm:text-right">
-              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Price</p>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Student Price</p>
+              <p class="text-xl font-extrabold tracking-tight text-amber-600 sm:text-2xl">
+                {{ formatCurrency(product.studentPrice) }}
+              </p>
+              <p class="mt-4 text-[10px] font-bold uppercase tracking-wider text-slate-400">Regular Price</p>
               <p class="text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">
-                {{ formatCurrency(product.basePrice) }}
+                {{ formatCurrency(product.nonStudentPrice) }}
               </p>
             </div>
           </div>
@@ -89,7 +93,7 @@
                   v-for="color in availableColors"
                   :key="color"
                   type="button"
-                  class="relative group flex items-center justify-center min-w-[3rem] px-3 py-2 rounded-lg border transition-all duration-200"
+                  class="relative group flex items-center justify-center min-w-12 px-3 py-2 rounded-lg border transition-all duration-200"
                   :class="selectedColor === color
                     ? 'border-slate-950 bg-slate-950 text-white'
                     : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50'"
@@ -142,7 +146,51 @@
             <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Purchase Details</h2>
           </div>
 
-          <div class="space-y-4">
+          <div class="space-y-6">
+            <!-- Price Tier Selection -->
+            <div class="space-y-2">
+              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">Select Price Tier</p>
+              <div class="grid gap-2">
+                <button
+                  @click="selectedPriceType = 'student'"
+                  class="flex items-center justify-between gap-4 rounded-xl border-2 p-3 transition-all"
+                  :class="selectedPriceType === 'student' 
+                    ? 'border-amber-400 bg-amber-50 shadow-sm' 
+                    : 'border-slate-100 bg-white hover:border-slate-200'"
+                >
+                  <div class="text-left">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-amber-600">Student</p>
+                    <p class="text-base font-black text-slate-900">{{ formatCurrency(product.studentPrice) }}</p>
+                  </div>
+                  <div v-if="selectedPriceType === 'student'" class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-white">
+                    <Check :size="12" stroke-width="4" />
+                  </div>
+                </button>
+
+                <button
+                  @click="selectedPriceType = 'regular'"
+                  class="flex items-center justify-between gap-4 rounded-xl border-2 p-3 transition-all"
+                  :class="selectedPriceType === 'regular' 
+                    ? 'border-amber-400 bg-amber-50 shadow-sm' 
+                    : 'border-slate-100 bg-white hover:border-slate-200'"
+                >
+                  <div class="text-left">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-amber-600">Regular</p>
+                    <p class="text-base font-black">{{ formatCurrency(product.nonStudentPrice) }}</p>
+                  </div>
+                  <div v-if="selectedPriceType === 'regular'" class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-slate-950">
+                    <Check :size="12" stroke-width="4" />
+                  </div>
+                </button>
+              </div>
+              
+              <div v-if="isStudent && selectedPriceType !== 'student'" class="mt-2 px-1">
+                <p class="text-[9px] font-bold text-amber-600 uppercase tracking-tight animate-pulse">
+                  You are eligible for Student Pricing!
+                </p>
+              </div>
+            </div>
+
             <div class="flex items-center justify-between gap-4 rounded-xl border border-slate-100 bg-slate-50/50 p-1.5">
               <button
                 type="button"
@@ -224,6 +272,7 @@ import AppShell from '../../components/AppShell.vue'
 import { getProduct } from '../../services/catalogService'
 import { addToCart } from '../../services/cartService'
 import { formatCurrency } from '../../utils/format'
+import { useSession } from '../../composables/useSession'
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -241,6 +290,8 @@ import {
 } from 'lucide-vue-next'
 
 const route = useRoute()
+const { profile } = useSession()
+const isStudent = computed(() => profile.value?.isStudent || false)
 
 const loading = ref(true)
 const product = ref(null)
@@ -252,6 +303,12 @@ const adding = ref(false)
 
 const selectedColor = ref('')
 const selectedSize = ref('')
+const selectedPriceType = ref('regular')
+
+// Update selectedPriceType when profile is loaded
+watch(isStudent, (val) => {
+  selectedPriceType.value = val ? 'student' : 'regular'
+}, { immediate: true })
 
 const availableColors = computed(() => {
   if (!product.value?.variants) return []
@@ -302,6 +359,7 @@ const handleAddToCart = async () => {
       productId: product.value.id,
       variantId: selectedVariantId.value,
       quantity: quantity.value,
+      useStudentPrice: selectedPriceType.value === 'student'
     })
     message.value = 'Item added to selection!'
     isSuccess.value = true

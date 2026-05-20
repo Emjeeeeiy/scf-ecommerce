@@ -64,6 +64,12 @@
                   <div class="space-y-1">
                     <h2 class="truncate text-sm font-semibold text-slate-950 transition-colors group-hover:text-slate-700">{{ item.productName }}</h2>
                     <div class="flex flex-wrap items-center gap-1.5">
+                      <span v-if="item.isStudentPrice" class="inline-flex items-center gap-1 rounded bg-amber-50 border border-amber-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-amber-700">
+                        Student Price
+                      </span>
+                      <span v-else class="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-slate-500">
+                        Regular Price
+                      </span>
                       <span class="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-100 px-1.5 py-0.5 text-[9px] font-medium text-slate-600">
                         <Palette :size="8" />
                         {{ item.color || 'Standard' }}
@@ -75,7 +81,7 @@
                     </div>
                   </div>
                   <div class="text-left sm:text-right">
-                    <p class="text-sm font-bold text-slate-950">{{ formatCurrency(item.basePrice) }}</p>
+                    <p class="text-sm font-bold text-slate-950">{{ formatCurrency(item.price) }}</p>
                     <p class="text-[9px] font-semibold uppercase tracking-wider text-slate-400">Each</p>
                   </div>
                 </div>

@@ -252,7 +252,7 @@
                   </p>
                 </div>
               </div>
-              <span class="text-xs font-bold text-slate-900 tracking-tight">{{ formatCurrency(item.basePrice * item.quantity) }}</span>
+              <span class="text-xs font-bold text-slate-900 tracking-tight">{{ formatCurrency(item.price * item.quantity) }}</span>
             </div>
           </div>
 

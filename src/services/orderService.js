@@ -56,7 +56,7 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
   }
 
   const totalAmount = cart.items.reduce(
-    (sum, item) => sum + Number(item.basePrice || 0) * Number(item.quantity || 0),
+    (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0),
     0,
   )
 
@@ -90,7 +90,7 @@ export const checkoutCart = async ({ customerDetails, userId = null }) => {
         productId: item.productId,
         variantId: item.variantId,
         quantity: item.quantity,
-        priceAtPurchase: Number(item.basePrice || 0),
+        priceAtPurchase: Number(item.price || 0),
         color: item.color || '',
         size: item.size || '',
         productName: item.productName || '',

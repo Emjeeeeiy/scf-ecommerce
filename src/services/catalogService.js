@@ -98,7 +98,8 @@ export const getProduct = async (productId) => {
 export const createProduct = async ({
   name,
   description,
-  basePrice,
+  studentPrice,
+  nonStudentPrice,
   status,
   categoryId,
   base64Image,
@@ -107,7 +108,8 @@ export const createProduct = async ({
   const productRef = await addDoc(productsCollection, {
     name,
     description,
-    basePrice: Number(basePrice),
+    studentPrice: Number(studentPrice),
+    nonStudentPrice: Number(nonStudentPrice),
     status: status || 'active',
     categoryId: categoryId || null,
     base64Image: base64Image || '',
@@ -132,13 +134,14 @@ export const createProduct = async ({
 
 export const updateProduct = async (
   productId,
-  { name, description, basePrice, status, categoryId, base64Image, variants = [] },
+  { name, description, studentPrice, nonStudentPrice, status, categoryId, base64Image, variants = [] },
 ) => {
   const productRef = doc(db, 'products', productId)
   await updateDoc(productRef, {
     name,
     description,
-    basePrice: Number(basePrice),
+    studentPrice: Number(studentPrice),
+    nonStudentPrice: Number(nonStudentPrice),
     status: status || 'active',
     categoryId: categoryId || null,
     base64Image: base64Image || '',
@@ -201,7 +204,8 @@ export const ensureDemoCatalog = async () => {
     {
       name: 'Essential Linen Set',
       description: 'A breathable two-piece linen outfit designed for warm weather.',
-      basePrice: 1899,
+      studentPrice: 1699,
+      nonStudentPrice: 1899,
       status: 'active',
       categoryId: womenCategory.id,
       base64Image: createPlaceholderImage('Essential Linen', '#d97706'),
@@ -213,7 +217,8 @@ export const ensureDemoCatalog = async () => {
     {
       name: 'Urban Layer Jacket',
       description: 'A lightweight statement jacket with clean lines and everyday comfort.',
-      basePrice: 2499,
+      studentPrice: 2199,
+      nonStudentPrice: 2499,
       status: 'active',
       categoryId: menCategory.id,
       base64Image: createPlaceholderImage('Urban Layer', '#1e293b'),
@@ -228,7 +233,8 @@ export const ensureDemoCatalog = async () => {
     const productRef = await addDoc(productsCollection, {
       name: product.name,
       description: product.description,
-      basePrice: product.basePrice,
+      studentPrice: product.studentPrice,
+      nonStudentPrice: product.nonStudentPrice,
       status: product.status,
       categoryId: product.categoryId,
       base64Image: product.base64Image || '',

@@ -43,7 +43,8 @@
               <tr>
                 <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500">Product</th>
                 <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500">Category</th>
-                <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500 text-center">Price</th>
+                <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500 text-center">Student Price</th>
+                <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500 text-center">Regular Price</th>
                 <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500 text-center">Inventory</th>
                 <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500">Status</th>
                 <th class="sticky top-0 z-10 border-b border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-neutral-500 text-right">Actions</th>
@@ -51,7 +52,7 @@
             </thead>
             <tbody class="divide-y divide-slate-50 dark:divide-neutral-800/50">
               <tr v-if="loading" v-for="i in 5" :key="i">
-                <td colspan="6" class="px-6 py-6">
+                <td colspan="7" class="px-6 py-6">
                   <div class="flex items-center gap-3 animate-pulse">
                     <div class="h-10 w-10 rounded-xl bg-slate-100 dark:bg-neutral-800"></div>
                     <div class="flex-1 space-y-1.5">
@@ -87,7 +88,10 @@
                   </span>
                 </td>
                 <td class="px-6 py-3.5 text-center">
-                  <p class="text-sm font-black text-slate-950 dark:text-white">{{ formatCurrency(product.basePrice) }}</p>
+                  <p class="text-sm font-black text-amber-600 dark:text-amber-400">{{ formatCurrency(product.studentPrice) }}</p>
+                </td>
+                <td class="px-6 py-3.5 text-center">
+                  <p class="text-sm font-black text-slate-950 dark:text-white">{{ formatCurrency(product.nonStudentPrice) }}</p>
                 </td>
                 <td class="px-6 py-3.5 text-center">
                   <div class="inline-flex flex-col items-center">
@@ -126,7 +130,7 @@
                 </td>
               </tr>
               <tr v-else>
-                <td colspan="6" class="px-6 py-20 text-center">
+                <td colspan="7" class="px-6 py-20 text-center">
                   <div class="flex flex-col items-center justify-center">
                     <div class="mb-4 rounded-3xl bg-slate-50 dark:bg-neutral-800 p-6">
                       <PackageSearch :size="48" stroke-width="1" class="text-slate-200 dark:text-neutral-700" />
@@ -188,10 +192,18 @@
 
                   <div class="space-y-4">
                     <label class="block">
-                      <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Base Price</span>
+                      <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Student Price</span>
                       <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">₱</span>
-                        <input v-model.number="form.basePrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all" />
+                        <input v-model.number="form.studentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all" />
+                      </div>
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Regular Price</span>
+                      <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">₱</span>
+                        <input v-model.number="form.nonStudentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all" />
                       </div>
                     </label>
 
@@ -352,7 +364,8 @@ const createBlankVariant = () => ({ color: '', options: [createBlankOption()] })
 const form = reactive({
   name: '',
   description: '',
-  basePrice: 0,
+  studentPrice: 0,
+  nonStudentPrice: 0,
   status: 'active',
   categoryId: '',
   base64Image: '',
@@ -391,7 +404,8 @@ const resetForm = () => {
   editingProductId.value = ''
   form.name = ''
   form.description = ''
-  form.basePrice = 0
+  form.studentPrice = 0
+  form.nonStudentPrice = 0
   form.status = 'active'
   form.categoryId = ''
   form.base64Image = ''
@@ -492,7 +506,8 @@ const handleSaveProduct = async () => {
     const payload = {
       name: form.name.trim(),
       description: (form.description || '').trim(),
-      basePrice: Number(form.basePrice || 0),
+      studentPrice: Number(form.studentPrice || 0),
+      nonStudentPrice: Number(form.nonStudentPrice || 0),
       status: form.status,
       categoryId: form.categoryId,
       base64Image: (finalImage || '').trim(),
@@ -539,7 +554,8 @@ const startEdit = (product) => {
   editingProductId.value = product.id
   form.name = product.name
   form.description = product.description
-  form.basePrice = Number(product.basePrice || 0)
+  form.studentPrice = Number(product.studentPrice || 0)
+  form.nonStudentPrice = Number(product.nonStudentPrice || 0)
   form.status = product.status || 'active'
   form.categoryId = product.categoryId || ''
   form.base64Image = product.base64Image || ''

@@ -67,6 +67,18 @@
             />
           </div>
 
+          <div class="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/30 p-4">
+            <input
+              id="isStudent"
+              v-model="profileForm.isStudent"
+              type="checkbox"
+              class="h-5 w-5 rounded border-slate-200 text-slate-900 focus:ring-slate-100"
+            />
+            <label for="isStudent" class="text-xs font-bold text-slate-600 cursor-pointer select-none">
+              I am a student (Eligible for student pricing)
+            </label>
+          </div>
+
           <button
             type="submit"
             class="group mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-slate-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-95"
@@ -167,6 +179,7 @@ const profileForm = reactive({
   firstName: '',
   lastName: '',
   contact: '',
+  isStudent: false,
 })
 
 const loadProfile = async () => {
@@ -181,6 +194,7 @@ const loadProfile = async () => {
   profileForm.firstName = profile?.firstName || ''
   profileForm.lastName = profile?.lastName || ''
   profileForm.contact = profile?.contact || ''
+  profileForm.isStudent = profile?.isStudent || false
 }
 
 const handleSaveProfile = async () => {
