@@ -216,7 +216,7 @@ import {
   Image
 } from 'lucide-vue-next'
 
-const { profile } = useSession()
+const { profile, isAuthenticated } = useSession()
 const isStudent = computed(() => profile.value?.isStudent || false)
 
 const loading = ref(true)
@@ -227,7 +227,11 @@ const query = ref('')
 
 const loadCatalog = async () => {
   loading.value = true
-  await ensureDemoCatalog()
+  try {
+    await ensureDemoCatalog()
+  } catch (e) {
+    console.warn('Demo catalog seeding skipped or failed:', e.message)
+  }
   categories.value = await listCategories()
   products.value = await listProducts()
   loading.value = false

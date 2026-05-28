@@ -211,7 +211,8 @@ import {
   CheckCircle, 
   Truck, 
   Palette,
-  Image
+  Image,
+  ArrowRight
 } from 'lucide-vue-next'
 
 const { isAuthenticated } = useSession()

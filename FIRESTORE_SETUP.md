@@ -27,13 +27,15 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn()
+      return isSignedIn() 
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
     match /users/{userId} {
       allow read, create: if isOwner(userId) || isAdmin();
       allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
 
       match /addresses/{addressId} {
         allow read, write: if isOwner(userId) || isAdmin();
@@ -42,7 +44,7 @@ service cloud.firestore {
 
     match /guests/{guestId} {
       allow create: if true;
-      allow read: if isAdmin();
+      allow read, delete: if isAdmin();
     }
 
     match /categories/{categoryId} {
@@ -69,15 +71,20 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
-      allow create: if true; // Allow guest checkout
+      allow create: if true; 
       allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
-      allow update: if isAdmin();
+      allow update, delete: if isAdmin();
 
       match /items/{itemId} {
-        allow create: if true; // Allow guest items
+        allow create: if true;
         allow read: if isAdmin() || (isSignedIn() && get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid);
-        allow update: if isAdmin();
+        allow update, delete: if isAdmin();
       }
+    }
+
+    match /settings/{settingsId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
   }
 }
