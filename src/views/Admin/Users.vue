@@ -26,8 +26,8 @@
 
       <!-- Users Table -->
       <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse border-spacing-0">
+        <div class="admin-card-table-wrap overflow-x-auto">
+          <table class="admin-card-table w-full text-left border-collapse border-spacing-0">
             <thead>
               <tr class="bg-slate-50/50 dark:bg-neutral-800/50 border-b border-slate-100 dark:border-neutral-800">
                 <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">User</th>
@@ -44,7 +44,7 @@
                 :key="user.id"
                 class="hover:bg-slate-50/50 dark:hover:bg-neutral-800/30 transition-colors cursor-pointer group"
               >
-                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
+                <td class="px-6 py-4 whitespace-nowrap" data-label="User" @click="openDetails(user)">
                   <div class="flex items-center gap-3">
                     <div class="relative">
                       <div class="h-9 w-9 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-400 dark:text-neutral-500 border border-slate-200 dark:border-neutral-700">
@@ -64,7 +64,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
+                <td class="px-6 py-4 whitespace-nowrap" data-label="Tier" @click="openDetails(user)">
                   <span 
                     class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
                     :class="user.isStudent ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
@@ -72,7 +72,7 @@
                     {{ user.isStudent ? 'Student' : 'Regular' }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
+                <td class="px-6 py-4 whitespace-nowrap" data-label="Role" @click="openDetails(user)">
                   <span 
                     class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
                     :class="getRoleClass(user.role)"
@@ -80,13 +80,13 @@
                     {{ user.role }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
+                <td class="px-6 py-4 whitespace-nowrap" data-label="Email" @click="openDetails(user)">
                   <p class="text-xs font-semibold text-slate-500 dark:text-neutral-400">{{ user.email }}</p>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" @click="openDetails(user)">
+                <td class="px-6 py-4 whitespace-nowrap" data-label="Registration Date" @click="openDetails(user)">
                   <p class="text-xs font-semibold text-slate-400 dark:text-neutral-500">{{ formatDate(user.createdAt) }}</p>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap" data-label="Actions">
                   <div class="flex items-center justify-center gap-1">
                     <button 
                       @click.stop="openDetails(user)"
@@ -340,4 +340,81 @@ onUnmounted(() => {
 .modal-enter-to { opacity: 1; transform: scale(1) translateY(0); }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (max-width: 767px) {
+  .admin-card-table-wrap {
+    overflow-x: visible;
+  }
+
+  .admin-card-table,
+  .admin-card-table thead,
+  .admin-card-table tbody,
+  .admin-card-table tr,
+  .admin-card-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-card-table thead {
+    display: none;
+  }
+
+  .admin-card-table tbody {
+    display: grid;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .admin-card-table tbody tr {
+    border: 1px solid rgb(226 232 240);
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 10px 24px rgb(15 23 42 / 0.06);
+    overflow: hidden;
+  }
+
+  .dark .admin-card-table tbody tr {
+    border-color: rgb(38 38 38);
+    background: rgb(23 23 23);
+    box-shadow: none;
+  }
+
+  .admin-card-table tbody tr > td:not([colspan]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    text-align: right;
+    white-space: normal;
+    border-bottom: 1px solid rgb(241 245 249);
+  }
+
+  .dark .admin-card-table tbody tr > td:not([colspan]) {
+    border-bottom-color: rgb(38 38 38 / 0.75);
+  }
+
+  .admin-card-table tbody tr > td:not([colspan])::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(148 163 184);
+  }
+
+  .admin-card-table tbody tr > td:first-child {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .admin-card-table tbody tr > td:first-child::before {
+    display: none;
+  }
+
+  .admin-card-table tbody tr > td:last-child {
+    border-bottom: 0;
+  }
+}
 </style>

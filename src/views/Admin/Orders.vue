@@ -126,8 +126,8 @@
 
       <!-- Orders List (Compact Table View) -->
       <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse border-spacing-0">
+        <div class="admin-card-table-wrap overflow-x-auto">
+          <table class="admin-card-table w-full text-left border-collapse border-spacing-0">
             <thead>
               <tr class="bg-slate-50/50 dark:bg-neutral-800/50 border-b border-slate-100 dark:border-neutral-800">
                 <th class="pl-6 py-4 w-10">
@@ -166,7 +166,7 @@
                   :class="selectedOrders.includes(order.id) ? 'bg-slate-50/80 dark:bg-neutral-800/50' : ''"
                   @click="openDetails(order)"
                 >
-                  <td class="pl-6 py-4" @click.stop>
+                  <td class="pl-6 py-4" data-label="Select" @click.stop>
                     <div class="flex items-center justify-center">
                       <input 
                         type="checkbox" 
@@ -176,7 +176,7 @@
                       >
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap" data-label="Order ID">
                     <div class="flex items-center gap-2">
                       <span 
                         v-if="!order.seenByAdmin" 
@@ -188,7 +188,7 @@
                       </span>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap" data-label="Status">
                     <span 
                       class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border"
                       :class="getStatusClass(order.status)"
@@ -196,7 +196,7 @@
                       {{ order.status }}
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap" data-label="Customer">
                     <div class="max-w-50">
                       <div class="flex items-center gap-2 mb-0.5">
                         <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}</p>
@@ -207,7 +207,7 @@
                     </div>
                   </td>
 
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap" data-label="Product">
                     <div class="flex items-center gap-2 max-w-50">
                       <span class="text-xs font-bold text-slate-700 dark:text-neutral-300 truncate">
                         {{ order.firstItemName || 'No Items' }}
@@ -217,13 +217,13 @@
                       </span>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap" data-label="Date">
                     <p class="text-xs font-semibold text-slate-400 dark:text-neutral-500">{{ formatDate(order.createdAt, true) }}</p>
                   </td>
-                  <td class="px-6 py-4 text-right whitespace-nowrap">
+                  <td class="px-6 py-4 text-right whitespace-nowrap" data-label="Total">
                     <p class="text-sm font-black text-slate-900 dark:text-white">{{ formatCurrency(order.totalAmount) }}</p>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap" data-label="Action">
                     <div class="flex items-center justify-center gap-2">
                       <button 
                         @click.stop="openDetails(order)"
@@ -665,5 +665,79 @@ onUnmounted(() => {
 .fade-enter-to { opacity: 1; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (max-width: 767px) {
+  .admin-card-table-wrap {
+    overflow-x: visible;
+  }
+
+  .admin-card-table,
+  .admin-card-table thead,
+  .admin-card-table tbody,
+  .admin-card-table tr,
+  .admin-card-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-card-table thead {
+    display: none;
+  }
+
+  .admin-card-table tbody {
+    display: grid;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .admin-card-table tbody tr {
+    border: 1px solid rgb(226 232 240);
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 10px 24px rgb(15 23 42 / 0.06);
+    overflow: hidden;
+  }
+
+  .dark .admin-card-table tbody tr {
+    border-color: rgb(38 38 38);
+    background: rgb(23 23 23);
+    box-shadow: none;
+  }
+
+  .admin-card-table tbody tr > td:not([colspan]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    text-align: right;
+    white-space: normal;
+    border-bottom: 1px solid rgb(241 245 249);
+  }
+
+  .dark .admin-card-table tbody tr > td:not([colspan]) {
+    border-bottom-color: rgb(38 38 38 / 0.75);
+  }
+
+  .admin-card-table tbody tr > td:not([colspan])::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(148 163 184);
+  }
+
+  .admin-card-table tbody tr > td:nth-child(2),
+  .admin-card-table tbody tr > td:nth-child(4),
+  .admin-card-table tbody tr > td:nth-child(5) {
+    align-items: flex-start;
+  }
+
+  .admin-card-table tbody tr > td:last-child {
+    border-bottom: 0;
+  }
+}
 </style>
 

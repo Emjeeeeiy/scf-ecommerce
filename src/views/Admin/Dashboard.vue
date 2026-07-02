@@ -21,22 +21,25 @@
     </section>
 
     <!-- Metrics Cards -->
-    <section class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <section class="mt-5 grid grid-cols-2 gap-3 xl:grid-cols-4">
       <article
         v-for="metric in metrics"
         :key="metric.label"
-        class="rounded-xl bg-white dark:bg-neutral-900 p-4 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800 flex flex-col justify-between"
+        class="group relative min-h-33 overflow-hidden rounded-2xl bg-white p-3.5 shadow-sm ring-1 ring-slate-200 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/60 dark:bg-neutral-900 dark:ring-neutral-800 dark:hover:shadow-none sm:min-h-36 sm:p-5"
       >
-        <div>
-          <div class="flex items-center justify-between">
-            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-neutral-500">{{ metric.label }}</p>
-            <div class="p-1.5 rounded-md bg-slate-50 dark:bg-neutral-800 text-slate-400 dark:text-neutral-500">
-              <component :is="metric.icon" :size="14" />
+        <div class="absolute -right-5 -top-5 h-18 w-18 rounded-full opacity-70 blur-2xl sm:h-22 sm:w-22" :class="metric.glow"></div>
+        <div class="relative flex h-full flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2">
+              <p class="max-w-24 text-[8px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-neutral-500 sm:max-w-none sm:text-[9px] sm:tracking-[0.2em]">{{ metric.label }}</p>
+              <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl ring-1 sm:h-9 sm:w-9" :class="metric.iconClass">
+                <component :is="metric.icon" :size="16" />
+              </div>
             </div>
+            <h3 class="mt-3 wrap-break-word text-[1.35rem] font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-2xl">{{ metric.value }}</h3>
           </div>
-          <h3 class="mt-1.5 text-xl font-black text-slate-900 dark:text-white tracking-tight">{{ metric.value }}</h3>
+          <p class="mt-3 text-[10px] font-bold leading-snug text-slate-500 dark:text-neutral-400 sm:text-[11px]">{{ metric.caption }}</p>
         </div>
-        <p class="mt-2 text-[10px] font-medium text-slate-500 dark:text-neutral-400">{{ metric.caption }}</p>
       </article>
     </section>
 
@@ -474,24 +477,32 @@ const metrics = computed(() => [
     value: formatCurrency(orders.value.reduce((sum, o) => sum + o.totalAmount, 0)),
     icon: TrendingUp,
     caption: 'Total lifetime sales',
+    iconClass: 'bg-emerald-50 text-emerald-600 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20',
+    glow: 'bg-emerald-200 dark:bg-emerald-500/20',
   },
   {
     label: 'Products',
     value: products.value.length,
     icon: Package,
     caption: 'Total catalog entries',
+    iconClass: 'bg-blue-50 text-blue-600 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/20',
+    glow: 'bg-blue-200 dark:bg-blue-500/20',
   },
   {
     label: 'Orders',
     value: orders.value.length,
     icon: ShoppingCart,
     caption: 'Lifetime order count',
+    iconClass: 'bg-amber-50 text-amber-600 ring-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20',
+    glow: 'bg-amber-200 dark:bg-amber-500/20',
   },
   {
     label: 'Low Stock',
     value: lowStockItems.value.length,
     icon: AlertTriangle,
     caption: 'Items requiring attention',
+    iconClass: 'bg-rose-50 text-rose-600 ring-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20',
+    glow: 'bg-rose-200 dark:bg-rose-500/20',
   },
 ])
 
