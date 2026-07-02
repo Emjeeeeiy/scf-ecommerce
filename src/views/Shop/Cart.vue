@@ -1,15 +1,15 @@
 <template>
   <AppShell subtitle="Shopping Cart">
     <section class="grid gap-8 lg:grid-cols-[1.3fr_0.8fr]">
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
+      <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-6">
           <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 text-slate-700 border border-slate-100">
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100">
               <ShoppingCart :size="16" stroke-width="1.5" />
             </div>
             <div>
-              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Your Selection</p>
-              <h1 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Shopping Cart</h1>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">Your Selection</p>
+              <h1 class="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl">Shopping Cart</h1>
             </div>
           </div>
           <button
@@ -24,37 +24,37 @@
         </div>
 
         <div v-if="!cart.items.length" class="flex flex-col items-center justify-center py-16 text-center">
-          <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-slate-50 text-slate-300">
+          <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-300">
             <ShoppingBag :size="24" stroke-width="1.5" />
           </div>
-          <h2 class="text-lg font-bold text-slate-900 tracking-tight">Your cart is empty</h2>
-          <p class="mt-1 max-w-xs text-xs text-slate-500 mx-auto leading-relaxed">
+          <h2 class="text-lg font-bold text-neutral-900 tracking-tight">Your cart is empty</h2>
+          <p class="mt-1 max-w-xs text-xs text-neutral-500 mx-auto leading-relaxed">
             Looks like you haven't added anything to your cart yet. Let's find something beautiful for you.
           </p>
           <router-link
             to="/shop"
-            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-slate-950 px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-95"
+            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-95"
           >
             <ArrowLeft :size="14" />
             <span>Continue Shopping</span>
           </router-link>
         </div>
 
-        <div v-else class="mt-6 divide-y divide-slate-100">
+        <div v-else class="mt-6 divide-y divide-neutral-100">
           <article
             v-for="item in cart.items"
             :key="item.id"
             class="group py-6 first:pt-0 last:pb-0"
           >
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-slate-50">
+              <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-50">
                 <img
                   v-if="item.base64Image"
                   :src="item.base64Image"
                   :alt="item.productName"
                   class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                 />
-                <div v-else class="flex h-full items-center justify-center text-[9px] text-slate-400 font-bold uppercase tracking-wider">
+                <div v-else class="flex h-full items-center justify-center text-[9px] text-neutral-400 font-bold uppercase tracking-wider">
                   No Image
                 </div>
               </div>
@@ -62,42 +62,42 @@
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-start justify-between gap-2">
                   <div class="space-y-1">
-                    <h2 class="truncate text-sm font-semibold text-slate-950 transition-colors group-hover:text-slate-700">{{ item.productName }}</h2>
+                    <h2 class="truncate text-sm font-semibold text-neutral-950 transition-colors group-hover:text-neutral-700">{{ item.productName }}</h2>
                     <div class="flex flex-wrap items-center gap-1.5">
                       <span v-if="item.isStudentPrice" class="inline-flex items-center gap-1 rounded bg-amber-50 border border-amber-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-amber-700">
                         Student Price
                       </span>
-                      <span v-else class="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-slate-500">
+                      <span v-else class="inline-flex items-center gap-1 rounded bg-neutral-50 border border-neutral-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-neutral-500">
                         Regular Price
                       </span>
-                      <span class="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-100 px-1.5 py-0.5 text-[9px] font-medium text-slate-600">
+                      <span class="inline-flex items-center gap-1 rounded bg-neutral-50 border border-neutral-100 px-1.5 py-0.5 text-[9px] font-medium text-neutral-600">
                         <Palette :size="8" />
                         {{ item.color || 'Standard' }}
                       </span>
-                      <span class="inline-flex items-center gap-1 rounded bg-slate-50 border border-slate-100 px-1.5 py-0.5 text-[9px] font-medium text-slate-600">
+                      <span class="inline-flex items-center gap-1 rounded bg-neutral-50 border border-neutral-100 px-1.5 py-0.5 text-[9px] font-medium text-neutral-600">
                         <Maximize :size="8" />
                         {{ item.size || 'Free size' }}
                       </span>
                     </div>
                   </div>
                   <div class="text-left sm:text-right">
-                    <p class="text-sm font-bold text-slate-950">{{ formatCurrency(item.price) }}</p>
-                    <p class="text-[9px] font-semibold uppercase tracking-wider text-slate-400">Each</p>
+                    <p class="text-sm font-bold text-neutral-950">{{ formatCurrency(item.price) }}</p>
+                    <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400">Each</p>
                   </div>
                 </div>
 
                 <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
-                  <div class="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-1">
+                  <div class="flex items-center gap-2.5 rounded-lg border border-neutral-200 bg-white p-1">
                     <button 
                       @click="updateQuantity(item, { target: { value: Math.max(1, item.quantity - 1) } })"
-                      class="flex h-6 w-6 items-center justify-center rounded text-slate-400 transition hover:bg-slate-50 hover:text-slate-900 active:scale-90"
+                      class="flex h-6 w-6 items-center justify-center rounded text-neutral-400 transition hover:bg-neutral-50 hover:text-neutral-900 active:scale-90"
                     >
                       <Minus :size="12" />
                     </button>
-                    <span class="w-4 text-center text-xs font-semibold text-slate-900">{{ item.quantity }}</span>
+                    <span class="w-4 text-center text-xs font-semibold text-neutral-900">{{ item.quantity }}</span>
                     <button 
                       @click="updateQuantity(item, { target: { value: item.quantity + 1 } })"
-                      class="flex h-6 w-6 items-center justify-center rounded text-slate-400 transition hover:bg-slate-50 hover:text-slate-900 active:scale-90"
+                      class="flex h-6 w-6 items-center justify-center rounded text-neutral-400 transition hover:bg-neutral-50 hover:text-neutral-900 active:scale-90"
                     >
                       <Plus :size="12" />
                     </button>
@@ -119,30 +119,30 @@
       </div>
 
       <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div class="flex items-center gap-2.5 mb-6 border-b border-slate-100 pb-4">
-            <ReceiptText :size="14" class="text-slate-400" />
-            <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Order Summary</h2>
+        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
+          <div class="flex items-center gap-2.5 mb-6 border-b border-neutral-100 pb-4">
+            <ReceiptText :size="14" class="text-neutral-400" />
+            <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Order Summary</h2>
           </div>
 
           <div class="space-y-3.5">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-slate-500">Subtotal</span>
-              <span class="font-bold text-slate-900">{{ formatCurrency(cart.totalAmount) }}</span>
+              <span class="font-medium text-neutral-500">Subtotal</span>
+              <span class="font-bold text-neutral-900">{{ formatCurrency(cart.totalAmount) }}</span>
             </div>
             <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-slate-500">Total Items</span>
-              <span class="font-bold text-slate-900">{{ cart.totalItems || 0 }}</span>
+              <span class="font-medium text-neutral-500">Total Items</span>
+              <span class="font-bold text-neutral-900">{{ cart.totalItems || 0 }}</span>
             </div>
             <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-slate-500">Shipping</span>
+              <span class="font-medium text-neutral-500">Shipping</span>
               <span class="rounded bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-emerald-700">Calculated Next</span>
             </div>
 
-            <div class="mt-5 border-t border-slate-100 pt-5 flex items-end justify-between">
+            <div class="mt-5 border-t border-neutral-100 pt-5 flex items-end justify-between">
               <div>
-                <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Grand Total</p>
-                <p class="text-2xl font-extrabold tracking-tight text-slate-950">
+                <p class="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">Grand Total</p>
+                <p class="text-2xl font-extrabold tracking-tight text-neutral-950">
                   {{ formatCurrency(cart.totalAmount) }}
                 </p>
               </div>
@@ -151,7 +151,7 @@
 
           <router-link
             to="/checkout"
-            class="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-[0.99]"
+            class="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-[0.99]"
             :class="cart.items.length ? '' : 'pointer-events-none opacity-40'"
           >
             <span>Proceed to Checkout</span>
@@ -159,13 +159,13 @@
           </router-link>
         </div>
         
-        <div class="rounded-2xl border border-slate-200 bg-slate-50/50 p-5">
+        <div class="rounded-2xl border border-neutral-200 bg-neutral-50/50 p-5">
           <div class="flex items-start gap-2.5">
             <div class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-amber-50 text-amber-600 border border-amber-100">
               <Info :size="12" />
             </div>
-            <p class="text-[11px] leading-relaxed text-slate-500 font-medium">
-              By proceeding, you agree to our terms. <span class="text-slate-800 font-semibold">100% of proceeds</span> support SCF missions.
+            <p class="text-[11px] leading-relaxed text-neutral-500 font-medium">
+              By proceeding, you agree to our terms. <span class="text-neutral-800 font-semibold">100% of proceeds</span> support SCF missions.
             </p>
           </div>
         </div>

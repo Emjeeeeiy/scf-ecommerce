@@ -12,7 +12,7 @@
       <div 
         v-for="toast in toasts" 
         :key="toast.id"
-        class="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white p-4 shadow-2xl shadow-slate-200/50 ring-1 ring-slate-100"
+        class="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white p-4 shadow-2xl shadow-neutral-200/50 ring-1 ring-neutral-100"
       >
         <div 
           class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl"
@@ -30,12 +30,12 @@
         </div>
         
         <div class="flex-1 pt-0.5">
-          <p class="text-xs font-bold text-slate-900 leading-relaxed">{{ toast.message }}</p>
+          <p class="text-xs font-bold text-neutral-900 leading-relaxed">{{ toast.message }}</p>
         </div>
 
         <button 
           @click="removeToast(toast.id)"
-          class="shrink-0 text-slate-300 hover:text-slate-500 transition-colors"
+          class="shrink-0 text-neutral-300 hover:text-neutral-500 transition-colors"
         >
           <X :size="14" />
         </button>

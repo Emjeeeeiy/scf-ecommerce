@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-amber-100 selection:text-amber-900">
+  <div class="min-h-screen bg-neutral-50 text-neutral-900 font-sans selection:bg-amber-100 selection:text-amber-900">
     <!-- Desktop Header -->
-    <header class="sticky top-0 z-40 w-full border-b border-slate-300 bg-white">
+    <header class="sticky top-0 z-40 w-full border-b border-neutral-300 bg-white">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
         <div class="group flex items-center gap-1">
           <div class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg">
@@ -12,7 +12,7 @@
             />
           </div>
           <div class="flex flex-col leading-none">
-            <span class="text-base font-black tracking-tighter text-slate-900">SCF</span>
+            <span class="text-base font-black tracking-tighter text-neutral-900">SCF</span>
           </div>
         </div>
 
@@ -23,7 +23,7 @@
             :key="item.to"
             :to="item.to"
             class="flex items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all"
-            :class="route.path === item.to ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'"
+            :class="route.path === item.to ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'"
           >
             <Home v-if="item.to === '/'" :size="12" />
             <Store v-else-if="item.to === '/shop'" :size="12" />
@@ -37,15 +37,15 @@
           <router-link
             to="/cart"
             class="hidden md:flex relative h-9 w-9 items-center justify-center rounded-lg transition-all"
-            :class="route.path === '/cart' ? 'bg-amber-400 text-slate-900 shadow-xl shadow-amber-400/20' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'"
+            :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900 shadow-xl shadow-amber-400/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'"
           >
             <ShoppingCart :size="18" />
-            <span v-if="cartCount > 0" class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-slate-900 text-[8px] font-black text-white shadow-sm">
+            <span v-if="cartCount > 0" class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-neutral-900 text-[8px] font-black text-white shadow-sm">
               {{ cartCount }}
             </span>
           </router-link>
 
-          <div class="h-5 w-px bg-slate-300 mx-1.5"></div>
+          <div class="h-5 w-px bg-neutral-300 mx-1.5"></div>
 
           <!-- User Section -->
           <div class="flex items-center gap-1.5">
@@ -53,7 +53,7 @@
               <router-link
                 to="/account/orders"
                 class="hidden md:flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all"
-                :class="route.path === '/account/orders' ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'"
+                :class="route.path === '/account/orders' ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'"
               >
                 <Package :size="12" />
                 <span class="hidden lg:inline">Order History</span>
@@ -62,17 +62,17 @@
               <router-link
                 to="/account/profile"
                 class="hidden md:flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all"
-                :class="route.path === '/account/profile' ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'"
+                :class="route.path === '/account/profile' ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'"
               >
                 <User :size="12" />
                 <span class="hidden lg:inline">Profile</span>
               </router-link>
 
-              <div class="h-5 w-px bg-slate-300 mx-1.5 hidden md:block"></div>
+              <div class="h-5 w-px bg-neutral-300 mx-1.5 hidden md:block"></div>
 
               <button
                 type="button"
-                class="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 transition-all hover:bg-rose-50 hover:text-rose-600 active:scale-95"
+                class="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest text-neutral-400 transition-all hover:bg-rose-50 hover:text-rose-600 active:scale-95"
                 @click="handleLogout"
                 title="Logout"
               >
@@ -84,7 +84,7 @@
             <template v-else>
               <router-link
                 to="/register"
-                class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-[9px] font-black uppercase tracking-widest text-slate-600 transition-all hover:bg-slate-50 active:scale-95 sm:px-4"
+                class="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 transition-all hover:bg-neutral-50 active:scale-95 sm:px-4"
               >
                 <UserPlus :size="12" />
                 <span class="hidden xs:inline sm:inline">Register</span>
@@ -92,7 +92,7 @@
               
               <router-link
                 to="/login"
-                class="flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-white transition-all hover:bg-slate-800 active:scale-95 shadow-xl shadow-slate-900/20"
+                class="flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 active:scale-95 shadow-xl shadow-neutral-900/20"
               >
                 <LogIn :size="12" />
                 <span>Login</span>
@@ -109,27 +109,34 @@
     </main>
 
     <!-- Mobile Navigation -->
-    <nav class="fixed inset-x-0 bottom-4 z-40 mx-auto w-[85%] max-w-sm md:hidden">
-      <div class="flex items-center justify-around rounded-full border border-white/10 bg-slate-900/90 p-1.5 shadow-2xl backdrop-blur-xl">
+    <nav class="fixed bottom-0 inset-x-0 z-40 border-t border-neutral-200 bg-white md:hidden">
+      <div class="flex items-center justify-around py-2 px-1">
         <router-link
           v-for="item in mobileNavigation"
           :key="item.to"
           :to="item.to"
-          class="relative flex h-12 w-12 items-center justify-center rounded-full transition-all active:scale-90"
-          :class="route.path === item.to ? 'bg-slate-500 text-slate-900' : 'text-slate-400 hover:text-white'"
+          class="relative flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+          :class="route.path === item.to ? 'text-neutral-900' : 'text-neutral-400 hover:text-neutral-900'"
         >
-          <template v-if="item.to === '/'"><Home :size="18" /></template>
-          <template v-else-if="item.to === '/shop'"><Store :size="18" /></template>
-          <template v-else-if="item.to === '/cart'">
-            <ShoppingCart :size="18" />
-            <span v-if="cartCount > 0" class="absolute right-2 top-2 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-slate-900 bg-amber-400 text-[7px] font-black text-slate-900 shadow-sm">
-              {{ cartCount }}
-            </span>
-          </template>
-          <template v-else-if="item.to === '/login' || item.to === '/account/profile'"><User :size="18" /></template>
-          <template v-else-if="item.to === '/register'"><UserPlus :size="18" /></template>
-          <template v-else-if="item.to === '/account/orders'"><Package :size="18" /></template>
-          <template v-else-if="item.to.startsWith('/admin')"><LayoutDashboard :size="18" /></template>
+          <!-- Icon -->
+          <div class="flex items-center justify-center">
+            <template v-if="item.to === '/'"><Home :size="20" /></template>
+            <template v-else-if="item.to === '/shop'"><Store :size="20" /></template>
+            <template v-else-if="item.to === '/cart'">
+              <div class="relative">
+                <ShoppingCart :size="20" />
+                <span v-if="cartCount > 0" class="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white bg-amber-400 text-[8px] font-black text-neutral-900 shadow-sm">
+                  {{ cartCount }}
+                </span>
+              </div>
+            </template>
+            <template v-else-if="item.to === '/login' || item.to === '/account/profile'"><User :size="20" /></template>
+            <template v-else-if="item.to === '/register'"><UserPlus :size="20" /></template>
+            <template v-else-if="item.to === '/account/orders'"><Package :size="20" /></template>
+            <template v-else-if="item.to.startsWith('/admin')"><LayoutDashboard :size="20" /></template>
+          </div>
+          <!-- Label -->
+          <span class="text-[9px] font-bold mt-1 tracking-tight leading-none">{{ item.label }}</span>
         </router-link>
       </div>
     </nav>

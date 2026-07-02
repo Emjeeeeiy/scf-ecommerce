@@ -2,20 +2,20 @@
   <AppShell subtitle="Account Settings">
     <section class="grid gap-8 lg:grid-cols-2">
       
-      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col h-fit">
-        <div class="flex items-center gap-3 border-b border-slate-100 p-6 sm:px-8">
-          <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 text-slate-700 border border-slate-100">
+      <div class="rounded-2xl border border-neutral-200 bg-white shadow-sm flex flex-col h-fit">
+        <div class="flex items-center gap-3 border-b border-neutral-100 p-6 sm:px-8">
+          <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100">
             <UserCircle :size="16" stroke-width="1.5" />
           </div>
           <div>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Personal Info</p>
-            <h1 class="text-xl font-bold tracking-tight text-slate-900">Account Details</h1>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">Personal Info</p>
+            <h1 class="text-xl font-bold tracking-tight text-neutral-900">Account Details</h1>
           </div>
         </div>
 
         <form class="p-6 sm:p-8 grid gap-5" @submit.prevent="handleSaveProfile">
           <div class="space-y-1.5">
-            <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
               <AtSign :size="10" stroke-width="1.5" />
               <span>Username</span>
             </label>
@@ -23,13 +23,13 @@
               v-model="profileForm.username" 
               type="text"
               placeholder="Your username"
-              class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100" 
+              class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100" 
             />
           </div>
           
           <div class="grid gap-5 sm:grid-cols-2">
             <div class="space-y-1.5">
-              <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                 <User :size="10" stroke-width="1.5" />
                 <span>First Name</span>
               </label>
@@ -37,11 +37,11 @@
                 v-model="profileForm.firstName" 
                 type="text"
                 placeholder="First name"
-                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100" 
+                class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100" 
               />
             </div>
             <div class="space-y-1.5">
-              <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                 <User :size="10" stroke-width="1.5" />
                 <span>Last Name</span>
               </label>
@@ -49,13 +49,13 @@
                 v-model="profileForm.lastName" 
                 type="text"
                 placeholder="Last name"
-                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100" 
+                class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100" 
               />
             </div>
           </div>
 
           <div class="space-y-1.5">
-            <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
               <Phone :size="10" stroke-width="1.5" />
               <span>Contact Number</span>
             </label>
@@ -63,25 +63,25 @@
               v-model="profileForm.contact" 
               type="tel"
               placeholder="09xx xxx xxxx"
-              class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-slate-300 focus:ring-4 focus:ring-slate-100" 
+              class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100" 
             />
           </div>
 
-          <div class="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/30 p-4">
+          <div class="flex items-center gap-3 rounded-xl border border-neutral-100 bg-neutral-50/30 p-4">
             <input
               id="isStudent"
               v-model="profileForm.isStudent"
               type="checkbox"
-              class="h-5 w-5 rounded border-slate-200 text-slate-900 focus:ring-slate-100"
+              class="h-5 w-5 rounded border-neutral-200 text-neutral-900 focus:ring-neutral-100"
             />
-            <label for="isStudent" class="text-xs font-bold text-slate-600 cursor-pointer select-none">
+            <label for="isStudent" class="text-xs font-bold text-neutral-600 cursor-pointer select-none">
               I am a student (Eligible for student pricing)
             </label>
           </div>
 
           <button
             type="submit"
-            class="group mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-slate-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 active:scale-95"
+            class="group mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-95"
           >
             <Save :size="14" />
             <span>Save Changes</span>
@@ -94,15 +94,15 @@
         </div>
       </div>
 
-      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col h-fit">
-        <div class="flex items-center justify-between border-b border-slate-100 p-6 sm:px-8">
+      <div class="rounded-2xl border border-neutral-200 bg-white shadow-sm flex flex-col h-fit">
+        <div class="flex items-center justify-between border-b border-neutral-100 p-6 sm:px-8">
           <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-50 text-slate-700 border border-slate-100">
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100">
               <MapPinned :size="16" stroke-width="1.5" />
             </div>
             <div>
-              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Shipping</p>
-              <h2 class="text-xl font-bold tracking-tight text-slate-900">Saved Addresses</h2>
+              <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">Shipping</p>
+              <h2 class="text-xl font-bold tracking-tight text-neutral-900">Saved Addresses</h2>
             </div>
           </div>
         </div>
@@ -111,16 +111,16 @@
           <article
             v-for="address in addresses"
             :key="address.id"
-            class="group relative flex items-start justify-between rounded-xl border border-slate-100 bg-slate-50/30 p-4 transition duration-200 hover:border-slate-200 hover:bg-white hover:shadow-sm"
+            class="group relative flex items-start justify-between rounded-xl border border-neutral-100 bg-neutral-50/30 p-4 transition duration-200 hover:border-neutral-200 hover:bg-white hover:shadow-sm"
           >
             <div class="flex items-start gap-3">
-              <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-slate-400 border border-slate-100 transition group-hover:bg-slate-950 group-hover:text-white group-hover:border-slate-950">
+              <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-neutral-400 border border-neutral-100 transition group-hover:bg-neutral-950 group-hover:text-white group-hover:border-neutral-950">
                 <Home :size="14" stroke-width="1.5" />
               </div>
               <div class="min-w-0">
-                <p class="text-xs font-bold tracking-tight text-slate-900 truncate">{{ address.street }}</p>
-                <p class="mt-0.5 text-[11px] font-medium text-slate-500">{{ address.city }}, {{ address.postalCode }}</p>
-                <p class="mt-1 text-[9px] font-bold text-slate-400 uppercase tracking-wider">{{ address.country }}</p>
+                <p class="text-xs font-bold tracking-tight text-neutral-900 truncate">{{ address.street }}</p>
+                <p class="mt-0.5 text-[11px] font-medium text-neutral-500">{{ address.city }}, {{ address.postalCode }}</p>
+                <p class="mt-1 text-[9px] font-bold text-neutral-400 uppercase tracking-wider">{{ address.country }}</p>
               </div>
             </div>
             <button
@@ -133,10 +133,10 @@
           </article>
 
           <div v-if="!addresses.length" class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="mb-3.5 flex h-14 w-14 items-center justify-center rounded-xl bg-slate-50 text-slate-300">
+            <div class="mb-3.5 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-300">
               <MapPinOff :size="24" stroke-width="1.5" />
             </div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">No Addresses Saved</p>
+            <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">No Addresses Saved</p>
           </div>
         </div>
       </div>
