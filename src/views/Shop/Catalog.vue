@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="Premium collection for your lifestyle">
     <!-- Header Section -->
-    <section class="relative overflow-hidden rounded-2xl bg-neutral-950 p-6 border border-neutral-900 sm:p-10">
+    <section class="relative overflow-hidden rounded-2xl bg-neutral-950 p-6 border border-neutral-900 sm:p-10 dark:ring-1 dark:ring-white/10">
       <div class="relative z-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
         
         <div class="space-y-2">
@@ -37,21 +37,21 @@
     <!-- Main Content Grid -->
     <section class="mt-6 sm:mt-10 grid gap-6 lg:grid-cols-[240px_1fr]">
       <!-- Category Sidebar/Top Bar -->
-      <aside class="sticky top-16 z-30 -mx-4 px-4 bg-neutral-50/80 backdrop-blur-md py-1.5 lg:sticky lg:top-24 lg:h-fit lg:p-0 lg:bg-transparent lg:backdrop-blur-none lg:mx-0">
-        <div class="rounded-xl border border-neutral-200 bg-white p-1.5 lg:p-4 shadow-sm">
-          
+      <aside class="sticky top-16 z-30 -mx-4 px-4 bg-neutral-50/80 dark:bg-neutral-950/80 backdrop-blur-md py-1.5 lg:sticky lg:top-24 lg:h-fit lg:p-0 lg:bg-transparent lg:backdrop-blur-none lg:mx-0">
+        <div class="rounded-xl border border-neutral-200 bg-white p-1.5 lg:p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+
           <div class="hidden lg:flex items-center gap-2 mb-4">
-            <Filter :size="12" class="text-neutral-400" />
-            <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Filter By Category</p>
+            <Filter :size="12" class="text-neutral-400 dark:text-neutral-500" />
+            <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Filter By Category</p>
           </div>
           
           <div class="flex gap-1.5 overflow-x-auto pb-0.5 lg:flex-col lg:overflow-visible lg:pb-0 scrollbar-hide">
             <button
               type="button"
               class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
-              :class="selectedCategory === '' 
-                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm' 
-                : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900'"
+              :class="selectedCategory === ''
+                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
+                : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white'"
               @click="selectedCategory = ''"
             >
               <LayoutGrid :size="12" stroke-width="1.5" />
@@ -63,9 +63,9 @@
               :key="category.id"
               type="button"
               class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
-              :class="selectedCategory === category.id 
-                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm' 
-                : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900'"
+              :class="selectedCategory === category.id
+                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
+                : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white'"
               @click="selectedCategory = category.id"
             >
               <Tag :size="12" stroke-width="1.5" />
@@ -77,12 +77,12 @@
 
       <!-- Product Grid -->
       <div v-if="loading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-3xl bg-white p-1.5 ring-1 ring-neutral-100">
-          <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-3xl bg-white p-1.5 ring-1 ring-neutral-100 dark:bg-neutral-900 dark:ring-neutral-800">
+          <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100 dark:bg-neutral-800"></div>
           <div class="space-y-3 p-4 sm:p-6">
-            <div class="h-3 w-20 animate-pulse rounded bg-neutral-100"></div>
-            <div class="h-6 w-40 animate-pulse rounded bg-neutral-100"></div>
-            <div class="h-10 w-full animate-pulse rounded-xl bg-neutral-100"></div>
+            <div class="h-3 w-20 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
+            <div class="h-6 w-40 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
+            <div class="h-10 w-full animate-pulse rounded-xl bg-neutral-100 dark:bg-neutral-800"></div>
           </div>
         </div>
       </div>
@@ -91,12 +91,12 @@
         <article
           v-for="product in pagedProducts"
           :key="product.id"
-          class="group relative flex flex-col bg-white rounded-lg"
+          class="group relative flex flex-col bg-white rounded-lg dark:bg-neutral-900"
         >
           <!-- Image Section: Clickable Link -->
-          <router-link 
+          <router-link
             :to="`/shop/product/${product.id}`"
-            class="relative aspect-4/5 w-full overflow-hidden rounded-xl bg-gray-100 border border-neutral-300 block"
+            class="relative aspect-4/5 w-full overflow-hidden rounded-xl bg-gray-100 border border-neutral-300 block dark:bg-neutral-800 dark:border-neutral-800"
           >
             <img
               v-if="product.base64Image"
@@ -107,13 +107,13 @@
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <!-- Fallback Placeholder -->
-            <div v-else class="flex h-full items-center justify-center text-gray-300">
+            <div v-else class="flex h-full items-center justify-center text-gray-300 dark:text-neutral-600">
               <Image :size="40" stroke-width="1.5" />
             </div>
 
             <!-- Category Badge -->
             <div class="absolute left-2 top-2 sm:left-3 sm:top-3">
-              <span class="rounded-full bg-white/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-medium backdrop-blur-md text-gray-900 shadow-sm">
+              <span class="rounded-full bg-white/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-medium backdrop-blur-md text-gray-900 shadow-sm dark:bg-neutral-900/80 dark:text-white">
                 {{ categoryName(product.categoryId) || 'New' }}
               </span>
             </div>
@@ -132,34 +132,34 @@
               <div class="flex items-start justify-between gap-2">
                 <!-- Product Name Link -->
                 <router-link :to="`/shop/product/${product.id}`" class="block flex-1">
-                  <h2 class="text-xs sm:text-sm font-semibold text-gray-900 group-hover:text-neutral-600 transition-colors line-clamp-1">
+                  <h2 class="text-xs sm:text-sm font-semibold text-gray-900 group-hover:text-neutral-600 transition-colors line-clamp-1 dark:text-white dark:group-hover:text-neutral-300">
                     {{ product.name }}
                   </h2>
                 </router-link>
-                
+
               <div class="flex flex-col gap-1 items-end">
                 <div class="flex flex-col items-end">
-                  <p class="text-[9px] font-black text-amber-600 uppercase tracking-tighter">Student</p>
-                  <p class="text-xs sm:text-sm font-black text-neutral-950">{{ formatCurrency(product.studentPrice) }}</p>
+                  <p class="text-[9px] font-black text-amber-600 uppercase tracking-tighter dark:text-amber-400">Student</p>
+                  <p class="text-xs sm:text-sm font-black text-neutral-950 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
                 </div>
                 <div class="flex flex-col items-end">
-                  <p class="text-[9px] font-black text-neutral-400 uppercase tracking-tighter">Regular</p>
-                  <p class="text-xs sm:text-sm font-black text-neutral-950">{{ formatCurrency(product.nonStudentPrice) }}</p>
+                  <p class="text-[9px] font-black text-neutral-400 uppercase tracking-tighter dark:text-neutral-500">Regular</p>
+                  <p class="text-xs sm:text-sm font-black text-neutral-950 dark:text-white">{{ formatCurrency(product.nonStudentPrice) }}</p>
                 </div>
               </div>
             </div>
-            
-            <p class="mt-1 line-clamp-1 text-[10px] sm:text-[11px] text-gray-500">
+
+            <p class="mt-1 line-clamp-1 text-[10px] sm:text-[11px] text-gray-500 dark:text-neutral-400">
               {{ product.description }}
             </p>
           </div>
 
           <!-- Highlight applied price if logged in -->
           <div v-if="isAuthenticated" class="px-3 pb-2">
-            <span v-if="isStudent" class="text-[8px] font-black text-amber-600 uppercase tracking-widest bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
+            <span v-if="isStudent" class="text-[8px] font-black text-amber-600 uppercase tracking-widest bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">
               Eligible for Student Price
             </span>
-            <span v-else class="text-[8px] font-black text-neutral-400 uppercase tracking-widest bg-neutral-50 px-2 py-0.5 rounded-full border border-neutral-100">
+            <span v-else class="text-[8px] font-black text-neutral-400 uppercase tracking-widest bg-neutral-50 px-2 py-0.5 rounded-full border border-neutral-100 dark:bg-neutral-800/50 dark:text-neutral-500 dark:border-neutral-800">
               Regular Price Applied
             </span>
           </div>
@@ -167,13 +167,13 @@
             <!-- Variant/Style Footer -->
             <div class="mt-2 flex items-center gap-2">
               <div class="flex -space-x-1">
-                <div 
-                  v-for="n in Math.min(product.variants?.length || 0, 3)" 
-                  :key="n" 
-                  class="h-2 w-2 rounded-full border border-white bg-neutral-300"
+                <div
+                  v-for="n in Math.min(product.variants?.length || 0, 3)"
+                  :key="n"
+                  class="h-2 w-2 rounded-full border border-white bg-neutral-300 dark:border-neutral-900 dark:bg-neutral-700"
                 ></div>
               </div>
-              <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium">
+              <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium dark:text-neutral-500">
                 {{ product.variants?.length || 0 }} {{ product.variants?.length === 1 ? 'Style' : 'Styles' }}
               </span>
             </div>
@@ -183,16 +183,16 @@
         <!-- Empty State -->
         <div
           v-if="!filteredProducts.length"
-          class="col-span-full rounded-3xl bg-white p-12 text-center shadow-xl shadow-neutral-200/50 ring-1 ring-neutral-100 sm:p-16"
+          class="col-span-full rounded-3xl bg-white p-12 text-center shadow-xl shadow-neutral-200/50 ring-1 ring-neutral-100 sm:p-16 dark:bg-neutral-900 dark:ring-neutral-800"
         >
-          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-50 text-neutral-200 shadow-inner mb-6">
+          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-50 text-neutral-200 shadow-inner mb-6 dark:bg-neutral-800 dark:text-neutral-600">
             <SearchX :size="32" />
           </div>
-          <h3 class="text-xl font-black text-neutral-900 tracking-tight">No products found</h3>
-          <p class="mt-2 text-xs text-neutral-400 font-medium max-w-xs mx-auto">We couldn't find any items matching your search or filters. Try another keyword!</p>
-          <button 
+          <h3 class="text-xl font-black text-neutral-900 tracking-tight dark:text-white">No products found</h3>
+          <p class="mt-2 text-xs text-neutral-400 font-medium max-w-xs mx-auto dark:text-neutral-500">We couldn't find any items matching your search or filters. Try another keyword!</p>
+          <button
             @click="query = ''; selectedCategory = ''"
-            class="mt-8 rounded-full bg-neutral-100 px-8 py-3 text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:bg-neutral-900 hover:text-white active:scale-95"
+            class="mt-8 rounded-full bg-neutral-100 px-8 py-3 text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:bg-neutral-900 hover:text-white active:scale-95 dark:bg-neutral-800 dark:text-white dark:hover:bg-amber-400 dark:hover:text-neutral-950"
           >
             Clear All Filters
           </button>

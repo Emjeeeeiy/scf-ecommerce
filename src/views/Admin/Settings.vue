@@ -29,20 +29,26 @@
                 <p class="text-sm font-bold text-slate-950 dark:text-white">Appearance Mode</p>
                 <p class="text-xs font-medium text-slate-500 dark:text-neutral-400">Toggle between light and dark themes for the admin panel.</p>
               </div>
-              <div class="flex items-center gap-1 rounded-xl bg-slate-100 dark:bg-neutral-800 p-1">
-                <button 
-                  @click="toggleTheme(false)"
-                  class="flex h-8 w-12 items-center justify-center rounded-lg transition-all"
-                  :class="!isDarkMode ? 'bg-white dark:bg-neutral-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400 dark:text-neutral-500 hover:text-slate-600 dark:hover:text-neutral-300'"
+              <div class="relative flex items-center gap-1 rounded-xl bg-slate-100 dark:bg-neutral-800 p-1">
+                <div
+                  class="absolute left-1 top-1 h-8 w-12 rounded-lg bg-white shadow-sm transition-transform duration-300 ease-out dark:bg-neutral-700"
+                  :class="isDarkMode ? 'translate-x-13' : 'translate-x-0'"
+                ></div>
+                <button
+                  type="button"
+                  @click="handleToggleTheme(false, $event)"
+                  class="relative z-10 flex h-8 w-12 items-center justify-center rounded-lg transition-colors duration-300"
+                  :class="!isDarkMode ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-neutral-500 hover:text-slate-600 dark:hover:text-neutral-300'"
                 >
-                  <Sun :size="16" />
+                  <Sun :size="16" class="transition-transform duration-300" :class="!isDarkMode ? 'scale-110 rotate-0' : 'scale-90 -rotate-45'" />
                 </button>
-                <button 
-                  @click="toggleTheme(true)"
-                  class="flex h-8 w-12 items-center justify-center rounded-lg transition-all"
-                  :class="isDarkMode ? 'bg-white dark:bg-neutral-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400 dark:text-neutral-500 hover:text-slate-600 dark:hover:text-neutral-300'"
+                <button
+                  type="button"
+                  @click="handleToggleTheme(true, $event)"
+                  class="relative z-10 flex h-8 w-12 items-center justify-center rounded-lg transition-colors duration-300"
+                  :class="isDarkMode ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-neutral-500 hover:text-slate-600 dark:hover:text-neutral-300'"
                 >
-                  <Moon :size="16" />
+                  <Moon :size="16" class="transition-transform duration-300" :class="isDarkMode ? 'scale-110 rotate-0' : 'scale-90 rotate-45'" />
                 </button>
               </div>
             </div>
@@ -295,10 +301,16 @@ import {
 } from '../../services/settingsService'
 import { useToast } from '../../composables/useToast'
 import { useAdminTheme } from '../../composables/useAdminTheme'
+import { runThemeTransition } from '../../utils/themeTransition'
 
 const { success, error: toastError } = useToast()
 const { isDarkMode, toggleTheme } = useAdminTheme()
 const activeTab = ref('general')
+
+const handleToggleTheme = (val, event) => {
+  if (val === isDarkMode.value) return
+  runThemeTransition(event, () => toggleTheme(val))
+}
 const loading = ref(true)
 const saving = ref(false)
 
