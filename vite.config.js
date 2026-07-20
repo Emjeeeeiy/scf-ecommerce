@@ -17,7 +17,12 @@ export default defineConfig({
             if (id.includes('firebase')) {
               return 'vendor-firebase'
             }
-            if (id.includes('chart.js')) {
+            // vue-chartjs's own package path doesn't contain the literal
+            // substring "chart.js" (no dot), so match both explicitly —
+            // otherwise it (and the chart.js core it pulls in) silently
+            // falls through to the generic vendor chunk, which is eagerly
+            // preloaded on every route instead of only the dashboard.
+            if (id.includes('chart.js') || id.includes('vue-chartjs')) {
               return 'vendor-charts'
             }
             return 'vendor'

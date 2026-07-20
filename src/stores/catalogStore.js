@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import {
   createCategory as createCategoryService,
   createProduct as createProductService,
@@ -18,8 +18,11 @@ import {
  * independently on every mount; now they share one cache, and any admin mutation
  * (create/update/delete) refreshes it for every open view.
  */
-const products = ref([])
-const categories = ref([])
+// shallowRef: these arrays are always replaced wholesale (never mutated
+// in place), so deep reactivity on every product/category is wasted work —
+// this matters once catalogs grow past a handful of items.
+const products = shallowRef([])
+const categories = shallowRef([])
 const productsLoading = ref(false)
 const categoriesLoading = ref(false)
 let loaded = false
@@ -93,11 +96,14 @@ export function useCatalogStore() {
       const product = await getProduct(productId)
       if (product) {
         const index = products.value.findIndex((item) => item.id === product.id)
+        const next = products.value.slice()
         if (index >= 0) {
-          products.value[index] = product
+          next[index] = product
         } else {
-          products.value.push(product)
+          next.push(product)
         }
+        // Reassign (rather than mutate in place) since products is a shallowRef.
+        products.value = next
       }
       return product
     },

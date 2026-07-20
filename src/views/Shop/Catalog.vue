@@ -89,7 +89,7 @@
 
       <div v-else class="grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 px-4 py-6">  
         <article
-          v-for="product in filteredProducts"
+          v-for="product in pagedProducts"
           :key="product.id"
           class="group relative flex flex-col bg-white rounded-lg"
         >
@@ -102,6 +102,8 @@
               v-if="product.base64Image"
               :src="product.base64Image"
               :alt="product.name"
+              loading="lazy"
+              decoding="async"
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <!-- Fallback Placeholder -->
@@ -196,15 +198,19 @@
           </button>
         </div>
       </div>
+
+      <Pagination class="lg:col-span-2" :page="page" :total-pages="totalPages" :total-items="filteredProducts.length" @update:page="goToPage" />
     </section>
   </AppShell>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import AppShell from '../../components/AppShell.vue'
+import Pagination from '../../components/Pagination.vue'
 import { useCatalogStore } from '../../stores/catalogStore'
 import { useSearchFilter } from '../../composables/useSearchFilter'
+import { usePagination } from '../../composables/usePagination'
 import { formatCurrency } from '../../utils/format'
 import { useSession } from '../../composables/useSession'
 import {
@@ -232,6 +238,9 @@ const { query, filtered: filteredProducts } = useSearchFilter(categoryFiltered, 
   product.name,
   product.description,
 ])
+
+const { page, totalPages, paged: pagedProducts, goToPage, resetPage } = usePagination(filteredProducts, 24)
+watch([query, selectedCategory], resetPage)
 
 onMounted(async () => {
   try {

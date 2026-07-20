@@ -43,7 +43,7 @@
         <div v-else class="mt-6 divide-y divide-neutral-100">
           <article
             v-for="item in items"
-            :key="item.id"
+            :key="item.cartKey || item.id"
             class="group py-6 first:pt-0 last:pb-0"
           >
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -52,6 +52,8 @@
                   v-if="item.base64Image"
                   :src="item.base64Image"
                   :alt="item.productName"
+                  loading="lazy"
+                  decoding="async"
                   class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                 />
                 <div v-else class="flex h-full items-center justify-center text-[9px] text-neutral-400 font-bold uppercase tracking-wider">

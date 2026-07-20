@@ -62,16 +62,16 @@
                   </div>
                 </td>
               </tr>
-              <tr 
-                v-else-if="filteredProducts.length"
-                v-for="product in filteredProducts" 
+              <tr
+                v-else-if="pagedProducts.length"
+                v-for="product in pagedProducts"
                 :key="product.id"
                 class="group hover:bg-slate-50/30 dark:hover:bg-neutral-800/20 transition-all duration-300"
               >
                 <td class="px-6 py-3.5">
                   <div class="flex items-center gap-3">
                     <div class="h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-neutral-800 border border-slate-200/50 dark:border-neutral-700 shadow-inner group-hover:scale-105 transition-transform duration-500">
-                      <img v-if="product.base64Image" :src="product.base64Image" :alt="product.name" class="h-full w-full object-cover" />
+                      <img v-if="product.base64Image" :src="product.base64Image" :alt="product.name" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                       <div v-else class="flex h-full items-center justify-center text-slate-300 dark:text-neutral-600">
                         <Image :size="18" stroke-width="1.5" />
                       </div>
@@ -143,6 +143,7 @@
             </tbody>
           </table>
         </div>
+        <Pagination :page="page" :total-pages="totalPages" :total-items="totalFilteredProducts" @update:page="goToPage" />
       </div>
     </div>
 
@@ -303,7 +304,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
   Image,
   Boxes,
@@ -318,8 +319,10 @@ import {
   Loader2
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
+import Pagination from '../../components/Pagination.vue'
 import { useCatalogStore } from '../../stores/catalogStore'
 import { useSearchFilter } from '../../composables/useSearchFilter'
+import { usePagination } from '../../composables/usePagination'
 import { formatCurrency, sortSizes } from '../../utils/format'
 import { useConfirmAction } from '../../composables/useConfirmAction'
 import { useToast } from '../../composables/useToast'
@@ -351,6 +354,9 @@ const { query: searchQuery, filtered: filteredProducts } = useSearchFilter(categ
   product.name,
   product.description,
 ])
+
+const { page, totalPages, totalItems: totalFilteredProducts, paged: pagedProducts, goToPage, resetPage } = usePagination(filteredProducts, 20)
+watch([searchQuery, selectedCategoryId], resetPage)
 
 const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 const DEFAULT_STOCK = 10

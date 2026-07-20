@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
 
 /**
  * Wires up a single-consumer Firestore onSnapshot subscription for the lifetime of
@@ -14,7 +14,8 @@ import { onMounted, onUnmounted, ref } from 'vue'
  * @param {any} initialValue - initial value of the returned data ref
  */
 export function useFirestoreSubscription(subscribeFn, initialValue = []) {
-  const data = ref(initialValue)
+  // Each snapshot replaces `data` wholesale, so shallow reactivity is all that's needed.
+  const data = shallowRef(initialValue)
   const loading = ref(true)
   let unsubscribe = null
 

@@ -92,7 +92,7 @@
             class="group flex items-center gap-3 rounded-lg border border-slate-100 dark:border-neutral-800 p-2.5 transition hover:border-rose-200 dark:hover:border-rose-900/30 hover:bg-rose-50/30 dark:hover:bg-rose-500/5"
           >
             <div class="h-10 w-10 shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-neutral-800 border border-slate-100 dark:border-neutral-800">
-              <img v-if="item.image" :src="item.image" class="h-full w-full object-cover" />
+              <img v-if="item.image" :src="item.image" loading="lazy" decoding="async" class="h-full w-full object-cover" />
               <div v-else class="flex h-full items-center justify-center text-slate-300"><Package :size="16" /></div>
             </div>
             <div class="min-w-0 flex-1">

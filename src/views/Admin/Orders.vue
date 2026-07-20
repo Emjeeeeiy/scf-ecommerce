@@ -159,8 +159,8 @@
                 </td>
               </tr>
               <template v-else>
-                <tr 
-                  v-for="order in filteredOrders" 
+                <tr
+                  v-for="order in pagedOrders"
                   :key="order.id"
                   class="hover:bg-slate-50/50 dark:hover:bg-neutral-800/30 transition-colors cursor-pointer group"
                   :class="selectedOrders.includes(order.id) ? 'bg-slate-50/80 dark:bg-neutral-800/50' : ''"
@@ -252,6 +252,7 @@
             </div>
             <p class="text-xs font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest">No matching orders found</p>
           </div>
+          <Pagination :page="page" :total-pages="totalPages" :total-items="totalFilteredOrders" @update:page="goToPage" />
         </div>
       </section>
     </div>
@@ -474,10 +475,12 @@ import {
   Bell
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
+import Pagination from '../../components/Pagination.vue'
 import { useOrderStore } from '../../stores/orderStore'
 import { formatCurrency, formatDate, getOrderStatusClasses } from '../../utils/format'
 import { useSearchFilter } from '../../composables/useSearchFilter'
 import { useSelection } from '../../composables/useSelection'
+import { usePagination } from '../../composables/usePagination'
 import { useConfirmAction } from '../../composables/useConfirmAction'
 import { useToast } from '../../composables/useToast'
 
@@ -528,6 +531,9 @@ const { query: searchQuery, filtered: filteredOrders } = useSearchFilter(statusD
 ])
 
 const { selected: selectedOrders, isAllSelected, toggleAll: toggleSelectAll, clear: clearSelection } = useSelection(filteredOrders)
+
+const { page, totalPages, totalItems: totalFilteredOrders, paged: pagedOrders, goToPage, resetPage } = usePagination(filteredOrders, 20)
+watch([searchQuery, statusFilter, startDate, endDate], resetPage)
 
 // Keep an open detail modal in sync with the realtime order list (e.g. status
 // changed from another tab), while preserving the already-fetched item lines.

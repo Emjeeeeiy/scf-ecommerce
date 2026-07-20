@@ -230,7 +230,7 @@
           <div class="max-h-[40vh] overflow-y-auto space-y-4 pr-1 custom-scrollbar">
             <div
               v-for="item in cartItems"
-              :key="item.id"
+              :key="item.cartKey || item.id"
               class="group flex items-center justify-between gap-4 rounded-xl border border-neutral-50 bg-neutral-50/30 p-3 transition-colors hover:border-neutral-100 hover:bg-white"
             >
               <div class="flex min-w-0 items-center gap-3">
@@ -239,6 +239,8 @@
                     v-if="item.base64Image"
                     :src="item.base64Image"
                     :alt="item.productName"
+                    loading="lazy"
+                    decoding="async"
                     class="h-full w-full object-cover transition duration-300 group-hover:scale-110"
                   />
                   <div v-else class="flex h-full items-center justify-center text-[8px] text-neutral-300 font-bold uppercase">

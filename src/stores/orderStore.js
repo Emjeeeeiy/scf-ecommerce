@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import {
   deleteOrder as deleteOrderService,
   getOrderItems,
@@ -17,7 +17,9 @@ import {
  * keeps the Firestore listener open only while at least one consumer is mounted,
  * so navigating away from both admin pages actually tears it down.
  */
-const orders = ref([])
+// shallowRef: the order list is always replaced wholesale by the subscription
+// snapshot, never mutated in place, so deep per-order reactivity is unneeded cost.
+const orders = shallowRef([])
 const ordersLoading = ref(true)
 let firestoreUnsubscribe = null
 let subscriberCount = 0
@@ -45,7 +47,7 @@ const countByStatus = (status) => orders.value.filter((order) => order.status ==
 
 // A customer's own order history is a separate, on-demand read (not part of the
 // realtime admin list, which only admins are allowed to subscribe to).
-const userOrders = ref([])
+const userOrders = shallowRef([])
 const userOrdersLoading = ref(false)
 
 const fetchUserOrders = async (uid) => {

@@ -65,6 +65,8 @@
                   v-if="product.base64Image"
                   :src="product.base64Image"
                   :alt="product.name"
+                  loading="lazy"
+                  decoding="async"
                   class="h-full w-full object-cover transition-transform duration-700"
                 />
                 <div v-else class="flex h-full w-full items-center justify-center text-neutral-300">

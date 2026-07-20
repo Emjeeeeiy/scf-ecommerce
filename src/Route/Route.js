@@ -1,106 +1,94 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useSession, waitForSessionReady } from '../composables/useSession'
-import LoginPage from '../views/Login.vue'
-import RegisterPage from '../views/Register.vue'
-import LandingPage from '../views/LandingPage.vue'
-import CatalogPage from '../views/Shop/Catalog.vue'
-import ProductDetailsPage from '../views/Shop/ProductDetails.vue'
-import CartPage from '../views/Shop/Cart.vue'
-import CheckoutPage from '../views/Shop/Checkout.vue'
-import ProfilePage from '../views/Account/Profile.vue'
-import OrdersPage from '../views/Account/Orders.vue'
-import Dashboard from '../views/Admin/Dashboard.vue'
-import AdminCategories from '../views/Admin/Categories.vue'
-import AdminProducts from '../views/Admin/Products.vue'
-import AdminOrders from '../views/Admin/Orders.vue'
-import AdminSettings from '../views/Admin/Settings.vue'
-import AdminUsers from '../views/Admin/Users.vue'
 
+// Route components are lazy-loaded so the initial bundle only ships what the
+// landing page needs; each view (and anything it alone depends on, like
+// chart.js for the admin dashboard) is fetched on first visit to its route.
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: LandingPage,
+    component: () => import('../views/LandingPage.vue'),
   },
   {
     path: '/shop',
     name: 'Catalog',
-    component: CatalogPage
+    component: () => import('../views/Shop/Catalog.vue'),
   },
   {
     path: '/shop/product/:productId',
     name: 'ProductDetails',
-    component: ProductDetailsPage,
+    component: () => import('../views/Shop/ProductDetails.vue'),
     props: true
   },
   {
     path: '/cart',
     name: 'Cart',
-    component: CartPage
+    component: () => import('../views/Shop/Cart.vue'),
   },
   {
     path: '/checkout',
     name: 'Checkout',
-    component: CheckoutPage
+    component: () => import('../views/Shop/Checkout.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: LoginPage,
+    component: () => import('../views/Login.vue'),
     meta: { guestOnly: true }
   },
   {
     path: '/register',
     name: 'Register',
-    component: RegisterPage,
+    component: () => import('../views/Register.vue'),
     meta: { guestOnly: true }
   },
   {
     path: '/account/profile',
     name: 'Profile',
-    component: ProfilePage,
+    component: () => import('../views/Account/Profile.vue'),
     meta: { requiresAuth: true }
   },
   {
     path: '/account/orders',
     name: 'Orders',
-    component: OrdersPage,
+    component: () => import('../views/Account/Orders.vue'),
     meta: { requiresAuth: true }
   },
   {
     path: '/admin/dashboard',
     name: 'Dashboard',
-    component: Dashboard,
+    component: () => import('../views/Admin/Dashboard.vue'),
     meta: { requiresAuth: true, requiresAdmin: true },
   },
   {
     path: '/admin/categories',
     name: 'AdminCategories',
-    component: AdminCategories,
+    component: () => import('../views/Admin/Categories.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/admin/products',
     name: 'AdminProducts',
-    component: AdminProducts,
+    component: () => import('../views/Admin/Products.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/admin/orders',
     name: 'AdminOrders',
-    component: AdminOrders,
+    component: () => import('../views/Admin/Orders.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/admin/users',
     name: 'AdminUsers',
-    component: AdminUsers,
+    component: () => import('../views/Admin/Users.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/admin/settings',
     name: 'AdminSettings',
-    component: AdminSettings,
+    component: () => import('../views/Admin/Settings.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {

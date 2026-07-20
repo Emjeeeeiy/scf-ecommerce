@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../Firebase/Firebase'
 import {
@@ -18,7 +18,9 @@ import {
  * so an add-to-cart on one page didn't reflect anywhere else until a manual
  * refetch. Now there is one cart, and any mutation refreshes it everywhere.
  */
-const items = ref([])
+// shallowRef: cart items are always replaced wholesale after every mutation
+// (never edited in place), so per-item deep reactivity is unneeded cost.
+const items = shallowRef([])
 const totalItems = ref(0)
 const totalAmount = ref(0)
 const loading = ref(false)

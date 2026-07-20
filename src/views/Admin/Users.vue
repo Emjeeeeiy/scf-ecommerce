@@ -39,8 +39,8 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 dark:divide-neutral-800/50">
-              <tr 
-                v-for="user in filteredUsers" 
+              <tr
+                v-for="user in pagedUsers"
                 :key="user.id"
                 class="hover:bg-slate-50/50 dark:hover:bg-neutral-800/30 transition-colors cursor-pointer group"
               >
@@ -115,6 +115,7 @@
             </div>
             <p class="text-xs font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest">No matching records found</p>
           </div>
+          <Pagination :page="page" :total-pages="totalPages" :total-items="totalFilteredUsers" @update:page="goToPage" />
         </div>
       </section>
     </div>
@@ -231,7 +232,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import {
   User as UserIcon,
   Users as UsersIcon,
@@ -244,10 +245,12 @@ import {
   MapPin
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
+import Pagination from '../../components/Pagination.vue'
 import { subscribeToAllUsers, markUserAsSeen, deleteUser } from '../../services/userService'
 import { formatDate } from '../../utils/format'
 import { useSearchFilter } from '../../composables/useSearchFilter'
 import { useFirestoreSubscription } from '../../composables/useFirestoreSubscription'
+import { usePagination } from '../../composables/usePagination'
 import { useConfirmAction } from '../../composables/useConfirmAction'
 import { useToast } from '../../composables/useToast'
 
@@ -257,6 +260,9 @@ const { query: searchQuery, filtered: filteredUsers } = useSearchFilter(users, (
   user.email,
   user.username,
 ])
+
+const { page, totalPages, totalItems: totalFilteredUsers, paged: pagedUsers, goToPage, resetPage } = usePagination(filteredUsers, 20)
+watch(searchQuery, resetPage)
 
 const selectedUser = ref(null)
 const toast = useToast()

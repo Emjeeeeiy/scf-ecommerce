@@ -22,6 +22,7 @@
             v-if="product.base64Image"
             :src="product.base64Image"
             :alt="product.name"
+            decoding="async"
             class="h-full w-full object-cover"
           />
           <div v-else class="flex h-full flex-col items-center justify-center gap-2 text-neutral-300">
