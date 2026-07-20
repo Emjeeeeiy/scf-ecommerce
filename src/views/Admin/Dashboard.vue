@@ -237,7 +237,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { 
   LayoutDashboard, 
   Layers, 
@@ -263,8 +263,8 @@ import {
   Filler
 } from 'chart.js'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { listCategories, listProducts } from '../../services/catalogService'
-import { listAllOrders } from '../../services/orderService'
+import { useCatalogStore } from '../../stores/catalogStore'
+import { useOrderStore } from '../../stores/orderStore'
 import { formatCurrency } from '../../utils/format'
 
 import { useAdminTheme } from '../../composables/useAdminTheme'
@@ -281,9 +281,8 @@ ChartJS.register(
 )
 
 const { isDarkMode } = useAdminTheme()
-const categories = ref([])
-const products = ref([])
-const orders = ref([])
+const { products, loadCatalog, lowStockVariants } = useCatalogStore()
+const { orders, subscribeOrders, unsubscribeOrders, countByStatus } = useOrderStore()
 const activeFilter = ref('week')
 
 const filters = [
@@ -317,32 +316,10 @@ const workspaces = [
   },
 ]
 
-const loadDashboard = async () => {
-  categories.value = await listCategories()
-  products.value = await listProducts()
-  orders.value = await listAllOrders()
-}
+// Orders arrive pre-sorted (createdAt desc) from the shared realtime subscription.
+const recentOrders = computed(() => orders.value.slice(0, 5))
 
-const recentOrders = computed(() => [...orders.value].sort((a, b) => b.createdAt - a.createdAt).slice(0, 5))
-
-const lowStockItems = computed(() => {
-  const items = []
-  products.value.forEach(product => {
-    product.variants?.forEach(variant => {
-      if (variant.stock <= 5) {
-        items.push({
-          variantKey: `${product.id}-${variant.id}`,
-          name: product.name,
-          image: product.base64Image,
-          color: variant.color || 'Std',
-          size: variant.size || 'Std',
-          stock: variant.stock
-        })
-      }
-    })
-  })
-  return items.sort((a, b) => a.stock - b.stock)
-})
+const lowStockItems = computed(() => lowStockVariants(5))
 
 const chartData = computed(() => {
   const labels = []
@@ -507,13 +484,17 @@ const metrics = computed(() => [
 ])
 
 const statusCards = computed(() => [
-  { label: 'Received', value: orders.value.filter(o => o.status === 'received').length },
-  { label: 'Processing', value: orders.value.filter(o => o.status === 'processing').length },
-  { label: 'Shipped', value: orders.value.filter(o => o.status === 'shipped').length },
-  { label: 'Completed', value: orders.value.filter(o => o.status === 'completed').length },
+  { label: 'Received', value: countByStatus('received') },
+  { label: 'Processing', value: countByStatus('processing') },
+  { label: 'Shipped', value: countByStatus('shipped') },
+  { label: 'Completed', value: countByStatus('completed') },
 ])
 
-onMounted(loadDashboard)
+onMounted(() => {
+  loadCatalog(true)
+  subscribeOrders()
+})
+onUnmounted(unsubscribeOrders)
 </script>
 
 <style scoped>

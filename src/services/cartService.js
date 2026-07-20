@@ -5,11 +5,6 @@ import { getUserProfile } from './userService'
 
 const CART_STORAGE_KEY = 'scf_cart_items'
 
-// Helper to notify UI of changes if needed
-let refreshCallback = null
-export const registerCartRefresh = (cb) => { refreshCallback = cb }
-const notifyRefresh = () => { if (refreshCallback) refreshCallback() }
-
 // Create unique item key combining productId, variantId, color, and size
 const createItemKey = (productId, variantId, color, size) => {
   return `${productId}__${variantId}__${color || 'std'}__${size || 'std'}`
@@ -70,7 +65,6 @@ const hydrateCartItems = async (items) => {
     const profile = await getUserProfile(auth.currentUser.uid)
     userIsStudent = profile?.isStudent || false
   }
-  
   return Promise.all(items.map(async (item) => {
     try {
       if (!productCache[item.productId]) {
@@ -179,7 +173,6 @@ export const addToCart = async ({ productId, variantId, quantity = 1, useStudent
       items.push(itemPayload)
     }
     writeCartItemsToLocal(items)
-    notifyRefresh()
     return
   }
 
@@ -203,8 +196,6 @@ export const addToCart = async ({ productId, variantId, quantity = 1, useStudent
 
     transaction.set(cartRef, { items: cleanItems, updatedAt: new Date() }, { merge: true })
   })
-  
-  notifyRefresh()
 }
 
 export const updateCartItemQuantity = async ({ variantId, cartKey, quantity }) => {
@@ -222,7 +213,6 @@ export const updateCartItemQuantity = async ({ variantId, cartKey, quantity }) =
       items[itemIndex] = { ...items[itemIndex], quantity: Number(quantity) }
     }
     writeCartItemsToLocal(items)
-    notifyRefresh()
     return
   }
 
@@ -248,8 +238,6 @@ export const updateCartItemQuantity = async ({ variantId, cartKey, quantity }) =
 
     transaction.set(cartRef, { items: cleanItems, updatedAt: new Date() }, { merge: true })
   })
-  
-  notifyRefresh()
 }
 
 export const removeCartItem = async ({ variantId, cartKey }) => {
@@ -259,7 +247,6 @@ export const removeCartItem = async ({ variantId, cartKey }) => {
       ? items.filter((item) => item.cartKey !== cartKey)
       : items.filter((item) => item.id !== variantId)
     writeCartItemsToLocal(filteredItems)
-    notifyRefresh()
     return
   }
 
@@ -275,20 +262,16 @@ export const removeCartItem = async ({ variantId, cartKey }) => {
 
     transaction.set(cartRef, { items: filteredItems, updatedAt: new Date() }, { merge: true })
   })
-  
-  notifyRefresh()
 }
 
 export const clearCart = async () => {
   if (!auth.currentUser) {
     writeCartItemsToLocal([])
-    notifyRefresh()
     return
   }
 
   const cartRef = getFirestoreCartRef()
   await setDoc(cartRef, { items: [], updatedAt: new Date() }, { merge: true })
-  notifyRefresh()
 }
 
 export const syncCartOnLogin = async () => {
@@ -324,7 +307,6 @@ export const syncCartOnLogin = async () => {
     })
 
     writeCartItemsToLocal([])
-    notifyRefresh()
   } catch (error) {
     console.error('Error syncing cart:', error)
   }

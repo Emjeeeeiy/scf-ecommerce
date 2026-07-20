@@ -203,15 +203,16 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import AppShell from '../../components/AppShell.vue'
-import { ensureDemoCatalog, listCategories, listProducts } from '../../services/catalogService'
+import { useCatalogStore } from '../../stores/catalogStore'
+import { useSearchFilter } from '../../composables/useSearchFilter'
 import { formatCurrency } from '../../utils/format'
 import { useSession } from '../../composables/useSession'
-import { 
-  Search, 
-  Filter, 
-  Tag, 
-  LayoutGrid, 
-  ArrowRight, 
+import {
+  Search,
+  Filter,
+  Tag,
+  LayoutGrid,
+  ArrowRight,
   SearchX,
   Image
 } from 'lucide-vue-next'
@@ -219,50 +220,25 @@ import {
 const { profile, isAuthenticated } = useSession()
 const isStudent = computed(() => profile.value?.isStudent || false)
 
-const loading = ref(true)
-const categories = ref([])
-const products = ref([])
+const { products, categories, productsLoading: loading, loadCatalog, seedDemoCatalog, categoryName } = useCatalogStore()
 const selectedCategory = ref('')
-const query = ref('')
 
-const loadCatalog = async () => {
-  loading.value = true
+const categoryFiltered = computed(() =>
+  selectedCategory.value
+    ? products.value.filter((product) => product.categoryId === selectedCategory.value)
+    : products.value,
+)
+const { query, filtered: filteredProducts } = useSearchFilter(categoryFiltered, (product) => [
+  product.name,
+  product.description,
+])
+
+onMounted(async () => {
   try {
-    await ensureDemoCatalog()
+    await seedDemoCatalog()
   } catch (e) {
     console.warn('Demo catalog seeding skipped or failed:', e.message)
   }
-  categories.value = await listCategories()
-  products.value = await listProducts()
-  loading.value = false
-}
-
-const filteredProducts = computed(() => {
-  const normalizedQuery = query.value.trim().toLowerCase()
-
-  if (!selectedCategory.value) {
-    return products.value.filter((product) => {
-      if (!normalizedQuery) return true
-      return (
-        product.name?.toLowerCase().includes(normalizedQuery) ||
-        product.description?.toLowerCase().includes(normalizedQuery)
-      )
-    })
-  }
-
-  return products.value
-    .filter((product) => product.categoryId === selectedCategory.value)
-    .filter((product) => {
-      if (!normalizedQuery) return true
-      return (
-        product.name?.toLowerCase().includes(normalizedQuery) ||
-        product.description?.toLowerCase().includes(normalizedQuery)
-      )
-    })
+  await loadCatalog()
 })
-
-const categoryName = (categoryId) =>
-  categories.value.find((category) => category.id === categoryId)?.name || ''
-
-onMounted(loadCatalog)
 </script>

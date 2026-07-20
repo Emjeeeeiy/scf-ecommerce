@@ -195,9 +195,9 @@
 
 <script setup>
 import AppShell from '../components/AppShell.vue'
-import { ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useSession } from '../composables/useSession'
-import { listProducts } from '../services/catalogService'
+import { useCatalogStore } from '../stores/catalogStore'
 import { getLandingPageSettings, DEFAULT_LANDING_PAGE_SETTINGS } from '../services/settingsService'
 import { formatCurrency } from '../utils/format'
 import { 
@@ -216,19 +216,18 @@ import {
 } from 'lucide-vue-next'
 
 const { isAuthenticated } = useSession()
+const { products, loadCatalog } = useCatalogStore()
 
-const latestProducts = ref([])
+const latestProducts = computed(() => products.value.slice(0, 6))
 const loading = ref(true)
 const settings = ref(DEFAULT_LANDING_PAGE_SETTINGS)
 
 onMounted(async () => {
   try {
-    const [products, landingSettings] = await Promise.all([
-      listProducts(),
+    const [, landingSettings] = await Promise.all([
+      loadCatalog(),
       getLandingPageSettings()
     ])
-    // Get top 6 latest products
-    latestProducts.value = products.slice(0, 6)
     settings.value = landingSettings
   } catch (error) {
     console.error('Error fetching data:', error)

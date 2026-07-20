@@ -218,7 +218,7 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap" data-label="Date">
-                    <p class="text-xs font-semibold text-slate-400 dark:text-neutral-500">{{ formatDate(order.createdAt, true) }}</p>
+                    <p class="text-xs font-semibold text-slate-400 dark:text-neutral-500">{{ formatDate(order.createdAt) }}</p>
                   </td>
                   <td class="px-6 py-4 text-right whitespace-nowrap" data-label="Total">
                     <p class="text-sm font-black text-slate-900 dark:text-white">{{ formatCurrency(order.totalAmount) }}</p>
@@ -456,10 +456,10 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { 
-  User, 
-  MapPin, 
-  Package, 
+import {
+  User,
+  MapPin,
+  Package,
   PackageSearch,
   Search,
   Trash2,
@@ -474,94 +474,103 @@ import {
   Bell
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import { subscribeToAllOrders, updateOrderStatus, deleteOrder, markOrderAsSeen, getOrderItems, updateMultipleOrderStatuses } from '../../services/orderService'
-import { formatCurrency } from '../../utils/format'
-import { useConfirm } from '../../composables/useConfirm'
+import { useOrderStore } from '../../stores/orderStore'
+import { formatCurrency, formatDate, getOrderStatusClasses } from '../../utils/format'
+import { useSearchFilter } from '../../composables/useSearchFilter'
+import { useSelection } from '../../composables/useSelection'
+import { useConfirmAction } from '../../composables/useConfirmAction'
 import { useToast } from '../../composables/useToast'
 
-const orders = ref([])
-const loading = ref(true)
-const searchQuery = ref('')
+const {
+  orders,
+  ordersLoading: loading,
+  subscribeOrders,
+  unsubscribeOrders,
+  countByStatus,
+  updateStatus,
+  bulkUpdateStatus,
+  remove,
+  markSeen,
+  fetchOrderItems,
+} = useOrderStore()
+
 const statusFilter = ref('all')
 const startDate = ref('')
 const endDate = ref('')
 const selectedOrder = ref(null)
 const previewImage = ref(null)
-const selectedOrders = ref([])
-let unsubscribeOrders = null
 
-const { confirm } = useConfirm()
+const { confirmAndRun } = useConfirmAction()
 const toast = useToast()
 
-const isAllSelected = computed(() => {
-  return filteredOrders.value.length > 0 && selectedOrders.value.length === filteredOrders.value.length
+const statusDateFiltered = computed(() => orders.value.filter((order) => {
+  const matchesStatus = statusFilter.value === 'all' || order.status === statusFilter.value
+
+  const orderDate = order.createdAt?.toDate ? order.createdAt.toDate() : new Date(order.createdAt)
+  const start = startDate.value ? new Date(startDate.value) : null
+  const end = endDate.value ? new Date(endDate.value) : null
+
+  if (start) start.setHours(0, 0, 0, 0)
+  if (end) end.setHours(23, 59, 59, 999)
+
+  const matchesStartDate = !start || orderDate >= start
+  const matchesEndDate = !end || orderDate <= end
+
+  return matchesStatus && matchesStartDate && matchesEndDate
+}))
+
+const { query: searchQuery, filtered: filteredOrders } = useSearchFilter(statusDateFiltered, (order) => [
+  order.id,
+  `${order.customerDetails?.firstName} ${order.customerDetails?.lastName}`,
+  order.customerDetails?.email,
+  order.referenceNo,
+  order.firstItemName,
+])
+
+const { selected: selectedOrders, isAllSelected, toggleAll: toggleSelectAll, clear: clearSelection } = useSelection(filteredOrders)
+
+// Keep an open detail modal in sync with the realtime order list (e.g. status
+// changed from another tab), while preserving the already-fetched item lines.
+watch(orders, (newOrders) => {
+  if (!selectedOrder.value) return
+  const updated = newOrders.find((o) => o.id === selectedOrder.value.id)
+  if (updated) {
+    selectedOrder.value = { ...updated, items: selectedOrder.value.items }
+  }
 })
 
-const toggleSelectAll = () => {
-  if (isAllSelected.value) {
-    selectedOrders.value = []
-  } else {
-    selectedOrders.value = filteredOrders.value.map(o => o.id)
-  }
-}
+const handleBulkUpdate = (status) => {
+  const count = selectedOrders.value.length
+  if (!count) return
 
-const handleBulkUpdate = async (status) => {
-  if (!selectedOrders.value.length) return
-  
-  const confirmed = await confirm(`Are you sure you want to update ${selectedOrders.value.length} orders to ${status}?`, 'Bulk Update')
-  if (!confirmed) return
-
-  try {
-    await updateMultipleOrderStatuses(selectedOrders.value, status)
-    toast.success(`${selectedOrders.value.length} orders updated to ${status}`)
-    selectedOrders.value = []
-  } catch (error) {
-    console.error('Bulk update error:', error)
-    toast.error('Failed to update orders')
-  }
-}
-
-const loadOrders = () => {
-  loading.value = true
-  unsubscribeOrders = subscribeToAllOrders((newOrders) => {
-    orders.value = newOrders
-    loading.value = false
-    
-    // If an order is currently selected, update its data from the fresh list
-    if (selectedOrder.value) {
-      const updated = newOrders.find(o => o.id === selectedOrder.value.id)
-      if (updated) {
-        // Keep the items from the previously fetched details if they exist
-        const items = selectedOrder.value.items
-        selectedOrder.value = { ...updated, items }
-      }
-    }
-  })
+  return confirmAndRun(
+    `Are you sure you want to update ${count} orders to ${status}?`,
+    async () => {
+      await bulkUpdateStatus(selectedOrders.value, status)
+      clearSelection()
+    },
+    { title: 'Bulk Update', successMessage: `${count} orders updated to ${status}`, errorMessage: 'Failed to update orders' },
+  )
 }
 
 const handleUpdateStatus = async (orderId, status) => {
   try {
-    await updateOrderStatus(orderId, status)
+    await updateStatus(orderId, status)
     toast.success('Order status updated')
   } catch (error) {
     toast.error('Failed to update status')
   }
 }
 
-const handleDeleteOrder = async (orderId) => {
-  const confirmed = await confirm('This action cannot be undone. Are you sure you want to delete this order?', 'Delete Order')
-  if (!confirmed) return
-
-  try {
-    await deleteOrder(orderId)
-    toast.success('Order deleted successfully')
-    if (selectedOrder.value && selectedOrder.value.id === orderId) {
-      selectedOrder.value = null
-    }
-  } catch (error) {
-    toast.error('Failed to delete order')
-  }
-}
+const handleDeleteOrder = (orderId) =>
+  confirmAndRun(
+    'This action cannot be undone. Are you sure you want to delete this order?',
+    async () => {
+      await remove(orderId)
+      if (selectedOrder.value?.id === orderId) selectedOrder.value = null
+    },
+    { title: 'Delete Order', successMessage: 'Order deleted successfully', errorMessage: 'Failed to delete order' },
+  )
 
 const resetFilters = () => {
   searchQuery.value = ''
@@ -573,14 +582,14 @@ const resetFilters = () => {
 const openDetails = async (order) => {
   // Set basic info first for immediate UI feedback
   selectedOrder.value = { ...order, items: [] }
-  
+
   try {
     // Fetch full items only when needed
-    const items = await getOrderItems(order.id)
+    const items = await fetchOrderItems(order.id)
     selectedOrder.value = { ...order, items }
-    
+
     if (!order.seenByAdmin) {
-      await markOrderAsSeen(order.id)
+      await markSeen(order.id)
     }
   } catch (error) {
     console.error('Failed to load order details:', error)
@@ -592,58 +601,7 @@ const viewFullImage = (url) => {
   previewImage.value = url
 }
 
-const getStatusClass = (status) => {
-  switch (status) {
-    case 'received': return 'bg-blue-50 text-blue-600 border-blue-100'
-    case 'processing': return 'bg-amber-50 text-amber-600 border-amber-100'
-    case 'shipped': return 'bg-indigo-50 text-indigo-600 border-indigo-100'
-    case 'completed': return 'bg-emerald-50 text-emerald-600 border-emerald-100'
-    default: return 'bg-slate-50 text-slate-600 border-slate-100'
-  }
-}
-
-const formatDate = (timestamp, compact = false) => {
-  if (!timestamp) return 'N/A'
-  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp)
-  if (compact) {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-  }
-  return date.toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-const filteredOrders = computed(() => {
-  return orders.value.filter(order => {
-    const searchLower = searchQuery.value.toLowerCase()
-    const matchesSearch = !searchQuery.value || 
-      order.id.toLowerCase().includes(searchLower) ||
-      `${order.customerDetails?.firstName} ${order.customerDetails?.lastName}`.toLowerCase().includes(searchLower) ||
-      order.customerDetails?.email?.toLowerCase().includes(searchLower) ||
-      order.referenceNo?.toLowerCase().includes(searchLower) ||
-      order.firstItemName?.toLowerCase().includes(searchLower)
-
-    const matchesStatus = statusFilter.value === 'all' || order.status === statusFilter.value
-
-    const orderDate = order.createdAt?.toDate ? order.createdAt.toDate() : new Date(order.createdAt)
-    const start = startDate.value ? new Date(startDate.value) : null
-    const end = endDate.value ? new Date(endDate.value) : null
-    
-    if (start) start.setHours(0, 0, 0, 0)
-    if (end) end.setHours(23, 59, 59, 999)
-
-    const matchesStartDate = !start || orderDate >= start
-    const matchesEndDate = !end || orderDate <= end
-
-    return matchesSearch && matchesStatus && matchesStartDate && matchesEndDate
-  })
-})
-
-const countByStatus = (status) => orders.value.filter((order) => order.status === status).length
+const getStatusClass = getOrderStatusClasses
 
 const summaries = computed(() => [
   { label: 'Total Volume', value: orders.value.length },
@@ -652,10 +610,8 @@ const summaries = computed(() => [
   { label: 'Unread', value: orders.value.filter(o => !o.seenByAdmin).length },
 ])
 
-onMounted(loadOrders)
-onUnmounted(() => {
-  if (unsubscribeOrders) unsubscribeOrders()
-})
+onMounted(subscribeOrders)
+onUnmounted(unsubscribeOrders)
 </script>
 
 <style scoped>

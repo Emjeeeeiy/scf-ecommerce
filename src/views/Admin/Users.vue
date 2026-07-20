@@ -231,9 +231,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { 
-  User as UserIcon, 
+import { ref } from 'vue'
+import {
+  User as UserIcon,
   Users as UsersIcon,
   Search,
   X,
@@ -245,27 +245,22 @@ import {
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
 import { subscribeToAllUsers, markUserAsSeen, deleteUser } from '../../services/userService'
+import { formatDate } from '../../utils/format'
+import { useSearchFilter } from '../../composables/useSearchFilter'
+import { useFirestoreSubscription } from '../../composables/useFirestoreSubscription'
+import { useConfirmAction } from '../../composables/useConfirmAction'
 import { useToast } from '../../composables/useToast'
-import { useConfirm } from '../../composables/useConfirm'
 
-const users = ref([])
-const searchQuery = ref('')
+const { data: users } = useFirestoreSubscription(subscribeToAllUsers)
+const { query: searchQuery, filtered: filteredUsers } = useSearchFilter(users, (user) => [
+  `${user.firstName} ${user.lastName}`,
+  user.email,
+  user.username,
+])
+
 const selectedUser = ref(null)
-let unsubscribe = null
-
 const toast = useToast()
-const { confirm } = useConfirm()
-
-const loadUsers = () => {
-  try {
-    unsubscribe = subscribeToAllUsers((data) => {
-      users.value = data
-    })
-  } catch (error) {
-    toast.error('Failed to load users')
-    console.error(error)
-  }
-}
+const { confirmAndRun } = useConfirmAction()
 
 const openDetails = async (user) => {
   selectedUser.value = user
@@ -278,26 +273,17 @@ const openDetails = async (user) => {
   }
 }
 
-const handleDeleteUser = async (user) => {
+const handleDeleteUser = (user) => {
   if (user.role === 'admin') {
     toast.error('Admin accounts cannot be deleted')
     return
   }
 
-  const isConfirmed = await confirm(
+  return confirmAndRun(
     `Are you sure you want to delete ${user.firstName} ${user.lastName}? This action cannot be undone.`,
-    'Delete User'
+    () => deleteUser(user.id),
+    { title: 'Delete User', successMessage: 'User deleted successfully', errorMessage: 'Failed to delete user' },
   )
-
-  if (isConfirmed) {
-    try {
-      await deleteUser(user.id)
-      toast.success('User deleted successfully')
-    } catch (error) {
-      toast.error('Failed to delete user')
-      console.error(error)
-    }
-  }
 }
 
 const getRoleClass = (role) => {
@@ -308,31 +294,6 @@ const getRoleClass = (role) => {
     default: return 'bg-slate-50 text-slate-600 border-slate-100'
   }
 }
-
-const formatDate = (timestamp) => {
-  if (!timestamp) return 'N/A'
-  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp)
-  return date.toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric'
-  })
-}
-
-const filteredUsers = computed(() => {
-  return users.value.filter(user => {
-    const searchLower = searchQuery.value.toLowerCase()
-    return !searchQuery.value || 
-      `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchLower) ||
-      user.email.toLowerCase().includes(searchLower) ||
-      user.username.toLowerCase().includes(searchLower)
-  })
-})
-
-onMounted(loadUsers)
-onUnmounted(() => {
-  if (unsubscribe) unsubscribe()
-})
 </script>
 
 <style scoped>

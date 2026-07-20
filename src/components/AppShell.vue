@@ -148,7 +148,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { logoutUser } from '../services/authService'
 import { useSession } from '../composables/useSession'
-import { useCart } from '../composables/useCart'
+import { useCartStore } from '../stores/cartStore'
 import { 
   ShoppingCart, 
   User, 
@@ -171,7 +171,7 @@ defineProps({
 const route = useRoute()
 const router = useRouter()
 const { isAuthenticated, isAdmin } = useSession()
-const { cartCount } = useCart()
+const { cartCount } = useCartStore()
 
 const navigation = computed(() => {
   const base = [{ to: '/', label: 'Home' }, { to: '/shop', label: 'Shop' }]

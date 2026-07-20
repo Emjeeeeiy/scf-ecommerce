@@ -155,7 +155,7 @@ import {
   listAddresses,
   updateUserProfile,
 } from '../../services/userService'
-import { useConfirm } from '../../composables/useConfirm'
+import { useConfirmAction } from '../../composables/useConfirmAction'
 import { 
   UserCircle, 
   User, 
@@ -169,7 +169,7 @@ import {
   MapPinOff 
 } from 'lucide-vue-next'
 
-const { confirm } = useConfirm()
+const { confirmAndRun } = useConfirmAction()
 const { authUser } = useSession()
 
 const message = ref('')
@@ -205,12 +205,11 @@ const handleSaveProfile = async () => {
   }, 3000)
 }
 
-const handleDeleteAddress = async (addressId) => {
-  if (await confirm('Are you sure you want to delete this address?')) {
+const handleDeleteAddress = (addressId) =>
+  confirmAndRun('Are you sure you want to delete this address?', async () => {
     await deleteAddress(authUser.value.uid, addressId)
     addresses.value = await listAddresses(authUser.value.uid)
-  }
-}
+  })
 
 onMounted(loadProfile)
 </script>

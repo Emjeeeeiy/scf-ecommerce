@@ -229,7 +229,7 @@
 
           <div class="max-h-[40vh] overflow-y-auto space-y-4 pr-1 custom-scrollbar">
             <div
-              v-for="item in cart.items"
+              v-for="item in cartItems"
               :key="item.id"
               class="group flex items-center justify-between gap-4 rounded-xl border border-neutral-50 bg-neutral-50/30 p-3 transition-colors hover:border-neutral-100 hover:bg-white"
             >
@@ -259,14 +259,14 @@
           <div class="mt-8 space-y-3.5 border-t border-neutral-100 pt-6">
             <div class="flex items-center justify-between text-xs">
               <span class="font-medium text-neutral-500">Order Subtotal</span>
-              <span class="font-bold text-neutral-900">{{ formatCurrency(cart.totalAmount) }}</span>
+              <span class="font-bold text-neutral-900">{{ formatCurrency(cartTotalAmount) }}</span>
             </div>
             
             <div class="mt-5 border-t border-neutral-100 pt-5 flex items-end justify-between">
               <div>
                 <p class="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">Total Payable</p>
                 <p class="text-2xl font-extrabold tracking-tight text-neutral-950">
-                  {{ formatCurrency(cart.totalAmount) }}
+                  {{ formatCurrency(cartTotalAmount) }}
                 </p>
               </div>
             </div>
@@ -477,7 +477,7 @@
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AppShell from '../../components/AppShell.vue'
-import { getCart } from '../../services/cartService'
+import { useCartStore } from '../../stores/cartStore'
 import { checkoutCart } from '../../services/orderService'
 import { getPaymentSettings, DEFAULT_PAYMENT_SETTINGS } from '../../services/settingsService'
 import { useSession } from '../../composables/useSession'
@@ -511,7 +511,7 @@ import {
 
 const router = useRouter()
 const { isAuthenticated, profile } = useSession()
-const cart = ref({ items: [], totalAmount: 0, totalItems: 0 })
+const { items: cartItems, totalAmount: cartTotalAmount, refresh: refreshCart } = useCartStore()
 const message = ref('')
 const showExclusiveNotice = ref(false)
 const showGcashModal = ref(false)
@@ -547,11 +547,10 @@ watch(profile, (newProfile) => {
 }, { immediate: true })
 
 const loadCheckout = async () => {
-  const [cartData, pSettings] = await Promise.all([
-    getCart(),
+  const [, pSettings] = await Promise.all([
+    refreshCart(),
     getPaymentSettings()
   ])
-  cart.value = cartData
   paymentSettings.value = pSettings
 
   const hasSeenNotice = localStorage.getItem(CHECKOUT_NOTICE_KEY)
@@ -597,7 +596,7 @@ const copyToClipboard = (text) => {
 }
 
 const handleCheckout = async () => {
-  if (!cart.value.items.length) {
+  if (!cartItems.value.length) {
     message.value = 'Your cart is empty.'
     return
   }
@@ -658,7 +657,8 @@ const processOrder = async () => {
 
     message.value = `Order created successfully! Redirecting...`
     showGcashModal.value = false
-    
+    await refreshCart()
+
     setTimeout(() => {
       router.push('/shop')
     }, 2000)

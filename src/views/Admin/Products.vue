@@ -304,13 +304,13 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { 
-  Image, 
-  Boxes, 
-  Plus, 
-  X, 
-  Edit3, 
-  Trash2, 
+import {
+  Image,
+  Boxes,
+  Plus,
+  X,
+  Edit3,
+  Trash2,
   PackageSearch,
   Search,
   Upload,
@@ -318,45 +318,39 @@ import {
   Loader2
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
-import {
-  createProduct,
-  deleteProduct,
-  listCategories,
-  listProducts,
-  updateProduct,
-} from '../../services/catalogService'
+import { useCatalogStore } from '../../stores/catalogStore'
+import { useSearchFilter } from '../../composables/useSearchFilter'
 import { formatCurrency, sortSizes } from '../../utils/format'
-import { useConfirm } from '../../composables/useConfirm'
+import { useConfirmAction } from '../../composables/useConfirmAction'
 import { useToast } from '../../composables/useToast'
 
-const { confirm } = useConfirm()
+const { confirmAndRun } = useConfirmAction()
 const toast = useToast()
-const loading = ref(true)
+const {
+  products,
+  categories,
+  productsLoading: loading,
+  loadCatalog,
+  categoryName,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} = useCatalogStore()
+
 const saving = ref(false)
 const isEditorOpen = ref(false)
-const searchQuery = ref('')
-const categories = ref([])
-const products = ref([])
 const editingProductId = ref('')
 const selectedCategoryId = ref('')
 
-const filteredProducts = computed(() => {
-  let items = products.value
-  
-  if (selectedCategoryId.value) {
-    items = items.filter(p => p.categoryId === selectedCategoryId.value)
-  }
-  
-  if (searchQuery.value) {
-    const q = searchQuery.value.toLowerCase()
-    items = items.filter(p => 
-      p.name.toLowerCase().includes(q) || 
-      p.description?.toLowerCase().includes(q)
-    )
-  }
-  
-  return items
-})
+const categoryFiltered = computed(() =>
+  selectedCategoryId.value
+    ? products.value.filter((p) => p.categoryId === selectedCategoryId.value)
+    : products.value,
+)
+const { query: searchQuery, filtered: filteredProducts } = useSearchFilter(categoryFiltered, (product) => [
+  product.name,
+  product.description,
+])
 
 const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 const DEFAULT_STOCK = 10
@@ -379,21 +373,13 @@ const form = reactive({
 })
 
 const loadData = async () => {
-  loading.value = true
   try {
-    const [cats, prods] = await Promise.all([listCategories(), listProducts()])
-    categories.value = cats
-    products.value = prods
+    await loadCatalog(true)
   } catch (error) {
     console.error('Failed to load data:', error)
     toast.error('Failed to load catalog data.')
-  } finally {
-    loading.value = false
   }
 }
-
-const categoryName = (categoryId) =>
-  categories.value.find((category) => category.id === categoryId)?.name || ''
 
 const openAddModal = () => {
   resetForm()
@@ -530,7 +516,6 @@ const handleSaveProduct = async () => {
     
     isEditorOpen.value = false
     resetForm()
-    await loadData()
   } catch (error) {
     console.error('Failed to save product:', error)
     if (error.code === 'resource-exhausted') {
@@ -543,18 +528,12 @@ const handleSaveProduct = async () => {
   }
 }
 
-const handleDeleteProduct = async (productId) => {
-  if (await confirm('Delete this product? This will also remove all its variants.')) {
-    try {
-      await deleteProduct(productId)
-      toast.success('Product deleted.')
-      await loadData()
-    } catch (error) {
-      console.error('Delete failed:', error)
-      toast.error('Failed to delete product.')
-    }
-  }
-}
+const handleDeleteProduct = (productId) =>
+  confirmAndRun(
+    'Delete this product? This will also remove all its variants.',
+    () => deleteProduct(productId),
+    { successMessage: 'Product deleted.', errorMessage: 'Failed to delete product.' },
+  )
 
 const startEdit = (product) => {
   editingProductId.value = product.id
@@ -601,6 +580,7 @@ const handleImageUpload = (event) => {
 
 onMounted(loadData)
 </script>
+
 
 <style scoped>
 .custom-scrollbar::-webkit-scrollbar {

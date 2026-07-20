@@ -13,7 +13,7 @@
             </div>
           </div>
           <button
-            v-if="cart.items.length"
+            v-if="items.length"
             type="button"
             class="flex items-center gap-2 rounded-lg bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 active:scale-95"
             @click="handleClearCart"
@@ -23,7 +23,7 @@
           </button>
         </div>
 
-        <div v-if="!cart.items.length" class="flex flex-col items-center justify-center py-16 text-center">
+        <div v-if="!items.length" class="flex flex-col items-center justify-center py-16 text-center">
           <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-300">
             <ShoppingBag :size="24" stroke-width="1.5" />
           </div>
@@ -42,7 +42,7 @@
 
         <div v-else class="mt-6 divide-y divide-neutral-100">
           <article
-            v-for="item in cart.items"
+            v-for="item in items"
             :key="item.id"
             class="group py-6 first:pt-0 last:pb-0"
           >
@@ -128,11 +128,11 @@
           <div class="space-y-3.5">
             <div class="flex items-center justify-between text-xs">
               <span class="font-medium text-neutral-500">Subtotal</span>
-              <span class="font-bold text-neutral-900">{{ formatCurrency(cart.totalAmount) }}</span>
+              <span class="font-bold text-neutral-900">{{ formatCurrency(totalAmount) }}</span>
             </div>
             <div class="flex items-center justify-between text-xs">
               <span class="font-medium text-neutral-500">Total Items</span>
-              <span class="font-bold text-neutral-900">{{ cart.totalItems || 0 }}</span>
+              <span class="font-bold text-neutral-900">{{ totalItems || 0 }}</span>
             </div>
             <div class="flex items-center justify-between text-xs">
               <span class="font-medium text-neutral-500">Shipping</span>
@@ -143,7 +143,7 @@
               <div>
                 <p class="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5">Grand Total</p>
                 <p class="text-2xl font-extrabold tracking-tight text-neutral-950">
-                  {{ formatCurrency(cart.totalAmount) }}
+                  {{ formatCurrency(totalAmount) }}
                 </p>
               </div>
             </div>
@@ -152,7 +152,7 @@
           <router-link
             to="/checkout"
             class="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-[0.99]"
-            :class="cart.items.length ? '' : 'pointer-events-none opacity-40'"
+            :class="items.length ? '' : 'pointer-events-none opacity-40'"
           >
             <span>Proceed to Checkout</span>
             <ArrowRight :size="14" class="transition-transform group-hover:translate-x-0.5" />
@@ -174,63 +174,49 @@
   </AppShell>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import AppShell from '../../components/AppShell.vue'
-import { clearCart, getCart, removeCartItem, updateCartItemQuantity } from '../../services/cartService'
+import { useCartStore } from '../../stores/cartStore'
 import { formatCurrency } from '../../utils/format'
-import { useConfirm } from '../../composables/useConfirm'
-import { 
-  ShoppingCart, 
-  Trash2, 
-  ShoppingBag, 
-  ArrowLeft, 
-  ArrowRight, 
-  Plus, 
-  Minus, 
-  X, 
-  Palette, 
-  Maximize, 
-  ReceiptText, 
+import { useConfirmAction } from '../../composables/useConfirmAction'
+import {
+  ShoppingCart,
+  Trash2,
+  ShoppingBag,
+  ArrowLeft,
+  ArrowRight,
+  Plus,
+  Minus,
+  X,
+  Palette,
+  Maximize,
+  ReceiptText,
   Info
 } from 'lucide-vue-next'
 
-const { confirm } = useConfirm()
-const cart = ref({
-  items: [],
-  totalItems: 0,
-  totalAmount: 0,
-})
+const { confirmAndRun } = useConfirmAction()
+const { items, totalItems, totalAmount, refresh, updateItemQuantity, removeItem, clear } = useCartStore()
 
-const loadCart = async () => {
-  cart.value = await getCart()
-}
-
-const updateQuantity = async (item, event) => {
+const updateQuantity = (item, event) => {
   const newQty = Number(event.target.value)
   if (newQty < 1) return
-  
-  await updateCartItemQuantity({
+
+  updateItemQuantity({
     variantId: item.id,
     cartKey: item.cartKey,
     quantity: newQty,
   })
-  await loadCart()
 }
 
-const handleRemove = async (item) => {
-  await removeCartItem({ 
+const handleRemove = (item) => {
+  removeItem({
     variantId: item.id,
-    cartKey: item.cartKey 
+    cartKey: item.cartKey,
   })
-  await loadCart()
 }
 
-const handleClearCart = async () => {
-  if (await confirm('Are you sure you want to clear your cart?')) {
-    await clearCart()
-    await loadCart()
-  }
-}
+const handleClearCart = () =>
+  confirmAndRun('Are you sure you want to clear your cart?', clear)
 
-onMounted(loadCart)
+onMounted(refresh)
 </script>

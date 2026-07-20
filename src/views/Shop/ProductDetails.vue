@@ -269,8 +269,8 @@
 import { onMounted, ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AppShell from '../../components/AppShell.vue'
-import { getProduct } from '../../services/catalogService'
-import { addToCart } from '../../services/cartService'
+import { useCatalogStore } from '../../stores/catalogStore'
+import { useCartStore } from '../../stores/cartStore'
 import { formatCurrency, sortSizes } from '../../utils/format'
 import { useSession } from '../../composables/useSession'
 import { 
@@ -291,6 +291,8 @@ import {
 
 const route = useRoute()
 const { profile } = useSession()
+const { fetchProduct } = useCatalogStore()
+const { addItem } = useCartStore()
 const isStudent = computed(() => profile.value?.isStudent || false)
 
 const loading = ref(true)
@@ -344,7 +346,7 @@ watch([selectedColor, selectedSize], () => {
 
 const loadProduct = async () => {
   loading.value = true
-  product.value = await getProduct(route.params.productId)
+  product.value = await fetchProduct(route.params.productId)
   loading.value = false
 }
 
@@ -357,7 +359,7 @@ const handleAddToCart = async () => {
 
   adding.value = true
   try {
-    await addToCart({
+    await addItem({
       productId: product.value.id,
       variantId: selectedVariantId.value,
       quantity: quantity.value,

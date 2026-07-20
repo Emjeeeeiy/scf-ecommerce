@@ -32,7 +32,7 @@
               <div class="flex flex-wrap items-center gap-2">
                 <span 
                   class="rounded px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider"
-                  :class="statusClasses(order.status)"
+                  :class="getOrderStatusClasses(order.status)"
                 >
                   {{ order.status }}
                 </span>
@@ -100,45 +100,25 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import AppShell from '../../components/AppShell.vue'
 import { useSession } from '../../composables/useSession'
-import { listUserOrders } from '../../services/orderService'
-import { formatCurrency } from '../../utils/format'
-import { 
-  Package, 
-  Hash, 
-  Calendar, 
-  ShoppingBag, 
-  FileText, 
-  Inbox, 
-  Store 
+import { useOrderStore } from '../../stores/orderStore'
+import { formatCurrency, formatDate, getOrderStatusClasses } from '../../utils/format'
+import {
+  Package,
+  Hash,
+  Calendar,
+  ShoppingBag,
+  FileText,
+  Inbox,
+  Store
 } from 'lucide-vue-next'
 
 const { authUser } = useSession()
-const orders = ref([])
+const { userOrders: orders, fetchUserOrders } = useOrderStore()
 
-const loadOrders = async () => {
-  if (!authUser.value) {
-    return
-  }
-
-  orders.value = await listUserOrders(authUser.value.uid)
-}
-
-const formatDate = (date) => {
-  if (!date) return 'N/A'
-  const d = new Date(date)
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-}
-
-const statusClasses = (status) => {
-  const s = status?.toLowerCase()
-  if (s === 'pending') return 'bg-yellow-100 text-yellow-700 ring-1 ring-yellow-200'
-  if (s === 'completed' || s === 'delivered') return 'bg-green-100 text-green-700 ring-1 ring-green-200'
-  if (s === 'cancelled') return 'bg-red-100 text-red-700 ring-1 ring-red-200'
-  return 'bg-blue-100 text-blue-700 ring-1 ring-blue-200'
-}
-
-onMounted(loadOrders)
+onMounted(() => {
+  if (authUser.value) fetchUserOrders(authUser.value.uid)
+})
 </script>
