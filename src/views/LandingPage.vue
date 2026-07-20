@@ -124,11 +124,11 @@
       </section>
 
       <!-- About Section -->
-      <section id="about" class="rounded-3xl bg-amber-400 px-6 py-12 text-neutral-900 sm:px-12 sm:py-16">
+      <section id="about" class="rounded-3xl bg-neutral-900 px-6 py-12  sm:px-12 sm:py-16">
         <div class="mx-auto max-w-3xl text-center">
-          <h2 class="text-2xl font-black tracking-tight sm:text-4xl uppercase">{{ settings.about.title }}</h2>
+          <h2 class="text-2xl text-amber-300 font-black tracking-tight sm:text-4xl uppercase">{{ settings.about.title }}</h2>
           <div class="mt-6 h-1 w-16 mx-auto rounded-full bg-neutral-900"></div>
-          <p class="mt-8 text-sm font-bold leading-relaxed opacity-80 sm:text-lg">
+          <p class="mt-2 text-sm text-neutral-300 leading-relaxed opacity-80 sm:text-lg">
             {{ settings.about.description }}
           </p>
         </div>
