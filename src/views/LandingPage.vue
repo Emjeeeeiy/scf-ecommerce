@@ -14,10 +14,10 @@
           <p class="mt-6 text-sm leading-relaxed text-neutral-400 max-w-xl mx-auto sm:text-lg">
             {{ settings.hero.description }}
           </p>
-          <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div class="mt-8 flex flex-col items-start justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
             <router-link
               to="/shop"
-              class="group w-full rounded-xl bg-amber-400 px-8 py-3.5 text-center text-xs font-black uppercase tracking-widest text-neutral-900 transition-all hover:scale-105 hover:bg-amber-300 sm:w-auto flex items-center justify-center gap-2 shadow-xl shadow-amber-400/20"
+              class="group w-fit rounded-xl bg-amber-400 px-5 py-3 text-left text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:scale-105 hover:bg-amber-300 sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:text-center flex items-center justify-center gap-2 shadow-xl shadow-amber-400/20"
             >
               <ShoppingBag :size="18" />
               Shop Now
@@ -88,25 +88,33 @@
       <!-- Mission & Vision -->
       <section class="grid gap-8 lg:grid-cols-2 lg:items-center">
         <div class="space-y-4">
-          <div class="rounded-2xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-8 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
-            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-500 dark:bg-amber-500/10 dark:text-amber-400">
-              <Target :size="20" />
+          <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                <Target :size="19" />
+              </div>
+              <div class="text-right">
+                <h2 class="mt-1 text-lg font-black tracking-tight text-neutral-900 dark:text-white">
+                  {{ settings.mission.title }}
+                </h2>
+              </div>
             </div>
-            <h2 class="text-xl font-black tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
-              {{ settings.mission.title }}
-            </h2>
-            <p class="mt-3 text-sm leading-relaxed text-neutral-500 sm:text-base dark:text-neutral-400">
+            <p class="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
               {{ settings.mission.description }}
             </p>
           </div>
-          <div class="rounded-2xl bg-neutral-900 p-6  sm:p-8 dark:ring-1 dark:ring-white/10">
-            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-amber-400">
-              <Eye :size="20" />
+          <div class="rounded-2xl border border-neutral-200 bg-neutral-900 p-6 text-white shadow-sm sm:p-8 dark:border-neutral-700">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-amber-400">
+                <Eye :size="19" />
+              </div>
+              <div class="text-right">
+                <h2 class="mt-1 text-lg font-black tracking-tight text-white">
+                  {{ settings.vision.title }}
+                </h2>
+              </div>
             </div>
-            <h2 class="text-xl font-black tracking-tight text-white sm:text-2xl">
-              {{ settings.vision.title }}
-            </h2>
-            <p class="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p class="mt-5 text-sm leading-relaxed text-neutral-300 sm:text-base">
               {{ settings.vision.description }}
             </p>
           </div>
