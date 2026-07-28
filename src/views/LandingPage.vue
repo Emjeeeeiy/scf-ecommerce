@@ -3,6 +3,7 @@
     <div class="space-y-10 pb-16 sm:space-y-16">
       <!-- Hero Section -->
      <section
+        id="hero"
         class="relative -mx-4 overflow-hidden bg-neutral-900 px-6 py-14 text-center text-white sm:mx-0 sm:rounded-3xl sm:px-10 sm:py-20 dark:ring-1 dark:ring-white/10"
         style="background-image: linear-gradient(to bottom, rgba(23, 23, 23, 0.9), rgba(23, 23, 23, 0.8)), url('/scfphoto2.jpg'); background-size: cover; background-position: center;"
       >
@@ -135,11 +136,19 @@
       </section>
 
       <!-- About Section -->
-      <section id="about" class="rounded-3xl bg-neutral-900 px-6 py-12  sm:px-12 sm:py-16 dark:ring-1 dark:ring-white/10">
-        <div class="mx-auto max-w-3xl text-center">
-          <h2 class="text-2xl text-amber-300 font-black tracking-tight sm:text-4xl uppercase">{{ settings.about.title }}</h2>
-          <div class="mt-6 h-1 w-16 mx-auto rounded-full bg-neutral-900"></div>
-          <p class="mt-2 text-sm text-neutral-300 leading-relaxed opacity-80 sm:text-lg">
+      <section id="about" class="relative overflow-hidden rounded-3xl bg-neutral-900 px-6 py-12 sm:px-12 sm:py-16 dark:ring-1 dark:ring-white/10">
+        <!-- Dot Pattern Background Overlay -->
+        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[16px_16px] opacity-10"></div>
+
+        <!-- Content Container (z-10 ensures text renders above dots) -->
+        <div class="relative z-10 mx-auto max-w-3xl text-center">
+          <h2 class="text-2xl font-black uppercase tracking-tight text-amber-300 sm:text-4xl">
+            {{ settings.about.title }}
+          </h2>
+          
+          <div class="mx-auto mt-6 h-1 w-16 rounded-full bg-amber-300/40"></div>
+          
+          <p class="mt-6 text-sm leading-relaxed text-neutral-300 opacity-90 sm:text-lg">
             {{ settings.about.description }}
           </p>
         </div>
@@ -196,19 +205,30 @@
             <input type="text" placeholder="Full Name" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
             <input type="email" placeholder="Email Address" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
             <textarea placeholder="Your Message" rows="3" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700"></textarea>
-            <button class="mt-3 rounded-xl bg-neutral-900 py-4 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 hover:shadow-xl active:scale-95 shadow-lg shadow-neutral-900/20 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300">
+            <button class="mt-3 rounded-xl bg-neutral-900 py-4 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300">
               Send Message
             </button>
           </form>
         </div>
       </section>
+
+      <button
+        v-show="showScrollToTopButton"
+        type="button"
+        aria-label="Return to hero section"
+        class="fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400 text-neutral-900 transition-all duration-300 hover:scale-105 hover:bg-amber-300 sm:right-6 sm:h-14 sm:w-14 md:bottom-6"
+        :class="showScrollToTopButton ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'"
+        @click="scrollToHero"
+      >
+        <ArrowUp :size="20" class="sm:h-6 sm:w-6" />
+      </button>
     </div>
   </AppShell>
 </template>
 
 <script setup>
 import AppShell from '../components/AppShell.vue'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useSession } from '../composables/useSession'
 import { useCatalogStore } from '../stores/catalogStore'
 import { getLandingPageSettings, DEFAULT_LANDING_PAGE_SETTINGS } from '../services/settingsService'
@@ -225,7 +245,8 @@ import {
   Truck, 
   Palette,
   Image,
-  ArrowRight
+  ArrowRight,
+  ArrowUp
 } from 'lucide-vue-next'
 
 const { isAuthenticated } = useSession()
@@ -234,8 +255,25 @@ const { products, loadCatalog } = useCatalogStore()
 const latestProducts = computed(() => products.value.slice(0, 6))
 const loading = ref(true)
 const settings = ref(DEFAULT_LANDING_PAGE_SETTINGS)
+const showScrollToTopButton = ref(false)
+
+const updateScrollState = () => {
+  const scrollTop = window.scrollY || window.pageYOffset
+  const windowHeight = window.innerHeight
+  const documentHeight = document.documentElement.scrollHeight
+
+  showScrollToTopButton.value = scrollTop + windowHeight >= documentHeight - 8
+}
+
+const scrollToHero = () => {
+  document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 
 onMounted(async () => {
+  updateScrollState()
+  window.addEventListener('scroll', updateScrollState, { passive: true })
+  window.addEventListener('resize', updateScrollState)
+
   try {
     const [, landingSettings] = await Promise.all([
       loadCatalog(),
@@ -247,5 +285,10 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', updateScrollState)
+  window.removeEventListener('resize', updateScrollState)
 })
 </script>

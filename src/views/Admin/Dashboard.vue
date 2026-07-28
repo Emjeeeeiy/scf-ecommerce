@@ -22,28 +22,35 @@
 
     <!-- Metrics Cards -->
     <section class="mt-5">
-      <div class="mb-3">
-        <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Snapshot</p>
-        <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Key metrics</h3>
+  <div class="mb-3">
+    <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Snapshot</p>
+    <h3 class="mt-0.5 text-lg font-black tracking-tight text-slate-900 dark:text-white">Key metrics</h3>
+  </div>
+
+  <div class="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+    <article
+      v-for="metric in metrics"
+      :key="metric.label"
+      class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs transition-all duration-300 hover:border-slate-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 sm:p-5"
+    >
+      <!-- Subtle Accent Strip -->
+      <div class="absolute inset-x-0 top-0 h-1 transition-opacity duration-300 opacity-60 group-hover:opacity-100" :class="metric.glow"></div>
+
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">{{ metric.label }}</p>
+          <h3 class="mt-1 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">{{ metric.value }}</h3>
+        </div>
+
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1 transition-transform duration-300 group-hover:rotate-6 sm:h-10 sm:w-10" :class="metric.iconClass">
+          <component :is="metric.icon" :size="18" />
+        </div>
       </div>
-      <div class="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
-        <article
-          v-for="metric in metrics"
-          :key="metric.label"
-          class="group relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60 dark:bg-neutral-900 dark:ring-neutral-800 dark:hover:shadow-none sm:p-5"
-        >
-          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-60 blur-2xl transition-all duration-300 group-hover:scale-110 group-hover:opacity-90 sm:h-28 sm:w-28" :class="metric.glow"></div>
-          <div class="relative">
-            <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl ring-1 transition-transform duration-300 group-hover:scale-110 sm:h-11 sm:w-11" :class="metric.iconClass">
-              <component :is="metric.icon" :size="17" />
-            </div>
-            <p class="mt-4 text-[8px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-neutral-500 sm:text-[9px] sm:tracking-[0.2em]">{{ metric.label }}</p>
-            <h3 class="mt-1.5 wrap-break-word text-xl font-black leading-none tracking-tight text-slate-950 dark:text-white sm:text-2xl">{{ metric.value }}</h3>
-            <p class="mt-2 text-[10px] font-bold leading-snug text-slate-500 dark:text-neutral-400 sm:text-[11px]">{{ metric.caption }}</p>
-          </div>
-        </article>
-      </div>
-    </section>
+
+      <p class="mt-3 text-xs font-medium text-slate-500 dark:text-neutral-400">{{ metric.caption }}</p>
+    </article>
+  </div>
+</section>
 
     <!-- Charts and Low Stock Section -->
     <section class="mt-5 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
