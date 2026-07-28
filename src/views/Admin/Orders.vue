@@ -28,7 +28,7 @@
                 v-model="searchQuery"
                 type="text" 
                 placeholder="Search by ID, name, email, or reference..." 
-                class="w-full pl-12 pr-10 py-3 rounded-xl border-none bg-slate-50 dark:bg-neutral-800/50 text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:ring-2 focus:ring-amber-400/20 transition-all"
+                  class="w-full pl-12 pr-10 py-3 rounded-xl border-none bg-neutral-50 dark:bg-neutral-800/50 text-sm font-medium text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-400/20 transition-all"
               >
               <button 
                 v-if="searchQuery" 
@@ -75,8 +75,8 @@
                 @click="statusFilter = status"
                 class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
                 :class="statusFilter === status 
-                  ? 'bg-slate-900 dark:bg-amber-400 text-white dark:text-neutral-950 border-slate-900 dark:border-amber-400 shadow-md' 
-                  : 'bg-white dark:bg-neutral-900 text-slate-400 dark:text-neutral-500 border-slate-100 dark:border-neutral-800 hover:border-slate-200 dark:hover:border-neutral-700'"
+                  ? 'bg-neutral-900 dark:bg-neutral-400 text-white dark:text-neutral-950 border-neutral-900 dark:border-neutral-400 shadow-md' 
+                  : 'bg-white dark:bg-neutral-900 text-neutral-400 dark:text-neutral-500 border-neutral-100 dark:border-neutral-800 hover:border-neutral-200 dark:hover:border-neutral-700'"
               >
                 {{ status }}
                 <span 
@@ -97,7 +97,7 @@
               leave-from-class="opacity-100 translate-y-0"
               leave-to-class="opacity-0 translate-y-2"
             >
-              <div v-if="selectedOrders.length" class="flex items-center gap-2 bg-slate-900 dark:bg-amber-400 p-1.5 pl-4 rounded-2xl shadow-lg border border-slate-800 dark:border-amber-500">
+              <div v-if="selectedOrders.length" class="flex items-center gap-2 bg-slate-900 dark:bg-neutral-400 p-1.5 pl-4 rounded-2xl shadow-lg border border-neutral-800 dark:border-neutral-500">
                 <span class="text-[10px] font-black uppercase tracking-wider text-white dark:text-neutral-950 mr-2">
                   {{ selectedOrders.length }} Selected
                 </span>
@@ -136,7 +136,7 @@
                       type="checkbox" 
                       :checked="isAllSelected"
                       @change="toggleSelectAll"
-                      class="h-4 w-4 rounded border-slate-200 dark:border-neutral-700 text-slate-900 dark:text-amber-400 focus:ring-amber-400/20 dark:bg-neutral-800"
+                      class="h-4 w-4 rounded border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-400 focus:ring-neutral-400/20 dark:bg-neutral-800"
                     >
                   </div>
                 </th>
@@ -153,8 +153,8 @@
               <tr v-if="loading">
                 <td colspan="8" class="py-20 text-center">
                   <div class="flex flex-col items-center justify-center gap-3">
-                    <div class="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-amber-400 dark:border-neutral-800 dark:border-t-amber-400"></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-neutral-500">Retrieving order data...</p>
+                    <div class="h-8 w-8 animate-spin rounded-full border-4 border-neutral-200 border-t-neutral-400 dark:border-neutral-800 dark:border-t-neutral-400"></div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Retrieving order data...</p>
                   </div>
                 </td>
               </tr>
@@ -172,7 +172,7 @@
                         type="checkbox" 
                         :value="order.id"
                         v-model="selectedOrders"
-                        class="h-4 w-4 rounded border-slate-200 dark:border-neutral-700 text-slate-900 dark:text-amber-400 focus:ring-amber-400/20 dark:bg-neutral-800"
+                        class="h-4 w-4 rounded border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-400 focus:ring-neutral-400/20 dark:bg-neutral-800"
                       >
                     </div>
                   </td>
@@ -183,7 +183,7 @@
                         class="flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
                         title="New Order"
                       ></span>
-                      <span class="bg-slate-900 dark:bg-amber-400 text-white dark:text-neutral-950 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter">
+                      <span class="bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter">
                         #{{ order.id.slice(0, 8) }}
                       </span>
                     </div>
@@ -274,7 +274,7 @@
           <!-- Modal Header -->
           <div class="px-8 py-6 border-b border-slate-50 dark:border-neutral-800 flex items-center justify-between bg-slate-50/30 dark:bg-neutral-800/30 shrink-0">
             <div class="flex items-center gap-4">
-              <div class="bg-slate-900 dark:bg-amber-400 text-white dark:text-neutral-950 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">
+              <div class="bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">
                 #{{ selectedOrder.id.slice(0, 12) }}
               </div>
               <span v-if="selectedOrder.isGuest" class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border bg-slate-50 dark:bg-neutral-800 text-slate-500 dark:text-neutral-400 border-slate-200 dark:border-neutral-700">
@@ -331,7 +331,7 @@
                   <div class="bg-slate-50 dark:bg-neutral-800/50 p-6 rounded-3xl border border-slate-100 dark:border-neutral-800 space-y-4">
                     <div class="flex items-center justify-between">
                       <span class="text-xs font-bold text-slate-500 dark:text-neutral-400">Method</span>
-                      <span class="px-3 py-1 rounded-xl bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[10px] font-black uppercase border border-amber-200 dark:border-amber-500/20">
+                      <span class="px-3 py-1 rounded-xl bg-neutral-100 dark:bg-neutral-800/10 text-neutral-700 dark:text-neutral-400 text-[10px] font-black uppercase border border-neutral-200 dark:border-neutral-500/20">
                         {{ selectedOrder.paymentMethod }}
                       </span>
                     </div>
@@ -393,11 +393,11 @@
                   <h3 class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <ShieldCheck :size="12" /> Fulfillment Action
                   </h3>
-                  <div class="bg-slate-900 dark:bg-amber-400 p-6 rounded-3xl text-white dark:text-neutral-950 space-y-4">
+                  <div class="bg-slate-900 dark:bg-neutral-400 p-6 rounded-3xl text-white dark:text-neutral-950 space-y-4">
                     <div>
                       <p class="text-[9px] font-bold text-slate-400 dark:text-neutral-700 uppercase tracking-widest mb-2">Update Order Status</p>
                       <select
-                        class="w-full rounded-xl bg-white/10 dark:bg-black/10 border-none px-4 py-3 text-xs font-bold text-white dark:text-neutral-950 focus:ring-2 focus:ring-amber-400 dark:focus:ring-neutral-950 transition-all cursor-pointer"
+                        class="w-full rounded-xl bg-white/10 dark:bg-black/10 border-none px-4 py-3 text-xs font-bold text-white dark:text-neutral-950 focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-950 transition-all cursor-pointer"
                         :value="selectedOrder.status"
                         @change="handleUpdateStatus(selectedOrder.id, $event.target.value)"
                       >

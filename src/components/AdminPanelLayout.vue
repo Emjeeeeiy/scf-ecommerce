@@ -1,30 +1,19 @@
 <template>
   <div :class="{ 'dark': isDarkMode }" class="h-screen overflow-hidden font-sans">
-    <div class="grid h-full lg:grid-cols-[240px_minmax(0,1fr)] bg-[#f8fafc] dark:bg-neutral-950 text-slate-900 dark:text-neutral-100">
-      <aside class="hidden h-screen border-r border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 lg:block shadow-sm">
+    <div class="grid h-full lg:grid-cols-[240px_minmax(0,1fr)] bg-[#f8fafc] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
+      <aside class="hidden h-screen border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 lg:block shadow-sm">
         <div class="flex h-full flex-col overflow-y-auto px-5 py-6">
-          <div class="border-b border-slate-100 dark:border-neutral-800 pb-5 flex items-center gap-2.5">
-            <div class="bg-slate-900 dark:bg-amber-400 p-1.5 rounded-lg text-white dark:text-neutral-950">
-              <LayoutDashboard :size="18" />
-            </div>
-            <div>
-              <router-link to="/shop" class="text-sm font-bold text-slate-950 dark:text-white tracking-tight">
-                SCF Admin
-              </router-link>
-              <p class="text-[9px] font-medium text-slate-500 dark:text-neutral-400">Workspace Management</p>
-            </div>
-          </div>
 
-          <div class="mt-5 rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/80 dark:bg-neutral-800/50 p-4 shadow-sm">
+          <div class="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-800/50 p-4">
             <div class="flex items-center gap-2.5">
-              <div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-neutral-700 flex items-center justify-center text-slate-600 dark:text-neutral-300">
+              <div class="h-8 w-8 rounded-full bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center text-neutral-600 dark:text-neutral-300">
                 <User :size="14" />
               </div>
               <div class="min-w-0">
-                <p class="truncate text-xs font-bold text-slate-950 dark:text-white">
+                <p class="truncate text-xs font-bold text-neutral-950 dark:text-white">
                   {{ profile?.username || profile?.email || 'Administrator' }}
                 </p>
-                <p class="text-[9px] font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wider">
+                <p class="text-[9px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
                   {{ profile?.role || 'admin' }}
                 </p>
               </div>
@@ -32,18 +21,18 @@
           </div>
 
           <nav class="mt-6 space-y-1">
-            <p class="px-3 mb-2 text-[9px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-[0.2em]">Main Menu</p>
+            <p class="px-3 mb-2 text-[9px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em]">Main Menu</p>
             <router-link
               v-for="item in adminNavigation"
               :key="item.to"
               :to="item.to"
               class="group flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition-all duration-200"
               :class="isActive(item.to)
-                ? 'bg-slate-900 dark:bg-amber-400 text-white dark:text-neutral-950 shadow-md'
-                : 'text-slate-600 dark:text-neutral-400 hover:bg-slate-50 dark:hover:bg-neutral-800 hover:text-slate-950 dark:hover:text-white'"
+                ? 'bg-neutral-900 dark:bg-neutral-400 text-white dark:text-neutral-950 shadow-md'
+                : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-neutral-950 dark:hover:text-white'"
             >
               <div class="relative">
-                <component :is="item.icon" :size="16" :class="isActive(item.to) ? '' : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-neutral-300'" />
+                <component :is="item.icon" :size="16" :class="isActive(item.to) ? '' : 'text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300'" />
                 <span 
                   v-if="item.label === 'Orders' && unseenOrdersCount > 0" 
                   class="absolute -top-1.5 -right-1.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900"
@@ -63,24 +52,24 @@
               <span
                 v-if="item.tag"
                 class="rounded-md px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider"
-                :class="isActive(item.to) ? 'bg-white/10 dark:bg-black/10' : 'bg-slate-100 dark:bg-neutral-800 text-slate-500 dark:text-neutral-400'"
+                :class="isActive(item.to) ? 'bg-white/10 dark:bg-black/10' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400'"
               >
                 {{ item.tag }}
               </span>
             </router-link>
           </nav>
 
-          <div class="mt-auto pt-6 border-t border-slate-100 dark:border-neutral-800 space-y-2.5">
+          <div class="mt-auto pt-6 border-t border-neutral-100 dark:border-neutral-800 space-y-2.5">
             <router-link
               to="/shop"
-              class="flex items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2.5 text-[10px] font-bold text-slate-700 dark:text-neutral-300 transition shadow-sm hover:bg-slate-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
+              class="flex items-center justify-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2.5 text-[10px] font-bold text-neutral-700 dark:text-neutral-300 transition shadow-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
             >
               <ExternalLink :size="12" />
               View storefront
             </router-link>
             <button
               type="button"
-              class="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-950 dark:bg-amber-400 px-3 py-2.5 text-[10px] font-bold text-white dark:text-neutral-950 transition shadow-sm hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-[0.98]"
+              class="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-950 dark:bg-neutral-400 px-3 py-2.5 text-[10px] font-bold text-white dark:text-neutral-950 transition shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98]"
               @click="handleLogout"
             >
               <LogOut :size="12" />
@@ -92,15 +81,15 @@
 
       <div class="flex h-screen min-w-0 flex-col">
         <!-- Top Bar for Mobile & Desktop -->
-        <header class="shrink-0 border-b border-slate-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md sticky top-0 z-10">
+        <header class="shrink-0 border-b border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md sticky top-0 z-10">
           <div class="flex items-center justify-between px-6 py-4 lg:py-5">
             <!-- Section Info -->
             <div class="min-w-0">
-              <div class="flex items-center gap-1.5 text-[9px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest">
+              <div class="flex items-center gap-1.5 text-[9px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">
                 <component :is="currentSection.icon" :size="10" />
                 <span>{{ currentSection.label }}</span>
               </div>
-              <h2 class="mt-0.5 text-lg font-black text-slate-950 dark:text-white tracking-tight truncate">{{ currentSection.label }}</h2>
+              <h2 class="mt-0.5 text-lg font-black text-neutral-950 dark:text-white tracking-tight truncate">{{ currentSection.label }}</h2>
             </div>
 
             <!-- Mobile: Quick Actions / Logout -->
@@ -113,7 +102,7 @@
               </router-link>
               <button 
                 @click="handleLogout"
-                class="p-2.5 rounded-xl bg-neutral-950 dark:bg-amber-400 text-white dark:text-neutral-950 shadow-sm"
+                class="p-2.5 rounded-xl bg-neutral-950 dark:bg-neutral-400 text-white dark:text-neutral-950 shadow-sm"
               >
                 <LogOut :size="18" />
               </button>
@@ -125,7 +114,7 @@
                 v-for="action in headerActions"
                 :key="action.to"
                 :to="action.to"
-                class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-slate-700 dark:text-neutral-300 transition shadow-sm hover:bg-slate-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
+                class="flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-neutral-700 dark:text-neutral-300 transition shadow-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
               >
                 <Plus v-if="action.label.toLowerCase().includes('add')" :size="12" />
                 <ArrowLeft v-else-if="action.label.toLowerCase().includes('back')" :size="12" />
@@ -137,7 +126,7 @@
           
           <!-- Desktop only Subtitle -->
           <div class="hidden lg:block px-6 pb-4">
-            <p class="max-w-2xl text-[10px] font-medium text-slate-500 dark:text-neutral-400">
+            <p class="max-w-2xl text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
               {{ subtitle || currentSection.description }}
             </p>
           </div>
@@ -156,7 +145,7 @@
             :key="`mobile-nav-${item.to}`"
             :to="item.to"
             class="relative flex flex-col items-center gap-1 px-3 py-1 transition-all"
-            :class="isActive(item.to) ? 'text-neutral-950 dark:text-amber-400' : 'text-neutral-400 dark:text-neutral-500'"
+            :class="isActive(item.to) ? 'text-neutral-950 dark:text-neutral-400' : 'text-neutral-400 dark:text-neutral-500'"
           >
             <component :is="item.icon" :size="20" :stroke-width="isActive(item.to) ? 2.5 : 2" />
             <span class="text-[8px] font-black uppercase tracking-tighter">{{ item.label }}</span>
@@ -177,7 +166,7 @@
             
             <div 
               v-if="isActive(item.to)"
-              class="absolute -bottom-3 h-1 w-6 rounded-t-full bg-neutral-950 dark:bg-amber-400"
+              class="absolute -bottom-3 h-1 w-6 rounded-t-full bg-neutral-950 dark:bg-neutral-400"
             ></div>
           </router-link>
         </nav>

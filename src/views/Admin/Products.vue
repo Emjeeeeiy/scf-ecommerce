@@ -12,12 +12,12 @@
                   v-model="searchQuery"
                   type="text" 
                   placeholder="Search products..." 
-                  class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 pl-9 pr-4 py-2 text-sm font-medium shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all"
+                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 pl-9 pr-4 py-2 text-sm font-medium shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all"
                 />
               </div>
               <select 
                 v-model="selectedCategoryId" 
-                class="rounded-xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-xs font-bold text-slate-700 dark:text-neutral-300 shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all cursor-pointer"
+                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-xs font-bold text-neutral-700 dark:text-neutral-300 shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all cursor-pointer"
               >
                 <option value="">All Categories</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -26,7 +26,7 @@
 
             <button 
               @click="openAddModal"
-              class="flex items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-5 py-2 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95"
+              class="flex items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-neutral-400 px-5 py-2 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition hover:bg-slate-800 dark:hover:bg-neutral-300 active:scale-95"
             >
               <Plus :size="16" />
               <span>Add Product</span>
@@ -88,7 +88,7 @@
                   </span>
                 </td>
                 <td class="px-6 py-3.5 text-center">
-                  <p class="text-sm font-black text-amber-600 dark:text-amber-400">{{ formatCurrency(product.studentPrice) }}</p>
+                  <p class="text-sm font-black text-neutral-600 dark:text-neutral-400">{{ formatCurrency(product.studentPrice) }}</p>
                 </td>
                 <td class="px-6 py-3.5 text-center">
                   <p class="text-sm font-black text-slate-950 dark:text-white">{{ formatCurrency(product.nonStudentPrice) }}</p>
@@ -116,7 +116,7 @@
                   <div class="flex justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <button 
                       @click="startEdit(product)"
-                      class="p-2 rounded-lg bg-slate-100 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400 hover:bg-slate-950 dark:hover:bg-amber-400 hover:text-white dark:hover:text-neutral-950 transition-all active:scale-90"
+                      class="p-2 rounded-lg bg-slate-100 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400 hover:bg-slate-950 dark:hover:bg-neutral-300 hover:text-white transition-all active:scale-90"
                     >
                       <Edit3 :size="14" />
                     </button>
@@ -177,7 +177,7 @@
               <div class="grid gap-8 lg:grid-cols-[220px_1fr]">
                 <!-- Left: Media -->
                 <div class="space-y-6">
-                  <div class="group relative aspect-square overflow-hidden rounded-3xl bg-white dark:bg-neutral-800 border-2 border-dashed border-slate-200 dark:border-neutral-700 flex items-center justify-center transition-all duration-500 hover:border-amber-400">
+                  <div class="group relative aspect-square overflow-hidden rounded-3xl bg-white dark:bg-neutral-800 border-2 border-dashed border-slate-200 dark:border-neutral-700 flex items-center justify-center transition-all duration-500 hover:border-neutral-400">
                     <img v-if="form.base64Image" :src="form.base64Image" class="h-full w-full object-cover" />
                     <div v-else class="flex flex-col items-center gap-2 text-slate-300 dark:text-neutral-600">
                       <Upload :size="32" stroke-width="1" />
@@ -196,7 +196,7 @@
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Student Price</span>
                       <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">₱</span>
-                        <input v-model.number="form.studentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all" />
+                        <input v-model.number="form.studentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all" />
                       </div>
                     </label>
 
@@ -204,13 +204,13 @@
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Regular Price</span>
                       <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">₱</span>
-                        <input v-model.number="form.nonStudentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-amber-400 focus:ring-4 focus:ring-amber-400/10 outline-none transition-all" />
+                        <input v-model.number="form.nonStudentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all" />
                       </div>
                     </label>
 
                     <label class="block">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Status</span>
-                      <select v-model="form.status" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-4 py-3 text-xs font-bold shadow-sm focus:border-amber-400 outline-none">
+                      <select v-model="form.status" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-4 py-3 text-xs font-bold shadow-sm focus:border-neutral-400 outline-none">
                         <option value="active">Active</option>
                         <option value="draft">Draft</option>
                         <option value="archived">Archived</option>
@@ -224,12 +224,12 @@
                   <div class="grid gap-4 md:grid-cols-2">
                     <label class="block md:col-span-2">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Product Name</span>
-                      <input v-model="form.name" required placeholder="Name your product..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-sm font-black shadow-sm focus:border-amber-400 outline-none transition-all" />
+                      <input v-model="form.name" required placeholder="Name your product..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-sm font-black shadow-sm focus:border-neutral-400 outline-none transition-all" />
                     </label>
 
                     <label class="block">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Category</span>
-                      <select v-model="form.categoryId" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-xs font-black shadow-sm focus:border-amber-400 outline-none cursor-pointer">
+                      <select v-model="form.categoryId" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-xs font-black shadow-sm focus:border-neutral-400 outline-none cursor-pointer">
                         <option value="">Uncategorized</option>
                         <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                       </select>
@@ -237,7 +237,7 @@
 
                     <label class="block md:col-span-2">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Description</span>
-                      <textarea v-model="form.description" rows="3" placeholder="Tell the story..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-4 text-xs font-medium shadow-sm focus:border-amber-400 outline-none resize-none transition-all"></textarea>
+                      <textarea v-model="form.description" rows="3" placeholder="Tell the story..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-4 text-xs font-medium shadow-sm focus:border-neutral-400 outline-none resize-none transition-all"></textarea>
                     </label>
                   </div>
 
@@ -245,7 +245,7 @@
                   <div class="space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 dark:border-neutral-800 pb-2">
                       <h3 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white">Inventory Variants</h3>
-                      <button type="button" @click="addVariantRow" class="text-[9px] font-black text-amber-500 uppercase tracking-widest hover:underline">+ Add Color</button>
+                      <button type="button" @click="addVariantRow" class="text-[9px] font-black text-neutral-500 uppercase tracking-widest hover:underline">+ Add Color</button>
                     </div>
 
                     <div class="grid gap-4">
@@ -267,7 +267,7 @@
                             <button type="button" @click="removeOptionRow(vIndex, oIndex)" class="p-1.5 text-slate-200 hover:text-red-500">
                               <X :size="14" />
                             </button>
-                            <button v-if="oIndex === variant.options.length - 1" type="button" @click="addOptionRow(vIndex)" class="p-1.5 text-amber-500">
+                            <button v-if="oIndex === variant.options.length - 1" type="button" @click="addOptionRow(vIndex)" class="p-1.5 text-neutral-500">
                               <Plus :size="14" />
                             </button>
                           </div>
@@ -286,7 +286,7 @@
               <button @click="closeEditor" type="button" class="flex-1 rounded-xl border-2 border-slate-100 dark:border-neutral-800 py-3 text-xs font-black text-slate-400 hover:border-slate-200 transition-all">
                 Cancel
               </button>
-              <button :disabled="saving" form="product-form" type="submit" class="flex-[1.5] rounded-xl bg-slate-900 dark:bg-amber-400 py-3 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed">
+              <button :disabled="saving" form="product-form" type="submit" class="flex-[1.5] rounded-xl bg-slate-900 dark:bg-neutral-400 py-3 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed">
                 <span v-if="saving" class="flex items-center justify-center gap-2">
                   <Loader2 class="animate-spin" :size="16" />
                   Saving...

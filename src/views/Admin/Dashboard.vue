@@ -6,7 +6,7 @@
       </div>
       <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between relative z-10">
         <div class="max-w-2xl">
-          <div class="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400">
+          <div class="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-400">
             <ShieldCheck :size="12" />
             <span>Control center</span>
           </div>
@@ -31,7 +31,7 @@
     <article
       v-for="metric in metrics"
       :key="metric.label"
-      class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs transition-all duration-300 hover:border-slate-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 sm:p-5"
+      class="group relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-4 shadow-xs transition-all duration-300 hover:border-neutral-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 sm:p-5"
     >
       <!-- Subtle Accent Strip -->
       <div class="absolute inset-x-0 top-0 h-1 transition-opacity duration-300 opacity-60 group-hover:opacity-100" :class="metric.glow"></div>
@@ -61,13 +61,13 @@
             <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Performance</p>
             <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Sales Trends</h3>
           </div>
-          <div class="flex items-center gap-1 rounded-lg bg-slate-50 dark:bg-neutral-800 p-1">
+          <div class="flex items-center gap-1 rounded-lg bg-neutral-50 dark:bg-neutral-800 p-1">
             <button 
               v-for="f in filters" 
               :key="f.id"
               @click="activeFilter = f.id"
               class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-all rounded-md"
-              :class="activeFilter === f.id ? 'bg-white dark:bg-neutral-700 text-slate-900 dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'"
+              :class="activeFilter === f.id ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-400 hover:text-neutral-600'"
             >
               {{ f.label }}
             </button>
@@ -111,7 +111,7 @@
               </p>
             </div>
             <div class="text-right">
-              <p class="text-xs font-black" :class="item.stock === 0 ? 'text-rose-600' : 'text-amber-600'">{{ item.stock }}</p>
+              <p class="text-xs font-black" :class="item.stock === 0 ? 'text-rose-600' : 'text-neutral-600'">{{ item.stock }}</p>
               <p class="text-[8px] font-bold uppercase tracking-widest text-slate-400">Left</p>
             </div>
           </div>
@@ -122,7 +122,7 @@
           </div>
         </div>
         
-        <router-link to="/admin/products" class="mt-5 flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-neutral-800 py-2 text-[10px] font-bold text-slate-600 dark:text-neutral-400 transition hover:bg-slate-50 dark:hover:bg-neutral-800">
+        <router-link to="/admin/products" class="mt-5 flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 py-2 text-[10px] font-bold text-neutral-600 dark:text-neutral-400 transition hover:bg-neutral-50 dark:hover:bg-neutral-800">
           Manage Inventory
         </router-link>
       </div>
@@ -149,7 +149,7 @@
               <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-neutral-500">{{ workspace.tag }}</p>
               <component :is="workspace.icon" :size="12" class="text-slate-300 dark:text-neutral-600 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
             </div>
-            <h4 class="mt-2 text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-950 dark:group-hover:text-amber-400 transition-colors">{{ workspace.title }}</h4>
+            <h4 class="mt-2 text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-950 dark:group-hover:text-neutral-300 transition-colors">{{ workspace.title }}</h4>
             <p class="mt-1.5 text-[11px] font-medium text-slate-500 dark:text-neutral-400 leading-relaxed">{{ workspace.description }}</p>
           </router-link>
         </div>
@@ -182,7 +182,7 @@
           <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Recent orders</p>
           <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Latest activity</h3>
         </div>
-        <router-link to="/admin/orders" class="flex items-center gap-1.5 rounded-lg bg-slate-950 dark:bg-amber-400 px-3.5 py-1.5 text-[10px] font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-95">
+        <router-link to="/admin/orders" class="flex items-center gap-1.5 rounded-lg bg-slate-950 dark:bg-neutral-400 px-3.5 py-1.5 text-[10px] font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-neutral-300 active:scale-95">
           <ShoppingCart :size="12" />
           View all
         </router-link>
@@ -219,7 +219,7 @@
                 <span 
                   class="mt-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider"
                   :class="{
-                    'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400': order.status === 'received',
+                    'bg-neutral-50 dark:bg-neutral-800/10 text-neutral-600 dark:text-neutral-400': order.status === 'received',
                     'bg-slate-50 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400': order.status === 'processing',
                     'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400': order.status === 'shipped',
                     'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400': order.status === 'completed'
@@ -479,8 +479,8 @@ const metrics = computed(() => [
     value: orders.value.length,
     icon: ShoppingCart,
     caption: 'Lifetime order count',
-    iconClass: 'bg-amber-50 text-amber-600 ring-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20',
-    glow: 'bg-amber-200 dark:bg-amber-500/20',
+    iconClass: 'bg-neutral-50 text-neutral-600 ring-neutral-100 dark:bg-neutral-500/10 dark:text-neutral-400 dark:ring-neutral-500/20',
+    glow: 'bg-neutral-200 dark:bg-neutral-500/20',
   },
   {
     label: 'Low Stock',

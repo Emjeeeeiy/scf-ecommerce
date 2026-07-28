@@ -11,7 +11,7 @@
               v-model="searchQuery"
               type="text" 
               placeholder="Search users by name, email, or username..." 
-              class="w-full pl-12 pr-10 py-3 rounded-xl border-none bg-slate-50 dark:bg-neutral-800/50 text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:ring-2 focus:ring-amber-400/20 transition-all"
+              class="w-full pl-12 pr-10 py-3 rounded-xl border-none bg-neutral-50 dark:bg-neutral-800/50 text-sm font-medium text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-400/20 transition-all"
             >
             <button 
               v-if="searchQuery" 
@@ -67,7 +67,7 @@
                 <td class="px-6 py-4 whitespace-nowrap" data-label="Tier" @click="openDetails(user)">
                   <span 
                     class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
-                    :class="user.isStudent ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
+                    :class="user.isStudent ? 'bg-neutral-50 text-neutral-600 border-neutral-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
                   >
                     {{ user.isStudent ? 'Student' : 'Regular' }}
                   </span>
@@ -90,7 +90,7 @@
                   <div class="flex items-center justify-center gap-1">
                     <button 
                       @click.stop="openDetails(user)"
-                      class="p-2 text-slate-300 dark:text-neutral-700 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                      class="p-2 text-slate-300 dark:text-neutral-700 hover:text-neutral-500 dark:hover:text-neutral-300 transition-colors"
                       title="View Profile"
                     >
                       <Eye :size="16" />
@@ -136,7 +136,7 @@
         <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-neutral-900 shadow-2xl flex flex-col">
           <div class="px-8 py-6 border-b border-slate-50 dark:border-neutral-800 flex items-center justify-between bg-slate-50/30 dark:bg-neutral-800/30 shrink-0">
             <div class="flex items-center gap-4">
-              <div class="h-10 w-10 rounded-full bg-slate-900 dark:bg-amber-400 flex items-center justify-center text-white dark:text-neutral-950">
+              <div class="h-10 w-10 rounded-full bg-slate-900 dark:bg-neutral-400 flex items-center justify-center text-white dark:text-neutral-950">
                 <UserIcon :size="20" />
               </div>
               <div>
@@ -177,7 +177,7 @@
                   <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Account Tier</p>
                   <span 
                     class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
-                    :class="selectedUser.isStudent ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
+                    :class="selectedUser.isStudent ? 'bg-neutral-50 text-neutral-600 border-neutral-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
                   >
                     {{ selectedUser.isStudent ? 'Student Pricing' : 'Regular Pricing' }}
                   </span>
@@ -220,7 +220,7 @@
           <div class="px-8 py-6 border-t border-slate-50 dark:border-neutral-800 bg-slate-50/30 dark:bg-neutral-800/30 flex justify-end shrink-0">
             <button 
               @click="selectedUser = null"
-              class="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-amber-400 text-white dark:text-neutral-950 text-xs font-bold hover:bg-slate-800 dark:hover:bg-amber-300 transition-all shadow-lg shadow-slate-900/10 dark:shadow-none"
+              class="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 text-xs font-bold hover:bg-slate-800 dark:hover:bg-neutral-300 transition-all shadow-lg shadow-slate-900/10 dark:shadow-none"
             >
               Close Profile
             </button>

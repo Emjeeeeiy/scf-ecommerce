@@ -13,10 +13,10 @@
 
         <form class="mt-6 space-y-4" @submit.prevent="handleCreateCategory">
           <label class="block">
-            <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">Category name</span>
-            <input v-model="name" class="w-full rounded-xl border border-slate-100 dark:border-neutral-800 bg-slate-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all" placeholder="Example: Accessories" required />
-          </label>
-          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-4 py-3.5 text-sm font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-amber-300 active:scale-[0.98] shadow-md shadow-slate-100 dark:shadow-none">
+              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Category name</span>
+              <input v-model="name" class="w-full rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-semibold text-neutral-900 dark:text-white focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400 transition-all" placeholder="Example: Accessories" required />
+            </label>
+            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 dark:bg-neutral-400 px-4 py-3.5 text-sm font-bold text-white dark:text-neutral-950 transition hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98] shadow-md shadow-neutral-100 dark:shadow-none">
             <Save :size="16" />
             Save category
           </button>

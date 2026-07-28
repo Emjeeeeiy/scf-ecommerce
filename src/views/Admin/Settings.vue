@@ -77,7 +77,7 @@
             <button 
               @click="handleSave"
               :disabled="saving"
-              class="flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-6 py-2.5 text-sm font-bold text-white dark:text-neutral-950 transition-all hover:bg-slate-800 dark:hover:bg-amber-300 disabled:opacity-50"
+              class="flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-neutral-400 px-6 py-2.5 text-sm font-bold text-white dark:text-neutral-950 transition-all hover:bg-slate-800 dark:hover:bg-neutral-300 disabled:opacity-50"
             >
               <Save v-if="!saving" :size="16" />
               <Loader2 v-else :size="16" class="animate-spin" />
@@ -98,11 +98,11 @@
               <div class="grid gap-6 md:grid-cols-2">
                 <div class="space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Heading Title</label>
-                  <input v-model="settings.hero.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                  <input v-model="settings.hero.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                 </div>
                 <div class="md:col-span-2 space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Description</label>
-                  <textarea v-model="settings.hero.description" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400"></textarea>
+                  <textarea v-model="settings.hero.description" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400"></textarea>
                 </div>
               </div>
             </div>
@@ -116,11 +116,11 @@
                 <div class="space-y-4">
                   <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Title</label>
-                    <input v-model="settings.mission.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                    <input v-model="settings.mission.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                   </div>
                   <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Description</label>
-                    <textarea v-model="settings.mission.description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400"></textarea>
+                    <textarea v-model="settings.mission.description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400"></textarea>
                   </div>
                 </div>
               </div>
@@ -131,11 +131,11 @@
                 <div class="space-y-4">
                   <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Title</label>
-                    <input v-model="settings.vision.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                    <input v-model="settings.vision.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                   </div>
                   <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Description</label>
-                    <textarea v-model="settings.vision.description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400"></textarea>
+                    <textarea v-model="settings.vision.description" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400"></textarea>
                   </div>
                 </div>
               </div>
@@ -149,11 +149,11 @@
               <div class="grid gap-6">
                 <div class="space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Title</label>
-                  <input v-model="settings.about.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                  <input v-model="settings.about.title" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                 </div>
                 <div class="space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Content</label>
-                  <textarea v-model="settings.about.description" rows="5" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400"></textarea>
+                  <textarea v-model="settings.about.description" rows="5" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400"></textarea>
                 </div>
               </div>
             </div>
@@ -166,15 +166,15 @@
               <div class="grid gap-6 md:grid-cols-2">
                 <div class="space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Public Email</label>
-                  <input v-model="settings.contact.email" type="email" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                  <input v-model="settings.contact.email" type="email" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                 </div>
                 <div class="space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Location/Address</label>
-                  <input v-model="settings.contact.address" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                  <input v-model="settings.contact.address" type="text" class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                 </div>
                 <div class="md:col-span-2 space-y-2">
                   <label class="text-xs font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">Facebook Page URL</label>
-                  <input v-model="settings.contact.facebook" type="url" placeholder="https://facebook.com/..." class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" />
+                  <input v-model="settings.contact.facebook" type="url" placeholder="https://facebook.com/..." class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" />
                 </div>
               </div>
             </div>
@@ -193,10 +193,10 @@
             <button 
               @click="handleSave"
               :disabled="saving"
-              class="flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-amber-400 px-6 py-2.5 text-sm font-bold text-white dark:text-neutral-950 transition-all hover:bg-slate-800 dark:hover:bg-amber-300 disabled:opacity-50"
+              class="flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-neutral-400 px-6 py-2.5 text-sm font-bold text-white dark:text-neutral-950 transition-all hover:bg-slate-800 dark:hover:bg-neutral-300 disabled:opacity-50"
             >
               <Save v-if="!saving" :size="16" />
-              <Loader2 v-else :size="16" class="animate-spin" />
+              <Loader2 v-else :size="32" class="animate-spin text-slate-400 dark:text-neutral-600" />
               {{ saving ? 'Saving...' : 'Save Changes' }}
             </button>
           </div>
@@ -216,7 +216,7 @@
                 <!-- QR Code Preview/Upload -->
                 <div class="space-y-4">
                   <p class="text-[10px] font-bold text-slate-700 dark:text-neutral-300 uppercase tracking-wider text-center">GCash QR Code</p>
-                  <div class="relative group aspect-square overflow-hidden rounded-2xl bg-slate-50 dark:bg-neutral-800/50 border-2 border-dashed border-slate-200 dark:border-neutral-700 flex items-center justify-center transition-all hover:border-amber-400 dark:hover:border-amber-400">
+                  <div class="relative group aspect-square overflow-hidden rounded-2xl bg-slate-50 dark:bg-neutral-800/50 border-2 border-dashed border-slate-200 dark:border-neutral-700 flex items-center justify-center transition-all hover:border-neutral-400 dark:hover:border-neutral-400">
                     <img 
                       v-if="paymentSettings.gcash.qrCodeBase64" 
                       :src="paymentSettings.gcash.qrCodeBase64" 
@@ -245,7 +245,7 @@
                       v-model="paymentSettings.gcash.accountName" 
                       type="text" 
                       placeholder="e.g. JOHN D." 
-                      class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" 
+                      class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" 
                     />
                   </div>
                   <div class="space-y-2">
@@ -254,11 +254,11 @@
                       v-model="paymentSettings.gcash.accountNumber" 
                       type="text" 
                       placeholder="e.g. 0912 345 6789" 
-                      class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-amber-400" 
+                      class="w-full rounded-xl border border-slate-200 dark:border-neutral-800 bg-slate-50 dark:bg-neutral-800/50 p-4 text-sm font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-neutral-400" 
                     />
                   </div>
-                  <div class="rounded-xl bg-amber-50 dark:bg-amber-500/10 p-4 border border-amber-100 dark:border-amber-500/20">
-                    <p class="text-[10px] font-bold text-amber-700 dark:text-amber-400 leading-relaxed">
+                  <div class="rounded-xl bg-neutral-50 dark:bg-neutral-800/10 p-4 border border-neutral-100 dark:border-neutral-500/20">
+                    <p class="text-[10px] font-bold text-neutral-700 dark:text-neutral-400 leading-relaxed">
                       <Info :size="12" class="inline mb-0.5 mr-1" />
                       Customers will see this QR code and account information when they select GCash as their payment method during checkout.
                     </p>
