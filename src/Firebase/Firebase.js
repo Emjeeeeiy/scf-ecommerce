@@ -4,12 +4,12 @@ import { getFirestore, serverTimestamp, Timestamp } from 'firebase/firestore'
 import { getMessaging, isSupported } from 'firebase/messaging'
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: 'AIzaSyABOyaQ2XE-VVDwk2E36GonmKLkgQphwT0',
+  authDomain: 'scf-app-4b684.firebaseapp.com',
+  projectId: 'scf-app-4b684',
+  storageBucket: 'scf-app-4b684.firebasestorage.app',
+  messagingSenderId: '470973606342',
+  appId: '1:470973606342:web:7c8411fe4e149dd6162ac7',
 }
 
 const app = initializeApp(firebaseConfig)
