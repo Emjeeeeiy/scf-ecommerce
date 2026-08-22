@@ -1,0 +1,92 @@
+rules_version = '2';
+
+// First-pass rules for the scf-app-4b684 project. This project had no rules
+// deployed before, so review carefully before `firebase deploy --only firestore:rules`.
+//
+// Kept intentionally close to the app's current (rule-less) behavior:
+// - Guest checkout writes orders/guests without auth, so those creates stay open.
+// - Everything else is scoped to the owning user or to admins.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      // Public registration (authService.registerUser) always sends role: 'customer';
+      // block anyone from self-registering as admin.
+      allow create: if isOwner(uid) && request.resource.data.role == 'customer';
+      // Owners can update their own profile (including fcmTokens) but not their own role;
+      // only an admin can promote/demote a user from the Users admin view.
+      allow update: if isAdmin() ||
+        (isOwner(uid) && request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin();
+
+      match /addresses/{addressId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+    }
+
+    match /carts/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+
+      match /variants/{variantId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    match /orders/{orderId} {
+      // Checkout (src/services/orderService.js) creates orders for guests too,
+      // before any auth exists, so this stays open like the rest of checkout.
+      allow create: if true;
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow update, delete: if isAdmin();
+
+      match /items/{itemId} {
+        allow create: if true;
+        allow read: if isAdmin() ||
+          (isSignedIn() &&
+            get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid);
+        allow update, delete: if isAdmin();
+      }
+    }
+
+    match /guests/{guestId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      // Landing page + payment (GCash) settings are read publicly (storefront, checkout).
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
