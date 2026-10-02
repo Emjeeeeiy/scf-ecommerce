@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local backup of discarded 2026-10-02 redesign work (delete after redo)
+.recovery/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
