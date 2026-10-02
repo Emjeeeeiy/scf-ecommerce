@@ -5,9 +5,9 @@
       v-if="showExclusiveNotice"
       class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-900/60 p-4 backdrop-blur-md"
     >
-      <div class="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800">
+      <div class="w-full max-w-sm overflow-hidden rounded-2xl bg-white  border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800">
         <div class="bg-amber-400 p-6 text-neutral-900">
-           <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 mb-4 shadow-inner">
+           <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 mb-4 ">
              <MapPin :size="20" />
            </div>
            <h2 class="text-xl font-bold tracking-tight">Delivery Area Notice</h2>
@@ -19,7 +19,7 @@
           </p>
           <button
             type="button"
-            class="mt-6 w-full rounded-xl bg-neutral-950 py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all hover:bg-neutral-800 active:scale-95 shadow-sm dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="mt-6 w-full rounded-xl bg-neutral-950 py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all hover:bg-neutral-800 active:scale-95  dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
             @click="dismissExclusiveNotice"
           >
             I Understand
@@ -30,7 +30,7 @@
 
     <section class="grid gap-8 lg:grid-cols-[1.3fr_0.8fr]">
       <!-- Customer Details Form -->
-      <div v-if="!isAuthenticated" class="rounded-2xl border border-neutral-200 bg-white shadow-sm flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
+      <div v-if="!isAuthenticated" class="rounded-2xl border border-neutral-200 bg-white  flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex items-center gap-3 border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
           <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
             <User :size="16" stroke-width="1.5" />
@@ -109,7 +109,7 @@
               <Globe :size="10" stroke-width="1.5" />
               <span>Province</span>
             </label>
-            <div class="flex items-center justify-between rounded-xl border border-neutral-100 bg-neutral-50 px-5 py-3 shadow-inner dark:border-neutral-700 dark:bg-neutral-800">
+            <div class="flex items-center justify-between rounded-xl border border-neutral-100 bg-neutral-50 px-5 py-3  dark:border-neutral-700 dark:bg-neutral-800">
               <span class="text-xs font-bold text-neutral-400 uppercase tracking-wider dark:text-neutral-500">Oriental Mindoro</span>
               <Lock :size="12" class="text-neutral-300 dark:text-neutral-600" />
             </div>
@@ -127,12 +127,12 @@
                 :key="method"
                 class="relative flex cursor-pointer flex-col gap-3 rounded-xl border-2 p-4 transition-all duration-200"
                 :class="form.paymentMethod === method
-                  ? 'border-neutral-900 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-neutral-950 dark:text-white dark:ring-1 dark:ring-amber-400/30'
+                  ? 'border-neutral-900 bg-neutral-950 text-white  dark:border-amber-400 dark:bg-neutral-950 dark:text-white dark:ring-1 dark:ring-amber-400/30'
                   : 'border-neutral-100 bg-neutral-50/50 text-neutral-500 hover:border-neutral-200 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-600 dark:hover:bg-neutral-800'"
               >
                 <input v-model="form.paymentMethod" type="radio" :value="method" class="sr-only" />
                 <div class="flex items-center justify-between">
-                  <div class="flex h-8 w-8 items-center justify-center rounded-lg shadow-inner" :class="form.paymentMethod === method ? 'bg-white/10' : 'bg-white border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-700'">
+                  <div class="flex h-8 w-8 items-center justify-center rounded-lg " :class="form.paymentMethod === method ? 'bg-white/10' : 'bg-white border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-700'">
                     <HandCoins v-if="method === 'cod'" :size="16" />
                     <Wallet v-if="method === 'gcash'" :size="16" />
                     <Landmark v-if="method === 'bank'" :size="16" />
@@ -149,7 +149,7 @@
       </div>
 
       <!-- Logged In Order Summary -->
-      <div v-else class="rounded-2xl border border-neutral-200 bg-white shadow-sm flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
+      <div v-else class="rounded-2xl border border-neutral-200 bg-white  flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex items-center gap-3 border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
           <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
             <CreditCard :size="16" stroke-width="1.5" />
@@ -193,17 +193,17 @@
                 :key="method"
                 class="relative flex cursor-pointer flex-col gap-4 rounded-xl border-2 p-5 transition-all duration-200"
                 :class="form.paymentMethod === method
-                  ? 'border-neutral-900 bg-neutral-950 text-white shadow-md dark:border-amber-400 dark:bg-neutral-950 dark:text-white dark:ring-1 dark:ring-amber-400/30'
+                  ? 'border-neutral-900 bg-neutral-950 text-white  dark:border-amber-400 dark:bg-neutral-950 dark:text-white dark:ring-1 dark:ring-amber-400/30'
                   : 'border-neutral-100 bg-neutral-50/50 text-neutral-500 hover:border-neutral-200 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-600 dark:hover:bg-neutral-800'"
               >
                 <input v-model="form.paymentMethod" type="radio" :value="method" class="sr-only" />
                 <div class="flex items-center justify-between">
-                  <div class="flex h-10 w-10 items-center justify-center rounded-xl shadow-inner" :class="form.paymentMethod === method ? 'bg-white/10' : 'bg-white border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-700'">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-xl " :class="form.paymentMethod === method ? 'bg-white/10' : 'bg-white border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-700'">
                     <HandCoins v-if="method === 'cod'" :size="20" />
                     <Wallet v-if="method === 'gcash'" :size="20" />
                     <Landmark v-if="method === 'bank'" :size="20" />
                   </div>
-                  <div v-if="form.paymentMethod === method" class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-neutral-950 shadow-sm">
+                  <div v-if="form.paymentMethod === method" class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-neutral-950 ">
                     <Check :size="12" stroke-width="3" />
                   </div>
                 </div>
@@ -221,7 +221,7 @@
 
       <!-- Order Review Sidebar -->
       <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-2xl border border-neutral-200 bg-white p-6  sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
           <div class="flex items-center gap-2.5 mb-6 border-b border-neutral-100 pb-4 dark:border-neutral-800">
             <Eye :size="14" class="text-neutral-400 dark:text-neutral-500" />
             <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Review Selection</h2>
@@ -234,7 +234,7 @@
               class="group flex items-center justify-between gap-4 rounded-xl border border-neutral-50 bg-neutral-50/30 p-3 transition-colors hover:border-neutral-100 hover:bg-white dark:border-neutral-800/50 dark:bg-neutral-800/20 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/40"
             >
               <div class="flex min-w-0 items-center gap-3">
-                <div class="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
+                <div class="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-white  dark:border-neutral-700 dark:bg-neutral-900">
                   <img
                     v-if="item.base64Image"
                     :src="item.base64Image"
@@ -277,7 +277,7 @@
           <button
             type="button"
             :disabled="isProcessing"
-            class="group mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-4 text-xs font-semibold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="group mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-4 text-xs font-semibold uppercase tracking-wider text-white  transition-all hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
             @click="handleCheckout"
           >
             <span v-if="!isProcessing">Place Order</span>
@@ -294,7 +294,7 @@
 
         <div class="rounded-2xl border border-neutral-200 bg-neutral-50/50 p-5 dark:border-neutral-800 dark:bg-neutral-800/50">
            <div class="items-start gap-3 flex">
-              <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-neutral-400 border border-neutral-100 shadow-sm dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700">
+              <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-neutral-400 border border-neutral-100  dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700">
                 <ShieldCheck :size="14" />
               </div>
               <p class="text-[11px] font-medium leading-relaxed text-neutral-500 dark:text-neutral-400">
@@ -315,7 +315,7 @@
         ></div>
         
         <!-- Modal Container -->
-        <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl flex flex-col max-h-[90vh] border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800">
+        <div class="relative w-full max-w-md overflow-hidden rounded-2xl bg-white  flex flex-col max-h-[90vh] border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800">
 
           <!-- Header -->
           <div class="flex items-center justify-between border-b border-neutral-100 p-5 sm:p-6 bg-white shrink-0 dark:border-neutral-800 dark:bg-neutral-900">
@@ -347,7 +347,7 @@
               </div>
 
               <!-- QR Code Section -->
-              <div class="relative mb-6 flex h-44 w-44 items-center justify-center rounded-2xl bg-neutral-50 border border-neutral-100 p-2 shadow-inner dark:bg-neutral-800 dark:border-neutral-700">
+              <div class="relative mb-6 flex h-44 w-44 items-center justify-center rounded-2xl bg-neutral-50 border border-neutral-100 p-2  dark:bg-neutral-800 dark:border-neutral-700">
                 <img
                   v-if="paymentSettings.gcash.qrCodeBase64"
                   :src="paymentSettings.gcash.qrCodeBase64"
@@ -370,7 +370,7 @@
                   </div>
                   <button
                     @click="copyToClipboard(paymentSettings.gcash.accountNumber)"
-                    class="rounded-lg bg-white p-2.5 text-blue-600 shadow-sm border border-neutral-200 hover:bg-neutral-50 active:scale-90 transition-all dark:bg-neutral-900 dark:text-blue-400 dark:border-neutral-700 dark:hover:bg-neutral-800"
+                    class="rounded-lg bg-white p-2.5 text-blue-600  border border-neutral-200 hover:bg-neutral-50 active:scale-90 transition-all dark:bg-neutral-900 dark:text-blue-400 dark:border-neutral-700 dark:hover:bg-neutral-800"
                     title="Copy Number"
                   >
                     <Copy :size="16" />
@@ -418,14 +418,14 @@
                     @change="handleFileChange"
                   />
                   <div v-if="!receiptPreview" class="flex flex-col items-center py-8">
-                    <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-neutral-400 border border-neutral-100 shadow-sm transition-transform group-hover:scale-110 dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700">
+                    <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-neutral-400 border border-neutral-100  transition-transform group-hover:scale-110 dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700">
                       <Upload :size="18" />
                     </div>
                     <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-wider dark:text-neutral-400">Tap to upload image</p>
                     <p class="mt-1 text-[8px] text-neutral-400 uppercase dark:text-neutral-500">JPG, PNG up to 5MB</p>
                   </div>
                   <div v-else class="p-2">
-                    <img :src="receiptPreview" class="aspect-video w-full rounded-lg object-cover shadow-sm" />
+                    <img :src="receiptPreview" class="aspect-video w-full rounded-lg object-cover " />
                     <div class="mt-3 text-center text-[10px] font-bold text-blue-600 uppercase tracking-wider bg-white/80 py-2 rounded-lg backdrop-blur-sm dark:text-blue-400 dark:bg-neutral-900/80">Change Receipt Image</div>
                   </div>
                 </div>
@@ -460,7 +460,7 @@
             <button
               @click="confirmGcashPayment"
               :disabled="isProcessing || receiptStatus !== 'legit' || !form.referenceNo"
-              class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-blue-100 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:bg-neutral-100 disabled:text-neutral-400 disabled:shadow-none disabled:cursor-not-allowed dark:shadow-blue-500/10 dark:disabled:bg-neutral-800 dark:disabled:text-neutral-600"
+              class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-4 text-xs font-bold uppercase tracking-wider text-white   transition-all hover:bg-blue-700 active:scale-[0.98] disabled:bg-neutral-100 disabled:text-neutral-400  disabled:cursor-not-allowed  dark:disabled:bg-neutral-800 dark:disabled:text-neutral-600"
             >
               <span v-if="!isProcessing">Confirm Payment</span>
               <Loader2 v-else :size="16" class="animate-spin" />

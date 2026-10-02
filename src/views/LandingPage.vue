@@ -1,34 +1,32 @@
 <template>
   <AppShell>
     <div class="space-y-10 pb-16 sm:space-y-16">
-      <!-- Hero Section -->
-     <section
+      <!-- Hero Section: full-screen, left-aligned massive stacked type -->
+      <section
         id="hero"
-        class="relative -mx-4 overflow-hidden bg-neutral-900 px-6 py-14 text-center text-white sm:mx-0 sm:rounded-3xl sm:px-10 sm:py-20 dark:ring-1 dark:ring-white/10"
-        style="background-image: linear-gradient(to bottom, rgba(23, 23, 23, 0.9), rgba(23, 23, 23, 0.8)), url('/scfphoto2.jpg'); background-size: cover; background-position: center;"
+        class="hero-fullscreen relative -mx-4 -mt-6 grid place-items-center overflow-hidden border-b-2 border-neutral-900 bg-white text-left text-neutral-900 sm:-mx-6 lg:-mx-12 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
       >
-        <div class="relative z-10 mx-auto max-w-4xl">
-          <h1 class="text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-            <span class="block text-white">{{ settings.hero.title.split(' ')[0] }}</span>
-            <span class="block text-amber-400">{{ settings.hero.title.split(' ').slice(1).join(' ') }}</span>
+        <div class="relative z-10 w-full px-6 py-12 sm:px-10 sm:py-16 lg:px-16">
+          <h1 class="space-y-2 wrap-break-word text-left font-display uppercase leading-[1.02] tracking-wide text-[clamp(2.5rem,7vw,8rem)] sm:space-y-3">
+            <span
+              v-for="(word, i) in heroWords"
+              :key="i"
+              class="block"
+              :class="i === heroWords.length - 1 ? 'text-amber-500' : 'text-neutral-900 dark:text-white'"
+            >{{ word }}</span>
           </h1>
-          <p class="mt-6 text-sm leading-relaxed text-neutral-400 max-w-xl mx-auto sm:text-lg">
+          <p class="mt-6 max-w-xl text-left text-sm leading-relaxed text-neutral-600 sm:text-lg dark:text-neutral-400">
             {{ settings.hero.description }}
           </p>
-          <div class="mt-8 flex flex-col items-start justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
-            <router-link
-              to="/shop"
-              class="group w-fit rounded-xl bg-amber-400 px-5 py-3 text-left text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:scale-105 hover:bg-amber-300 sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:text-center flex items-center justify-center gap-2 shadow-xl shadow-amber-400/20"
-            >
-              <ShoppingBag :size="18" />
-              Shop Now
-            </router-link>
-          </div>
+          <router-link
+            to="/shop"
+            class="group mt-8 flex w-fit items-center justify-center gap-2 rounded-lg bg-amber-400 px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:scale-105 hover:bg-amber-300 sm:px-8 sm:py-3.5 sm:text-xs"
+          >
+            <ShoppingBag :size="18" />
+            Shop Now
+          </router-link>
         </div>
-        
-        <!-- Animated Background Accents (Optional: Pwedeng alisin kung masyadong magulo na sa background image) -->
-        <div class="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-amber-400/10 blur-[100px]"></div>
-        <div class="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-blue-500/10 blur-[100px]"></div>
+
       </section>
 
       <!-- Latest Arrivals -->
@@ -63,8 +61,8 @@
             :to="`/shop/product/${product.id}`"
             class="group block min-w-40  flex-1 lg:min-w-0"
           >
-            <div class="aspect-4/5 overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-neutral-100 transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-neutral-900/10 group-hover:ring-amber-200 dark:bg-neutral-900 dark:ring-neutral-800 dark:group-hover:ring-amber-500/30">
-              <div class="relative h-full w-full overflow-hidden rounded-xl bg-neutral-50 shadow-inner dark:bg-neutral-800">
+            <div class="aspect-4/5 overflow-hidden rounded-2xl ring-1 ring-neutral-100 transition-all duration-500 group-hover:-translate-y-1   group-hover:ring-amber-200 dark:ring-neutral-800 dark:group-hover:ring-amber-500/30">
+              <div class="relative h-full w-full overflow-hidden rounded-xl bg-neutral-50  dark:bg-neutral-800">
                 <img
                   v-if="product.base64Image"
                   :src="product.base64Image"
@@ -89,7 +87,7 @@
       <!-- Mission & Vision -->
       <section class="grid gap-8 lg:grid-cols-2 lg:items-center">
         <div class="space-y-4">
-          <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+          <div class="rounded-2xl border border-neutral-200 bg-white p-6  sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
             <div class="flex items-start justify-between gap-3">
               <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
                 <Target :size="19" />
@@ -104,7 +102,7 @@
               {{ settings.mission.description }}
             </p>
           </div>
-          <div class="rounded-2xl border border-neutral-200 bg-neutral-900 p-6 text-white shadow-sm sm:p-8 dark:border-neutral-700">
+          <div class="rounded-2xl border border-neutral-200 bg-neutral-900 p-6 text-white  sm:p-8 dark:border-neutral-700">
             <div class="flex items-start justify-between gap-3">
               <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-amber-400">
                 <Eye :size="19" />
@@ -155,7 +153,7 @@
       </section>
 
       <!-- Contact Section -->
-      <section class="mx-auto max-w-5xl rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
+      <section class="w-full rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
         <div class="grid gap-10 md:grid-cols-2">
           <div class="space-y-6">
             <div>
@@ -202,9 +200,9 @@
           </div>
 
           <form @submit.prevent class="flex flex-col gap-3 rounded-2xl bg-neutral-50 p-5 sm:p-6 dark:bg-neutral-800/50">
-            <input type="text" placeholder="Full Name" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
-            <input type="email" placeholder="Email Address" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
-            <textarea placeholder="Your Message" rows="3" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700"></textarea>
+            <input type="text" placeholder="Full Name" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
+            <input type="email" placeholder="Email Address" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
+            <textarea placeholder="Your Message" rows="3" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700"></textarea>
             <button class="mt-3 rounded-xl bg-neutral-900 py-4 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300">
               Send Message
             </button>
@@ -255,6 +253,13 @@ const { products, loadCatalog } = useCatalogStore()
 const latestProducts = computed(() => products.value.slice(0, 6))
 const loading = ref(true)
 const settings = ref(DEFAULT_LANDING_PAGE_SETTINGS)
+// Stacked hero title: one word per line like GOOD WORK / DESERVES TO / BE SEEN.
+// Falls back to full name when the stored title is still the legacy "SCF".
+const heroWords = computed(() => {
+  const raw = (settings.value.hero?.title || '').trim()
+  const source = raw === '' || raw.toUpperCase() === 'SCF' ? 'Silangan Christian Fellowship' : raw
+  return source.split(/\s+/).filter(Boolean)
+})
 const showScrollToTopButton = ref(false)
 
 const updateScrollState = () => {
@@ -292,3 +297,15 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScrollState)
 })
 </script>
+
+<style scoped>
+/* Full-screen hero: min-height (never fixed height) so content never clips.
+   Fallback chain: 100vh -> 100svh (mobile URL bar) -> 100dvh (dynamic).
+   Header offset (sticky header = 4.25rem) subtracted so header + hero = 1 viewport.
+   Grid place-items:center on the section keeps content centered at any zoom (25%-200%). */
+.hero-fullscreen {
+  min-height: calc(100vh - 4.25rem);
+  min-height: calc(100svh - 4.25rem);
+  min-height: calc(100dvh - 4.25rem);
+}
+</style>

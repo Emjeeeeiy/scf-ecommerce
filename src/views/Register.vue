@@ -2,22 +2,11 @@
   <AppShell subtitle="Create Account">
     <div class="mx-auto max-w-md">
       <div class="overflow-hidden rounded-4xl bg-white border border-neutral-300 ring-1 ring-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
-        <!-- Header -->
+          <!-- Header -->
         <div class="relative overflow-hidden bg-white px-6 py-10 sm:px-8 sm:py-12 border-b border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800">
-          <!-- Subtle Background Accent (Optional: para sa modern touch) -->
-          <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-neutral-50/50 blur-3xl dark:bg-neutral-800/30"></div>
 
           <div class="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex flex-col gap-3">
-              <!-- Icon & Label Row -->
-              <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-900 shadow-sm">
-                  <UserPlus :size="20" class="text-white" />
-                </div>
-                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
-                 — Join Us
-                </span>
-              </div>
 
               <!-- Heading & Subtext -->
               <div class="space-y-1">

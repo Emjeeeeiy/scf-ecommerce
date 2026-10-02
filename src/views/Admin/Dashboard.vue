@@ -1,6 +1,6 @@
 <template>
   <AdminPanelLayout subtitle="Admin overview for catalog and order operations">
-    <section class="rounded-xl bg-neutral-950 p-5 text-white shadow-xl relative overflow-hidden">
+    <section class="rounded-xl bg-neutral-950 p-5 text-white  relative overflow-hidden">
       <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
         <LayoutDashboard :size="80" />
       </div>
@@ -31,7 +31,7 @@
     <article
       v-for="metric in metrics"
       :key="metric.label"
-      class="group relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-4 shadow-xs transition-all duration-300 hover:border-neutral-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 sm:p-5"
+      class="group relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-4  transition-all duration-300 hover:border-neutral-300  dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 sm:p-5"
     >
       <!-- Subtle Accent Strip -->
       <div class="absolute inset-x-0 top-0 h-1 transition-opacity duration-300 opacity-60 group-hover:opacity-100" :class="metric.glow"></div>
@@ -55,7 +55,7 @@
     <!-- Charts and Low Stock Section -->
     <section class="mt-5 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
       <!-- Sales Chart -->
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
             <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Performance</p>
@@ -67,7 +67,7 @@
               :key="f.id"
               @click="activeFilter = f.id"
               class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-all rounded-md"
-              :class="activeFilter === f.id ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-400 hover:text-neutral-600'"
+              :class="activeFilter === f.id ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white ' : 'text-neutral-400 hover:text-neutral-600'"
             >
               {{ f.label }}
             </button>
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Low Stock Warnings -->
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800 flex flex-col">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800 flex flex-col">
         <div class="flex items-center justify-between mb-5">
           <div>
             <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-rose-500">Inventory Alert</p>
@@ -130,7 +130,7 @@
 
     <!-- Operational Workspaces & Pipeline -->
     <section class="mt-5 grid gap-5 xl:grid-cols-[1fr_0.7fr]">
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
         <div class="flex items-center justify-between gap-4">
           <div>
             <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Management areas</p>
@@ -155,7 +155,7 @@
         </div>
       </div>
 
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
+      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
         <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Status breakdown</p>
         <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Order pipeline</h3>
 
@@ -176,7 +176,7 @@
     </section>
 
     <!-- Recent Activity -->
-    <section class="mt-5 rounded-xl bg-white dark:bg-neutral-900 p-5 shadow-sm ring-1 ring-slate-200 dark:ring-neutral-800">
+    <section class="mt-5 rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
       <div class="flex items-center justify-between gap-4">
         <div>
           <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Recent orders</p>
@@ -192,7 +192,7 @@
         <div
           v-for="order in recentOrders"
           :key="order.id"
-          class="rounded-lg border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3.5 transition hover:border-slate-200 dark:hover:border-neutral-700 hover:shadow-sm"
+          class="rounded-lg border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3.5 transition hover:border-slate-200 dark:hover:border-neutral-700 "
         >
           <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div class="flex items-center gap-3">

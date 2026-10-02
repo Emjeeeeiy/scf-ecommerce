@@ -1,6 +1,6 @@
 <template>
   <div class="fixed top-6 right-6 z-9999 flex flex-col gap-3 pointer-events-none w-full max-w-sm">
-    <TransitionGroup 
+    <TransitionGroup
       name="toast"
       enter-active-class="transition duration-300 ease-out"
       enter-from-class="transform translate-x-full opacity-0"
@@ -9,12 +9,12 @@
       leave-from-class="transform translate-x-0 opacity-100"
       leave-to-class="transform translate-x-full opacity-0"
     >
-      <div 
-        v-for="toast in toasts" 
+      <div
+        v-for="toast in toasts"
         :key="toast.id"
-        class="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white p-4 shadow-2xl shadow-neutral-200/50 ring-1 ring-neutral-100"
+        class="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white p-4   ring-1 ring-neutral-100"
       >
-        <div 
+        <div
           class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl"
           :class="{
             'bg-emerald-50 text-emerald-600': toast.type === 'success',
@@ -28,12 +28,12 @@
           <AlertTriangle v-else-if="toast.type === 'warning'" :size="18" />
           <Info v-else :size="18" />
         </div>
-        
+
         <div class="flex-1 pt-0.5">
           <p class="text-xs font-bold text-neutral-900 leading-relaxed">{{ toast.message }}</p>
         </div>
 
-        <button 
+        <button
           @click="removeToast(toast.id)"
           class="shrink-0 text-neutral-300 hover:text-neutral-500 transition-colors"
         >
@@ -46,12 +46,12 @@
 
 <script setup>
 import { useToast } from '../composables/useToast'
-import { 
-  CheckCircle2, 
-  AlertCircle, 
-  AlertTriangle, 
-  Info, 
-  X 
+import {
+  CheckCircle2,
+  AlertCircle,
+  AlertTriangle,
+  Info,
+  X
 } from 'lucide-vue-next'
 
 const { toasts, removeToast } = useToast()

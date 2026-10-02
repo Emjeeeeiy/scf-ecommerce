@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'dark': isDarkMode }" class="h-screen overflow-hidden font-sans">
     <div class="grid h-full lg:grid-cols-[240px_minmax(0,1fr)] bg-[#f8fafc] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
-      <aside class="hidden h-screen border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 lg:block shadow-sm">
+      <aside class="hidden h-screen border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 lg:block ">
         <div class="flex h-full flex-col overflow-y-auto px-5 py-6">
 
           <div class="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-800/50 p-4">
@@ -28,7 +28,7 @@
               :to="item.to"
               class="group flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition-all duration-200"
               :class="isActive(item.to)
-                ? 'bg-neutral-900 dark:bg-neutral-400 text-white dark:text-neutral-950 shadow-md'
+                ? 'bg-neutral-900 dark:bg-neutral-400 text-white dark:text-neutral-950 '
                 : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-neutral-950 dark:hover:text-white'"
             >
               <div class="relative">
@@ -62,14 +62,14 @@
           <div class="mt-auto pt-6 border-t border-neutral-100 dark:border-neutral-800 space-y-2.5">
             <router-link
               to="/shop"
-              class="flex items-center justify-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2.5 text-[10px] font-bold text-neutral-700 dark:text-neutral-300 transition shadow-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
+              class="flex items-center justify-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-2.5 text-[10px] font-bold text-neutral-700 dark:text-neutral-300 transition  hover:bg-neutral-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
             >
               <ExternalLink :size="12" />
               View storefront
             </router-link>
             <button
               type="button"
-              class="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-950 dark:bg-neutral-400 px-3 py-2.5 text-[10px] font-bold text-white dark:text-neutral-950 transition shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98]"
+              class="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-950 dark:bg-neutral-400 px-3 py-2.5 text-[10px] font-bold text-white dark:text-neutral-950 transition  hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98]"
               @click="handleLogout"
             >
               <LogOut :size="12" />
@@ -102,7 +102,7 @@
               </router-link>
               <button 
                 @click="handleLogout"
-                class="p-2.5 rounded-xl bg-neutral-950 dark:bg-neutral-400 text-white dark:text-neutral-950 shadow-sm"
+                class="p-2.5 rounded-xl bg-neutral-950 dark:bg-neutral-400 text-white dark:text-neutral-950 "
               >
                 <LogOut :size="18" />
               </button>
@@ -114,7 +114,7 @@
                 v-for="action in headerActions"
                 :key="action.to"
                 :to="action.to"
-                class="flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-neutral-700 dark:text-neutral-300 transition shadow-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
+                class="flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-neutral-700 dark:text-neutral-300 transition  hover:bg-neutral-50 dark:hover:bg-neutral-700 active:scale-[0.98]"
               >
                 <Plus v-if="action.label.toLowerCase().includes('add')" :size="12" />
                 <ArrowLeft v-else-if="action.label.toLowerCase().includes('back')" :size="12" />
@@ -152,14 +152,14 @@
             
             <span 
               v-if="item.label === 'Orders' && unseenOrdersCount > 0" 
-              class="absolute top-0 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900 shadow-sm"
+              class="absolute top-0 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900 "
             >
               {{ unseenOrdersCount }}
             </span>
 
             <span 
               v-if="item.label === 'Users' && unseenUsersCount > 0" 
-              class="absolute top-0 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900 shadow-sm"
+              class="absolute top-0 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white ring-2 ring-white dark:ring-neutral-900 "
             >
               {{ unseenUsersCount }}
             </span>

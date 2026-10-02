@@ -38,7 +38,7 @@
     <section class="mt-6 sm:mt-10 grid gap-6 lg:grid-cols-[240px_1fr]">
       <!-- Category Sidebar/Top Bar -->
       <aside class="sticky top-16 z-30 -mx-4 px-4 bg-neutral-50/80 dark:bg-neutral-950/80 backdrop-blur-md py-1.5 lg:sticky lg:top-24 lg:h-fit lg:p-0 lg:bg-transparent lg:backdrop-blur-none lg:mx-0">
-        <div class="rounded-xl border border-neutral-200 bg-white p-1.5 lg:p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-xl border border-neutral-200 bg-white p-1.5 lg:p-4  dark:border-neutral-800 dark:bg-neutral-900">
 
           <div class="hidden lg:flex items-center gap-2 mb-4">
             <Filter :size="12" class="text-neutral-400 dark:text-neutral-500" />
@@ -50,7 +50,7 @@
               type="button"
               class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
               :class="selectedCategory === ''
-                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
+                ? 'border-neutral-950 bg-neutral-950 text-white  dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
                 : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white'"
               @click="selectedCategory = ''"
             >
@@ -64,7 +64,7 @@
               type="button"
               class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
               :class="selectedCategory === category.id
-                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
+                ? 'border-neutral-950 bg-neutral-950 text-white  dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
                 : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white'"
               @click="selectedCategory = category.id"
             >
@@ -113,7 +113,7 @@
 
             <!-- Category Badge -->
             <div class="absolute left-2 top-2 sm:left-3 sm:top-3">
-              <span class="rounded-full bg-white/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-medium backdrop-blur-md text-gray-900 shadow-sm dark:bg-neutral-900/80 dark:text-white">
+              <span class="rounded-full bg-white/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-medium backdrop-blur-md text-gray-900  dark:bg-neutral-900/80 dark:text-white">
                 {{ categoryName(product.categoryId) || 'New' }}
               </span>
             </div>
@@ -183,9 +183,9 @@
         <!-- Empty State -->
         <div
           v-if="!filteredProducts.length"
-          class="col-span-full rounded-3xl bg-white p-12 text-center shadow-xl shadow-neutral-200/50 ring-1 ring-neutral-100 sm:p-16 dark:bg-neutral-900 dark:ring-neutral-800"
+          class="col-span-full rounded-3xl bg-white p-12 text-center   ring-1 ring-neutral-100 sm:p-16 dark:bg-neutral-900 dark:ring-neutral-800"
         >
-          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-50 text-neutral-200 shadow-inner mb-6 dark:bg-neutral-800 dark:text-neutral-600">
+          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-50 text-neutral-200  mb-6 dark:bg-neutral-800 dark:text-neutral-600">
             <SearchX :size="32" />
           </div>
           <h3 class="text-xl font-black text-neutral-900 tracking-tight dark:text-white">No products found</h3>

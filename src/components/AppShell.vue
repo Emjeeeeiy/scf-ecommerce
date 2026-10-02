@@ -1,11 +1,10 @@
 <template>
   <div
-    class="min-h-screen bg-neutral-50 text-neutral-900 font-sans selection:bg-amber-100 selection:text-amber-900 dark:bg-neutral-950 dark:text-neutral-100"
-    :class="{ dark: isDarkMode }"
+    class="store-scope min-h-screen bg-neutral-50 text-neutral-900 font-sans selection:bg-amber-100 selection:text-amber-900"
   >
     <!-- Desktop Header -->
     <header class="sticky top-0 z-40 w-full border-b border-neutral-300 bg-white dark:border-neutral-800 dark:bg-neutral-900">
-      <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
+      <div class="flex min-h-17 w-full items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-12">
         <div class="group flex items-center gap-1">
           <div class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg">
             <img
@@ -26,7 +25,7 @@
             :key="item.to"
             :to="item.to"
             class="flex items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all"
-            :class="route.path === item.to ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20 dark:bg-amber-400 dark:text-neutral-950 dark:shadow-amber-400/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
+            :class="route.path === item.to ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
           >
             <Home v-if="item.to === '/'" :size="12" />
             <Store v-else-if="item.to === '/shop'" :size="12" />
@@ -36,27 +35,14 @@
 
         <!-- Right Side Nav/Actions -->
         <div class="flex items-center gap-2">
-          <!-- Theme Toggle - Always visible (mobile + desktop) -->
-          <button
-            type="button"
-            @click="handleThemeToggle($event)"
-            class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg text-neutral-500 transition-all hover:bg-neutral-50 hover:text-neutral-900 active:scale-90 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
-            :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-          >
-            <Transition name="theme-icon" mode="out-in">
-              <Sun v-if="isDarkMode" key="sun" :size="18" />
-              <Moon v-else key="moon" :size="18" />
-            </Transition>
-          </button>
-
           <!-- Cart Link (Dedicated) - Hidden on Mobile (moved to bottom bar) -->
           <router-link
             to="/cart"
             class="hidden md:flex relative h-9 w-9 items-center justify-center rounded-lg transition-all"
-            :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900 shadow-xl shadow-amber-400/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
+            :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900  ' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
           >
             <ShoppingCart :size="18" />
-            <span v-if="cartCount > 0" class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-neutral-900 text-[8px] font-black text-white shadow-sm dark:border-neutral-900">
+            <span v-if="cartCount > 0" class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-neutral-900 text-[8px] font-black text-white  dark:border-neutral-900">
               {{ cartCount }}
             </span>
           </router-link>
@@ -69,7 +55,7 @@
               <router-link
                 to="/account/orders"
                 class="hidden md:flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all"
-                :class="route.path === '/account/orders' ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20 dark:bg-amber-400 dark:text-neutral-950 dark:shadow-amber-400/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
+                :class="route.path === '/account/orders' ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
               >
                 <Package :size="12" />
                 <span class="hidden lg:inline">Order History</span>
@@ -78,7 +64,7 @@
               <router-link
                 to="/account/profile"
                 class="hidden md:flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all"
-                :class="route.path === '/account/profile' ? 'bg-neutral-900 text-white shadow-xl shadow-neutral-900/20 dark:bg-amber-400 dark:text-neutral-950 dark:shadow-amber-400/20' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
+                :class="route.path === '/account/profile' ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'"
               >
                 <User :size="12" />
                 <span class="hidden lg:inline">Profile</span>
@@ -100,17 +86,17 @@
             <template v-else>
               <router-link
                 to="/register"
-                class="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 transition-all hover:bg-neutral-50 active:scale-95 sm:px-4 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                class="flex items-center gap-2 rounded-lg border border-neutral-200 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-neutral-600 transition-all hover:bg-neutral-50 active:scale-95 sm:px-5 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
               >
-                <UserPlus :size="12" />
+                <UserPlus :size="14" />
                 <span class="hidden xs:inline sm:inline">Register</span>
               </router-link>
 
               <router-link
                 to="/login"
-                class="flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 active:scale-95 shadow-xl shadow-neutral-900/20 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300 dark:shadow-amber-400/20"
+                class="flex items-center gap-2 rounded-lg bg-neutral-900 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 active:scale-95 sm:px-6   dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300 "
               >
-                <LogIn :size="12" />
+                <LogIn :size="14" />
                 <span>Login</span>
               </router-link>
             </template>
@@ -120,7 +106,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="mx-auto max-w-6xl px-4 py-6 pb-24 sm:px-6 md:pb-8">
+    <main class="w-full px-4 py-6 pb-24 sm:px-6 lg:px-12 md:pb-8">
       <slot />
     </main>
 
@@ -141,7 +127,7 @@
             <template v-else-if="item.to === '/cart'">
               <div class="relative">
                 <ShoppingCart :size="20" />
-                <span v-if="cartCount > 0" class="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white bg-amber-400 text-[8px] font-black text-neutral-900 shadow-sm dark:border-neutral-900">
+                <span v-if="cartCount > 0" class="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white bg-amber-400 text-[8px] font-black text-neutral-900  dark:border-neutral-900">
                   {{ cartCount }}
                 </span>
               </div>
@@ -156,32 +142,15 @@
         </router-link>
       </div>
     </nav>
-
-    <!-- Theme Change Label -->
-    <Transition name="theme-label">
-      <div
-        v-if="showThemeLabel"
-        class="pointer-events-none fixed inset-0 z-70 flex items-center justify-center px-4"
-      >
-        <span
-          class="text-4xl font-black uppercase tracking-[0.3em] sm:text-7xl"
-          :class="themeLabelText === 'Dark' ? 'theme-glow-dark' : 'theme-glow-light'"
-        >
-          {{ themeLabelText }}
-        </span>
-      </div>
-    </Transition>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { logoutUser } from '../services/authService'
 import { useSession } from '../composables/useSession'
 import { useCartStore } from '../stores/cartStore'
-import { useStoreTheme } from '../composables/useStoreTheme'
-import { runThemeTransition } from '../utils/themeTransition'
 import {
   ShoppingCart,
   User,
@@ -191,9 +160,7 @@ import {
   LayoutDashboard,
   LogOut,
   LogIn,
-  UserPlus,
-  Sun,
-  Moon
+  UserPlus
 } from 'lucide-vue-next'
 
 defineProps({
@@ -207,24 +174,6 @@ const route = useRoute()
 const router = useRouter()
 const { isAuthenticated, isAdmin } = useSession()
 const { cartCount } = useCartStore()
-const { isDarkMode, toggleTheme } = useStoreTheme()
-
-const showThemeLabel = ref(false)
-const themeLabelText = ref('Dark')
-let themeLabelTimeout = null
-
-const handleThemeToggle = (event) => {
-  const next = !isDarkMode.value
-
-  runThemeTransition(event, () => toggleTheme(next)).then(() => {
-    themeLabelText.value = next ? 'Dark' : 'Light'
-    showThemeLabel.value = true
-    clearTimeout(themeLabelTimeout)
-    themeLabelTimeout = setTimeout(() => {
-      showThemeLabel.value = false
-    }, 900)
-  })
-}
 
 const navigation = computed(() => {
   const base = [{ to: '/', label: 'Home' }, { to: '/shop', label: 'Shop' }]
@@ -273,13 +222,13 @@ const mobileNavigation = computed(() => {
 })
 
 const mainDesktopNavigation = computed(() => {
-  return navigation.value.filter(item => 
+  return navigation.value.filter(item =>
     item.to === '/' || item.to === '/shop'
   )
 })
 
 const rightDesktopNavigation = computed(() => {
-  return navigation.value.filter(item => 
+  return navigation.value.filter(item =>
     !item.to.startsWith('/admin') && item.to !== '/' && item.to !== '/shop'
   )
 })
@@ -289,46 +238,3 @@ const handleLogout = async () => {
   router.push('/login')
 }
 </script>
-
-<style scoped>
-.theme-icon-enter-active,
-.theme-icon-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.theme-icon-enter-from {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0.5);
-}
-.theme-icon-leave-to {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.5);
-}
-
-.theme-label-enter-active {
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-.theme-label-leave-active {
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-.theme-label-enter-from,
-.theme-label-leave-to {
-  opacity: 0;
-  transform: scale(0.85);
-}
-
-.theme-glow-dark {
-  color: #fbbf24;
-  text-shadow:
-    0 0 12px rgba(251, 191, 36, 0.85),
-    0 0 32px rgba(251, 191, 36, 0.6),
-    0 0 70px rgba(251, 191, 36, 0.4);
-}
-
-.theme-glow-light {
-  color: #fbbf24;
-  text-shadow:
-    0 0 12px rgba(251, 191, 36, 0.85),
-    0 0 32px rgba(251, 191, 36, 0.6),
-    0 0 70px rgba(251, 191, 36, 0.4);
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="Product details">
     <div v-if="loading" class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="overflow-hidden rounded-2xl border border-neutral-100 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="overflow-hidden rounded-2xl border border-neutral-100 bg-white p-2  dark:border-neutral-800 dark:bg-neutral-900">
         <div class="h-80 w-full animate-pulse rounded-xl bg-neutral-100 dark:bg-neutral-800"></div>
         <div class="space-y-4 p-6">
           <div class="h-3 w-20 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
@@ -10,13 +10,13 @@
         </div>
       </div>
       <div class="space-y-6">
-        <div class="h-64 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"></div>
-        <div class="h-48 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"></div>
+        <div class="h-64 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white  dark:border-neutral-800 dark:bg-neutral-900"></div>
+        <div class="h-48 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white  dark:border-neutral-800 dark:bg-neutral-900"></div>
       </div>
     </div>
 
     <section v-else-if="product" class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-2  dark:border-neutral-800 dark:bg-neutral-900">
         <div class="relative h-80 w-full overflow-hidden rounded-xl bg-neutral-50 sm:h-105 dark:bg-neutral-800">
           <img
             v-if="product.base64Image"
@@ -32,7 +32,7 @@
 
           <router-link
             to="/shop"
-            class="absolute left-4 top-4 flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium text-neutral-700 shadow-sm transition-all hover:bg-neutral-50 hover:text-neutral-950 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+            class="absolute left-4 top-4 flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium text-neutral-700  transition-all hover:bg-neutral-50 hover:text-neutral-950 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <ArrowLeft :size="14" />
             <span>Back to Shop</span>
@@ -76,7 +76,7 @@
       </div>
 
       <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-2xl border border-neutral-200 bg-white p-6  dark:border-neutral-800 dark:bg-neutral-900">
           <div class="space-y-6">
             <!-- Color Selection -->
             <div>
@@ -141,7 +141,7 @@
           </div>
         </div>
 
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-2xl border border-neutral-200 bg-white p-6  dark:border-neutral-800 dark:bg-neutral-900">
           <div class="flex items-center gap-2 mb-4">
             <ShoppingBag :size="14" class="text-neutral-400 dark:text-neutral-500" />
             <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Purchase Details</h2>
@@ -156,7 +156,7 @@
                   @click="selectedPriceType = 'student'"
                   class="flex items-center justify-between gap-4 rounded-xl border-2 p-3 transition-all"
                   :class="selectedPriceType === 'student'
-                    ? 'border-amber-400 bg-amber-50 shadow-sm dark:bg-amber-500/10'
+                    ? 'border-amber-400 bg-amber-50  dark:bg-amber-500/10'
                     : 'border-neutral-100 bg-white hover:border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700'"
                 >
                   <div class="text-left">
@@ -172,7 +172,7 @@
                   @click="selectedPriceType = 'regular'"
                   class="flex items-center justify-between gap-4 rounded-xl border-2 p-3 transition-all"
                   :class="selectedPriceType === 'regular'
-                    ? 'border-amber-400 bg-amber-50 shadow-sm dark:bg-amber-500/10'
+                    ? 'border-amber-400 bg-amber-50  dark:bg-amber-500/10'
                     : 'border-neutral-100 bg-white hover:border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700'"
                 >
                   <div class="text-left">
@@ -195,7 +195,7 @@
             <div class="flex items-center justify-between gap-4 rounded-xl border border-neutral-100 bg-neutral-50/50 p-1.5 dark:border-neutral-800 dark:bg-neutral-800/50">
               <button
                 type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-600 transition shadow-sm hover:bg-neutral-50 active:scale-95 disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                class="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-600 transition  hover:bg-neutral-50 active:scale-95 disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
                 :disabled="quantity <= 1"
                 @click="quantity = Math.max(1, quantity - 1)"
               >
@@ -207,7 +207,7 @@
               </div>
               <button
                 type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-600 transition shadow-sm hover:bg-neutral-50 active:scale-95 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                class="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-600 transition  hover:bg-neutral-50 active:scale-95 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
                 @click="quantity = quantity + 1"
               >
                 <Plus :size="14" />
@@ -226,7 +226,7 @@
             <div class="grid gap-2 pt-2">
               <button
                 type="button"
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white transition-all hover:bg-neutral-800 active:scale-[0.99] shadow-sm shadow-neutral-950/10 disabled:opacity-70 disabled:cursor-not-allowed dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white transition-all hover:bg-neutral-800 active:scale-[0.99]   disabled:opacity-70 disabled:cursor-not-allowed dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
                 :disabled="adding"
                 @click="handleAddToCart"
               >
@@ -248,7 +248,7 @@
       </aside>
     </section>
 
-    <div v-else class="rounded-2xl border border-neutral-200 bg-white p-12 text-center shadow-sm sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
+    <div v-else class="rounded-2xl border border-neutral-200 bg-white p-12 text-center  sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
       <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500">
         <PackageX :size="24" stroke-width="1.5" />
       </div>
@@ -257,7 +257,7 @@
 
       <router-link
         to="/shop"
-        class="mt-6 inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold text-neutral-700 shadow-sm transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+        class="mt-6 inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold text-neutral-700  transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
       >
         <ArrowLeft :size="14" />
         Return to Shop

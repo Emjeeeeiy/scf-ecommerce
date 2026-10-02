@@ -9,7 +9,7 @@
           <div 
             v-for="summary in summaries" 
             :key="summary.label"
-            class="bg-white dark:bg-neutral-900 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800 shadow-sm transition-all hover:shadow-md"
+            class="bg-white dark:bg-neutral-900 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800  transition-all "
           >
             <p class="text-[10px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1">{{ summary.label }}</p>
             <div class="flex items-baseline gap-2">
@@ -21,7 +21,7 @@
 
         <!-- Filter Bar -->
         <div class="space-y-4">
-          <div class="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-slate-100 dark:border-neutral-800 shadow-sm flex flex-col lg:flex-row items-center gap-4">
+          <div class="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-slate-100 dark:border-neutral-800  flex flex-col lg:flex-row items-center gap-4">
             <div class="relative flex-1 w-full">
               <Search class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-neutral-500" :size="18" />
               <input 
@@ -75,7 +75,7 @@
                 @click="statusFilter = status"
                 class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
                 :class="statusFilter === status 
-                  ? 'bg-neutral-900 dark:bg-neutral-400 text-white dark:text-neutral-950 border-neutral-900 dark:border-neutral-400 shadow-md' 
+                  ? 'bg-neutral-900 dark:bg-neutral-400 text-white dark:text-neutral-950 border-neutral-900 dark:border-neutral-400 ' 
                   : 'bg-white dark:bg-neutral-900 text-neutral-400 dark:text-neutral-500 border-neutral-100 dark:border-neutral-800 hover:border-neutral-200 dark:hover:border-neutral-700'"
               >
                 {{ status }}
@@ -97,7 +97,7 @@
               leave-from-class="opacity-100 translate-y-0"
               leave-to-class="opacity-0 translate-y-2"
             >
-              <div v-if="selectedOrders.length" class="flex items-center gap-2 bg-slate-900 dark:bg-neutral-400 p-1.5 pl-4 rounded-2xl shadow-lg border border-neutral-800 dark:border-neutral-500">
+              <div v-if="selectedOrders.length" class="flex items-center gap-2 bg-slate-900 dark:bg-neutral-400 p-1.5 pl-4 rounded-2xl  border border-neutral-800 dark:border-neutral-500">
                 <span class="text-[10px] font-black uppercase tracking-wider text-white dark:text-neutral-950 mr-2">
                   {{ selectedOrders.length }} Selected
                 </span>
@@ -125,7 +125,7 @@
       </section>
 
       <!-- Orders List (Compact Table View) -->
-      <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800 shadow-sm overflow-hidden">
+      <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800  overflow-hidden">
         <div class="admin-card-table-wrap overflow-x-auto">
           <table class="admin-card-table w-full text-left border-collapse border-spacing-0">
             <thead>
@@ -180,7 +180,7 @@
                     <div class="flex items-center gap-2">
                       <span 
                         v-if="!order.seenByAdmin" 
-                        class="flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+                        class="flex h-2 w-2 rounded-full bg-blue-500 "
                         title="New Order"
                       ></span>
                       <span class="bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter">
@@ -270,7 +270,7 @@
       <div v-if="selectedOrder" class="fixed inset-0 z-100 flex items-center justify-center p-4 backdrop-blur-md">
         <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60" @click="selectedOrder = null"></div>
         
-        <div class="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-neutral-900 shadow-2xl flex flex-col">
+        <div class="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-neutral-900  flex flex-col">
           <!-- Modal Header -->
           <div class="px-8 py-6 border-b border-slate-50 dark:border-neutral-800 flex items-center justify-between bg-slate-50/30 dark:bg-neutral-800/30 shrink-0">
             <div class="flex items-center gap-4">
@@ -303,7 +303,7 @@
                   </h3>
                   <div class="bg-slate-50 dark:bg-neutral-800/50 p-6 rounded-3xl border border-slate-100 dark:border-neutral-800 space-y-4">
                     <div class="flex items-center gap-4">
-                      <div class="w-12 h-12 rounded-2xl bg-white dark:bg-neutral-900 shadow-sm flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
+                      <div class="w-12 h-12 rounded-2xl bg-white dark:bg-neutral-900  flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
                         <User :size="24" />
                       </div>
                       <div>
@@ -344,7 +344,7 @@
                       </div>
                       <div v-if="selectedOrder.receiptUrl" class="space-y-2">
                         <p class="text-[8px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest">Receipt Screenshot</p>
-                        <div class="relative group aspect-video rounded-2xl overflow-hidden border-2 border-white dark:border-neutral-800 shadow-md bg-white dark:bg-neutral-900 cursor-pointer" @click="viewFullImage(selectedOrder.receiptUrl)">
+                        <div class="relative group aspect-video rounded-2xl overflow-hidden border-2 border-white dark:border-neutral-800  bg-white dark:bg-neutral-900 cursor-pointer" @click="viewFullImage(selectedOrder.receiptUrl)">
                           <img :src="selectedOrder.receiptUrl" class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                           <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white backdrop-blur-[2px]">
                             <Maximize2 :size="20" />
@@ -437,7 +437,7 @@
             </button>
             
             <!-- The Image itself -->
-            <div class="overflow-hidden rounded-2xl shadow-2xl border-4 border-white/10 bg-slate-900 flex items-center justify-center">
+            <div class="overflow-hidden rounded-2xl  border-4 border-white/10 bg-slate-900 flex items-center justify-center">
               <img 
                 :src="previewImage" 
                 class="max-w-[90vw] max-h-[80vh] object-contain block" 

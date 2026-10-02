@@ -4,7 +4,7 @@
       
       <!-- Search Bar Only -->
       <section>
-        <div class="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-slate-100 dark:border-neutral-800 shadow-sm">
+        <div class="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-slate-100 dark:border-neutral-800 ">
           <div class="relative w-full">
             <Search class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-neutral-500" :size="18" />
             <input 
@@ -25,7 +25,7 @@
       </section>
 
       <!-- Users Table -->
-      <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800 shadow-sm overflow-hidden">
+      <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800  overflow-hidden">
         <div class="admin-card-table-wrap overflow-x-auto">
           <table class="admin-card-table w-full text-left border-collapse border-spacing-0">
             <thead>
@@ -133,7 +133,7 @@
       <div v-if="selectedUser" class="fixed inset-0 z-100 flex items-center justify-center p-4 backdrop-blur-md">
         <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60" @click="selectedUser = null"></div>
         
-        <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-neutral-900 shadow-2xl flex flex-col">
+        <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-neutral-900  flex flex-col">
           <div class="px-8 py-6 border-b border-slate-50 dark:border-neutral-800 flex items-center justify-between bg-slate-50/30 dark:bg-neutral-800/30 shrink-0">
             <div class="flex items-center gap-4">
               <div class="h-10 w-10 rounded-full bg-slate-900 dark:bg-neutral-400 flex items-center justify-center text-white dark:text-neutral-950">
@@ -190,7 +190,7 @@
                 </h4>
                 <div class="bg-slate-50 dark:bg-neutral-800/50 p-6 rounded-3xl border border-slate-100 dark:border-neutral-800 space-y-4">
                   <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900 shadow-sm flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
+                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900  flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
                       <Phone :size="18" />
                     </div>
                     <div>
@@ -199,7 +199,7 @@
                     </div>
                   </div>
                   <div class="flex items-start gap-4 pt-4 border-t border-slate-200/50 dark:border-neutral-700">
-                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900 shadow-sm flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
+                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900  flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
                       <MapPin :size="18" />
                     </div>
                     <div class="flex-1">
@@ -220,7 +220,7 @@
           <div class="px-8 py-6 border-t border-slate-50 dark:border-neutral-800 bg-slate-50/30 dark:bg-neutral-800/30 flex justify-end shrink-0">
             <button 
               @click="selectedUser = null"
-              class="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 text-xs font-bold hover:bg-slate-800 dark:hover:bg-neutral-300 transition-all shadow-lg shadow-slate-900/10 dark:shadow-none"
+              class="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 text-xs font-bold hover:bg-slate-800 dark:hover:bg-neutral-300 transition-all   "
             >
               Close Profile
             </button>
