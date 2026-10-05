@@ -13,11 +13,13 @@
           class="absolute inset-0 h-full w-full object-cover"
         />
         <!-- Black overlay to darken image -->
-        <div class="absolute inset-0 bg-black/60"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/30"></div>
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-black/25"></div>
+        <!-- Black fade under the text: from bottom-center on mobile, from left on desktop -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent sm:bg-gradient-to-r"></div>
 
-        <div class="relative z-10 w-full px-6 py-12 pt-28 sm:px-10 sm:py-16 sm:pt-32 lg:px-16">
-          <h1 class="space-y-2 wrap-break-word text-left font-display uppercase leading-[1.02] tracking-wide text-[clamp(2rem,5.5vw,6rem)] sm:space-y-3">
+        <div class="relative z-10 flex w-full flex-col items-center px-6 py-12 pt-28 text-center sm:items-start sm:px-10 sm:py-16 sm:pt-32 sm:text-left lg:px-16">
+          <h1 class="space-y-2 wrap-break-word text-center font-display uppercase leading-[1.02] tracking-wide text-[clamp(2rem,5.5vw,6rem)] sm:space-y-3 sm:text-left">
             <span
               v-for="(word, i) in heroWords"
               :key="i"
@@ -25,15 +27,16 @@
               :class="i === heroWords.length - 1 ? 'text-amber-400' : 'text-white'"
             >{{ word }}</span>
           </h1>
-          <p class="mt-6 max-w-xl text-left text-sm leading-relaxed text-neutral-200 sm:text-lg">
+          <p class="mt-6 max-w-xl text-center text-sm leading-relaxed text-neutral-200 sm:text-left sm:text-lg">
             {{ settings.hero.description }}
           </p>
           <router-link
             to="/shop"
-            class="group mt-8 flex w-fit items-center justify-center gap-2 rounded-lg bg-amber-400 px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:scale-105 hover:bg-amber-300 sm:px-8 sm:py-3.5 sm:text-xs"
+            class="group relative mt-8 flex w-fit items-center justify-center gap-2 overflow-hidden rounded-none border border-white px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-white transition-colors duration-300 hover:text-neutral-900 sm:px-8 sm:py-3.5 sm:text-xs"
           >
-            <ShoppingBag :size="18" />
-            Shop Now
+            <span class="absolute inset-0 -translate-x-full bg-amber-400 transition-transform duration-300 ease-out group-hover:translate-x-0"></span>
+            <ShoppingBag :size="18" class="relative z-10" />
+            <span class="relative z-10">Shop Now</span>
           </router-link>
         </div>
 
