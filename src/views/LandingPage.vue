@@ -14,9 +14,9 @@
         />
         <!-- Black overlay to darken image -->
         <div class="absolute inset-0 bg-black/50"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-black/25"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-black/50 via-black/15 to-black/25"></div>
         <!-- Black fade under the text: from bottom-center on mobile, from left on desktop -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent sm:bg-gradient-to-r"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-transparent sm:bg-linear-to-r"></div>
 
         <div class="relative z-10 flex w-full flex-col items-center px-6 py-12 pt-28 text-center sm:items-start sm:px-10 sm:py-16 sm:pt-32 sm:text-left lg:px-16">
           <h1 class="space-y-2 wrap-break-word text-center font-display uppercase leading-[1.02] tracking-wide text-[clamp(2rem,5.5vw,6rem)] sm:space-y-3 sm:text-left">
@@ -98,7 +98,7 @@
       </section>
 
       <!-- Mission & Vision -->
-      <section class="grid gap-8 lg:grid-cols-2 lg:items-center">
+      <section class="grid gap-8 lg:grid-cols-2 lg:items-center lg:px-32 xl:px-48">
         <div class="space-y-4">
           <div class="rounded-2xl border border-neutral-200 bg-white p-6  sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
             <div class="flex items-start justify-between gap-3">
@@ -131,7 +131,7 @@
             </p>
           </div>
         </div>
-        <div class="relative rounded-3xl bg-neutral-200 aspect-square overflow-hidden flex items-center justify-center dark:bg-neutral-800">
+        <div class="relative rounded-3xl bg-neutral-200 aspect-square overflow-hidden hidden lg:flex items-center justify-center dark:bg-neutral-800">
             <!-- Background Image -->
             <img 
                 src="/scfphoto.jpg" 
