@@ -43,7 +43,7 @@
       </section>
 
       <!-- Latest Arrivals -->
-      <section class="space-y-6">
+      <section class="space-y-6 lg:px-32 xl:px-48">
         <div class="flex flex-col items-end justify-between gap-3 sm:flex-row sm:items-center">
           <div class="w-full text-left">
              <p class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-500 mb-0.5">Newest Releases</p>
@@ -131,23 +131,73 @@
             </p>
           </div>
         </div>
-        <div class="relative rounded-3xl bg-neutral-200 aspect-square overflow-hidden hidden lg:flex items-center justify-center dark:bg-neutral-800">
-            <!-- Background Image -->
-            <img 
-                src="/images/scfphoto.jpg" 
-                alt="SCF Photo" 
-                class="absolute inset-0 w-full h-full object-cover"
-            />
-            <!-- Neutral Gradient Overlay -->
-            <div class="absolute inset-0 bg-linear-to-br from-neutral-900/80 via-neutral-800/60 to-neutral-700/50"></div>            
-            <p class="absolute bottom-6 z-10 text-[8px] font-black uppercase tracking-[0.5em] text-white/90">
-                Faith in Action
-            </p>
+        <div class="rounded-3xl border border-neutral-200 bg-white p-6 sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                <Users :size="19" />
+              </div>
+              <div class="text-right">
+                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-500">Leadership</p>
+                <h2 class="mt-1 text-lg font-black tracking-tight text-neutral-900 dark:text-white">
+                  {{ officers.title }}
+                </h2>
+              </div>
+            </div>
+            <ul class="mt-6 divide-y divide-neutral-200 dark:divide-neutral-800">
+              <li
+                v-for="(member, i) in officers.members"
+                :key="i"
+                class="flex items-center gap-4 py-4"
+              >
+                <img
+                  v-if="member.photoBase64"
+                  :src="member.photoBase64"
+                  :alt="member.name"
+                  class="h-14 w-14 shrink-0 rounded-full object-cover"
+                />
+                <span v-else class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-sm font-black uppercase text-amber-400 dark:bg-amber-400 dark:text-neutral-950">
+                  {{ (member.name || '?').trim().charAt(0) }}
+                </span>
+                <div class="min-w-0">
+                  <p class="truncate text-xs font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ member.name }}</p>
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">{{ member.position }}</p>
+                </div>
+              </li>
+            </ul>
+        </div>
+      </section>
+
+      <!-- Basis of Faith Section -->
+      <section class="rounded-3xl border border-neutral-300 bg-white p-6 ring-1 ring-neutral-100 sm:p-12 lg:mx-64 xl:mx-96 dark:border-neutral-800 dark:bg-neutral-900 dark:ring-neutral-800">
+        <div class="mx-auto max-w-3xl">
+          <!-- IVCF Philippines mark -->
+          <div class="flex flex-col items-center">
+            <div class="flex">
+              <span class="flex h-10 w-10 items-center justify-center bg-yellow-400 text-xl font-black text-white">I</span>
+              <span class="flex h-10 w-10 items-center justify-center bg-green-500 text-xl font-black text-white">V</span>
+              <span class="flex h-10 w-10 items-center justify-center bg-blue-500 text-xl font-black text-white">C</span>
+              <span class="flex h-10 w-10 items-center justify-center bg-red-500 text-xl font-black text-white">F</span>
+            </div>
+            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900 dark:text-white">Philippines</p>
+          </div>
+          <p class="mt-6 text-center text-[9px] font-black uppercase tracking-[0.3em] text-amber-500">What We Believe</p>
+          <h2 class="mt-2 text-center text-2xl font-black uppercase tracking-tight text-neutral-900 sm:text-3xl dark:text-white">Basis of Faith</h2>
+          <div class="mx-auto mt-6 h-1 w-16 rounded-full bg-amber-400/60"></div>
+          <ol class="mt-8 space-y-4">
+            <li
+              v-for="(point, i) in basisOfFaith"
+              :key="i"
+              class="flex items-start gap-4"
+            >
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-400 text-[11px] font-black text-neutral-900">{{ i + 1 }}</span>
+              <p class="text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">{{ point }}</p>
+            </li>
+          </ol>
         </div>
       </section>
 
       <!-- About Section -->
-      <section id="about" class="relative overflow-hidden rounded-3xl bg-neutral-900 px-6 py-12 sm:px-12 sm:py-16 dark:ring-1 dark:ring-white/10">
+      <section id="about" class="relative overflow-hidden rounded-3xl bg-neutral-900 px-6 py-12 sm:px-12 sm:py-16 lg:mx-32 xl:mx-48 dark:ring-1 dark:ring-white/10">
         <!-- Dot Pattern Background Overlay -->
         <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[16px_16px] opacity-10"></div>
 
@@ -166,7 +216,7 @@
       </section>
 
       <!-- Contact Section -->
-      <section class="w-full rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
+      <section class="w-full rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 lg:mx-32 lg:w-auto xl:mx-48 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
         <div class="grid gap-10 md:grid-cols-2">
           <div class="space-y-6">
             <div>
@@ -245,20 +295,21 @@ import { useCatalogStore } from '../stores/catalogStore'
 import { getLandingPageSettings, DEFAULT_LANDING_PAGE_SETTINGS } from '../services/settingsService'
 import { formatCurrency } from '../utils/format'
 import { getLenis } from '../utils/lenis'
-import { 
-  ShoppingBag, 
-  Heart, 
-  Target, 
-  Eye, 
-  Mail, 
-  MapPin, 
+import {
+  ShoppingBag,
+  Heart,
+  Target,
+  Eye,
+  Mail,
+  MapPin,
   Facebook,
-  CheckCircle, 
-  Truck, 
+  CheckCircle,
+  Truck,
   Palette,
   Image,
   ArrowRight,
-  ArrowUp
+  ArrowUp,
+  Users
 } from 'lucide-vue-next'
 
 const { isAuthenticated } = useSession()
@@ -267,6 +318,21 @@ const { products, loadCatalog } = useCatalogStore()
 const latestProducts = computed(() => products.value.slice(0, 6))
 const loading = ref(true)
 const settings = ref(DEFAULT_LANDING_PAGE_SETTINGS)
+// Officers card falls back to defaults when older saved settings lack the key.
+const officers = computed(() => settings.value.officers ?? DEFAULT_LANDING_PAGE_SETTINGS.officers)
+const basisOfFaith = [
+  'The unity of the Father, Son and Holy Spirit in the Godhead.',
+  'The sovereignty of God in creation, revelation, redemption and final judgment.',
+  'The divine inspiration and the entire trustworthiness of the Holy Scriptures, as originally given, and its supreme authority in all matters of faith and conduct.',
+  'The universal sinfulness and guilt of all men since the fall, rendering them subject to God\u2019s wrath and condemnation.',
+  'Redemption from the guilt, penalty, dominion and pollution of sin, solely through the sacrificial death (as our Representative and Substitute) of the Lord Jesus Christ, the Incarnate Son of God.',
+  'The bodily resurrection of the Lord Jesus Christ from the dead and His ascension to the right hand of God the Father.',
+  'The presence and power of the Holy Spirit in the work of regeneration.',
+  'The justification of the sinner by the grace of God through faith alone.',
+  'The indwelling and work of the Holy Spirit in the believer.',
+  'The one Holy Universal Church which is the Body of Christ and to which all true believers belong.',
+  'The expectation of the personal return of the Lord Jesus Christ.',
+]
 // Stacked hero title: one word per line like GOOD WORK / DESERVES TO / BE SEEN.
 // Falls back to full name when the stored title is still the legacy "SCF".
 const heroWords = computed(() => {
