@@ -8,7 +8,7 @@
       >
         <!-- Background photo -->
         <img
-          src="/scfphoto.jpg"
+          src="/images/scfphoto.jpg"
           alt="SCF Photo"
           class="absolute inset-0 h-full w-full object-cover"
         />
@@ -134,7 +134,7 @@
         <div class="relative rounded-3xl bg-neutral-200 aspect-square overflow-hidden hidden lg:flex items-center justify-center dark:bg-neutral-800">
             <!-- Background Image -->
             <img 
-                src="/scfphoto.jpg" 
+                src="/images/scfphoto.jpg" 
                 alt="SCF Photo" 
                 class="absolute inset-0 w-full h-full object-cover"
             />
