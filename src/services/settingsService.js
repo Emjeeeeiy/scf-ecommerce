@@ -8,7 +8,7 @@ export const DEFAULT_LANDING_PAGE_SETTINGS = {
   hero: {
     title: 'Silangan Christian Fellowship',
     description: 'Silangan Christian Fellowship is a community of believers dedicated to sharing the love of Christ and serving our local community.',
-    logoUrl: '/scfLogo.png'
+    logoUrl: '/images/scfLogo.png'
   },
   mission: {
     title: 'Our Mission',

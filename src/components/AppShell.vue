@@ -19,7 +19,7 @@
         <div class="group flex items-center gap-1">
           <div class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg">
             <img
-              src="/scfLogo.png"
+              src="/images/scfLogo.png"
               alt="SCF Logo"
               class="h-6 w-6"
             />
