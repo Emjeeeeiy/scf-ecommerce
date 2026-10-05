@@ -138,17 +138,17 @@
           </div>
         </main>
 
-        <!-- Mobile Bottom Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-neutral-200 dark:border-neutral-800 bg-white/90 dark:bg-neutral-900/90 px-2 py-3 backdrop-blur-lg lg:hidden">
+        <!-- Mobile Bottom Navigation (icon-only on narrow phones so all 6 stay tappable) -->
+        <nav class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around gap-1 border-t border-neutral-200 dark:border-neutral-800 bg-white/90 dark:bg-neutral-900/90 px-2 py-2 backdrop-blur-lg lg:hidden">
           <router-link
             v-for="item in adminNavigation"
             :key="`mobile-nav-${item.to}`"
             :to="item.to"
-            class="relative flex flex-col items-center gap-1 px-3 py-1 transition-all"
+            class="relative flex min-h-11 min-w-11 shrink-0 flex-col items-center justify-center gap-1 px-3 py-2 transition-all"
             :class="isActive(item.to) ? 'text-neutral-950 dark:text-neutral-400' : 'text-neutral-400 dark:text-neutral-500'"
           >
             <component :is="item.icon" :size="20" :stroke-width="isActive(item.to) ? 2.5 : 2" />
-            <span class="text-[8px] font-black uppercase tracking-tighter">{{ item.label }}</span>
+            <span class="hidden text-[8px] font-black uppercase tracking-tighter min-[420px]:block">{{ item.label }}</span>
             
             <span 
               v-if="item.label === 'Orders' && unseenOrdersCount > 0" 

@@ -125,6 +125,23 @@ const router = createRouter({
   }
 })
 
+// A tap that hits a stale/missing lazy chunk (old PWA precache, partial deploy)
+// otherwise fails silently and the button looks dead. Reload once to pull a
+// fresh shell, then let later failures surface normally.
+router.onError((error) => {
+  const staleChunk = /loading chunk|failed to fetch dynamically|importing a module|chunkloaderror/i.test(
+    error?.message || ''
+  )
+  if (staleChunk && !sessionStorage.getItem('chunk-reload')) {
+    sessionStorage.setItem('chunk-reload', '1')
+    window.location.reload()
+  }
+})
+
+router.afterEach(() => {
+  sessionStorage.removeItem('chunk-reload')
+})
+
 router.beforeEach(async (to) => {
   await waitForSessionReady()
 
