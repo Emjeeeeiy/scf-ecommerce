@@ -2,7 +2,7 @@
   <AppShell subtitle="Account Settings">
     <section class="grid gap-8 lg:grid-cols-2">
       
-      <div class="rounded-2xl border border-neutral-200 bg-white shadow-sm flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="rounded-2xl border border-neutral-200 bg-white  flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex items-center gap-3 border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
           <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
             <UserCircle :size="16" stroke-width="1.5" />
@@ -81,7 +81,7 @@
 
           <button
             type="submit"
-            class="group mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="group mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white  transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
           >
             <Save :size="14" />
             <span>Save Changes</span>
@@ -94,7 +94,7 @@
         </div>
       </div>
 
-      <div class="rounded-2xl border border-neutral-200 bg-white shadow-sm flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="rounded-2xl border border-neutral-200 bg-white  flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex items-center justify-between border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
           <div class="flex items-center gap-3">
             <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
@@ -111,7 +111,7 @@
           <article
             v-for="address in addresses"
             :key="address.id"
-            class="group relative flex items-start justify-between rounded-xl border border-neutral-100 bg-neutral-50/30 p-4 transition duration-200 hover:border-neutral-200 hover:bg-white hover:shadow-sm dark:border-neutral-800 dark:bg-neutral-800/30 dark:hover:border-neutral-700 dark:hover:bg-neutral-900"
+            class="group relative flex items-start justify-between rounded-xl border border-neutral-100 bg-neutral-50/30 p-4 transition duration-200 hover:border-neutral-200 hover:bg-white  dark:border-neutral-800 dark:bg-neutral-800/30 dark:hover:border-neutral-700 dark:hover:bg-neutral-900"
           >
             <div class="flex items-start gap-3">
               <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-neutral-400 border border-neutral-100 transition group-hover:bg-neutral-950 group-hover:text-white group-hover:border-neutral-950 dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700 dark:group-hover:bg-amber-400 dark:group-hover:text-neutral-950 dark:group-hover:border-amber-400">

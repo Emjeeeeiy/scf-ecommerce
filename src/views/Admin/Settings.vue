@@ -9,7 +9,7 @@
           @click="activeTab = tab.id"
           class="flex items-center gap-2 rounded-xl px-6 py-2.5 text-[10px] font-bold transition-all"
           :class="activeTab === tab.id 
-            ? 'bg-white dark:bg-neutral-700 text-slate-900 dark:text-white shadow-sm' 
+            ? 'bg-white dark:bg-neutral-700 text-slate-900 dark:text-white ' 
             : 'text-slate-500 dark:text-neutral-400 hover:text-slate-700 dark:hover:text-neutral-200'"
         >
           <component :is="tab.icon" :size="16" />
@@ -19,7 +19,7 @@
 
       <!-- General Settings Tab -->
       <div v-if="activeTab === 'general'" class="animate-in fade-in slide-in-from-bottom-2 duration-500">
-        <div class="rounded-3xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 shadow-sm">
+        <div class="rounded-3xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 ">
           <h3 class="text-lg font-black text-slate-950 dark:text-white tracking-tight">System Preferences</h3>
           <p class="mt-1 text-sm font-medium text-slate-500 dark:text-neutral-400">Customize your admin dashboard experience.</p>
           
@@ -31,7 +31,7 @@
               </div>
               <div class="relative flex items-center gap-1 rounded-xl bg-slate-100 dark:bg-neutral-800 p-1">
                 <div
-                  class="absolute left-1 top-1 h-8 w-12 rounded-lg bg-white shadow-sm transition-transform duration-300 ease-out dark:bg-neutral-700"
+                  class="absolute left-1 top-1 h-8 w-12 rounded-lg bg-white  transition-transform duration-300 ease-out dark:bg-neutral-700"
                   :class="isDarkMode ? 'translate-x-13' : 'translate-x-0'"
                 ></div>
                 <button
@@ -59,7 +59,7 @@
                 <p class="text-xs font-medium text-slate-500 dark:text-neutral-400">Temporarily disable storefront access for customers.</p>
               </div>
               <button class="h-6 w-11 rounded-full bg-slate-200 dark:bg-neutral-800 p-1 transition-colors">
-                <div class="h-4 w-4 rounded-full bg-white dark:bg-neutral-600 shadow-sm"></div>
+                <div class="h-4 w-4 rounded-full bg-white dark:bg-neutral-600 "></div>
               </button>
             </div>
           </div>
@@ -68,7 +68,7 @@
 
       <!-- Landing Page Editor Tab -->
       <div v-if="activeTab === 'landing'" class="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-6">
-        <div class="rounded-3xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 shadow-sm">
+        <div class="rounded-3xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 ">
           <div class="flex items-center justify-between mb-8">
             <div>
               <h3 class="text-lg font-black text-slate-950 dark:text-white tracking-tight">Landing Page Content</h3>
@@ -184,7 +184,7 @@
 
       <!-- Payment Settings Tab -->
       <div v-if="activeTab === 'payment'" class="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-6">
-        <div class="rounded-3xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 shadow-sm">
+        <div class="rounded-3xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 ">
           <div class="flex items-center justify-between mb-8">
             <div>
               <h3 class="text-lg font-black text-slate-950 dark:text-white tracking-tight">Payment Methods</h3>

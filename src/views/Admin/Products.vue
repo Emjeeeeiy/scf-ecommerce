@@ -12,12 +12,12 @@
                   v-model="searchQuery"
                   type="text" 
                   placeholder="Search products..." 
-                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 pl-9 pr-4 py-2 text-sm font-medium shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all"
+                  class="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 pl-9 pr-4 py-2 text-sm font-medium  focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all"
                 />
               </div>
               <select 
                 v-model="selectedCategoryId" 
-                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-xs font-bold text-neutral-700 dark:text-neutral-300 shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all cursor-pointer"
+                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-xs font-bold text-neutral-700 dark:text-neutral-300  focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all cursor-pointer"
               >
                 <option value="">All Categories</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -26,7 +26,7 @@
 
             <button 
               @click="openAddModal"
-              class="flex items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-neutral-400 px-5 py-2 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition hover:bg-slate-800 dark:hover:bg-neutral-300 active:scale-95"
+              class="flex items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-neutral-400 px-5 py-2 text-xs font-black text-white dark:text-neutral-950    transition hover:bg-slate-800 dark:hover:bg-neutral-300 active:scale-95"
             >
               <Plus :size="16" />
               <span>Add Product</span>
@@ -36,7 +36,7 @@
       </div>
 
       <!-- Clean Product Table -->
-      <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xl shadow-slate-200/40 dark:shadow-none">
+      <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200/60 dark:border-neutral-800 bg-white dark:bg-neutral-900   ">
         <div class="overflow-x-auto">
           <table class="w-full text-left border-separate border-spacing-0">
             <thead>
@@ -70,7 +70,7 @@
               >
                 <td class="px-6 py-3.5">
                   <div class="flex items-center gap-3">
-                    <div class="h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-neutral-800 border border-slate-200/50 dark:border-neutral-700 shadow-inner group-hover:scale-105 transition-transform duration-500">
+                    <div class="h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-neutral-800 border border-slate-200/50 dark:border-neutral-700  group-hover:scale-105 transition-transform duration-500">
                       <img v-if="product.base64Image" :src="product.base64Image" :alt="product.name" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                       <div v-else class="flex h-full items-center justify-center text-slate-300 dark:text-neutral-600">
                         <Image :size="18" stroke-width="1.5" />
@@ -104,9 +104,9 @@
                     <div 
                       class="h-1.5 w-1.5 rounded-full"
                       :class="{
-                        'bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.4)]': product.status === 'active',
+                        'bg-green-500 ': product.status === 'active',
                         'bg-slate-300': product.status === 'draft',
-                        'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.4)]': product.status === 'archived'
+                        'bg-red-500 ': product.status === 'archived'
                       }"
                     ></div>
                     <span class="text-[9px] font-black uppercase tracking-widest text-slate-600 dark:text-neutral-400">{{ product.status }}</span>
@@ -154,7 +154,7 @@
         <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-md transition-opacity duration-500" @click="closeEditor"></div>
         
         <!-- Modal Content -->
-        <div class="relative w-full max-w-3xl bg-white dark:bg-neutral-900 shadow-2xl rounded-4xl flex flex-col max-h-[85vh] animate-in zoom-in-95 fade-in duration-500 overflow-hidden border border-white/20 dark:border-neutral-800">
+        <div class="relative w-full max-w-3xl bg-white dark:bg-neutral-900  rounded-4xl flex flex-col max-h-[85vh] animate-in zoom-in-95 fade-in duration-500 overflow-hidden border border-white/20 dark:border-neutral-800">
           <!-- Header -->
           <div class="flex items-center justify-between border-b border-slate-100 dark:border-neutral-800 px-8 py-5 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md">
             <div>
@@ -196,7 +196,7 @@
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Student Price</span>
                       <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">₱</span>
-                        <input v-model.number="form.studentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all" />
+                        <input v-model.number="form.studentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black  focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all" />
                       </div>
                     </label>
 
@@ -204,13 +204,13 @@
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Regular Price</span>
                       <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">₱</span>
-                        <input v-model.number="form.nonStudentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black shadow-sm focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all" />
+                        <input v-model.number="form.nonStudentPrice" type="number" min="0" required class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-8 py-3 text-lg font-black  focus:border-neutral-400 focus:ring-4 focus:ring-neutral-400/10 outline-none transition-all" />
                       </div>
                     </label>
 
                     <label class="block">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Status</span>
-                      <select v-model="form.status" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-4 py-3 text-xs font-bold shadow-sm focus:border-neutral-400 outline-none">
+                      <select v-model="form.status" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-4 py-3 text-xs font-bold  focus:border-neutral-400 outline-none">
                         <option value="active">Active</option>
                         <option value="draft">Draft</option>
                         <option value="archived">Archived</option>
@@ -224,12 +224,12 @@
                   <div class="grid gap-4 md:grid-cols-2">
                     <label class="block md:col-span-2">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Product Name</span>
-                      <input v-model="form.name" required placeholder="Name your product..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-sm font-black shadow-sm focus:border-neutral-400 outline-none transition-all" />
+                      <input v-model="form.name" required placeholder="Name your product..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-sm font-black  focus:border-neutral-400 outline-none transition-all" />
                     </label>
 
                     <label class="block">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Category</span>
-                      <select v-model="form.categoryId" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-xs font-black shadow-sm focus:border-neutral-400 outline-none cursor-pointer">
+                      <select v-model="form.categoryId" class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-3.5 text-xs font-black  focus:border-neutral-400 outline-none cursor-pointer">
                         <option value="">Uncategorized</option>
                         <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                       </select>
@@ -237,7 +237,7 @@
 
                     <label class="block md:col-span-2">
                       <span class="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Description</span>
-                      <textarea v-model="form.description" rows="3" placeholder="Tell the story..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-4 text-xs font-medium shadow-sm focus:border-neutral-400 outline-none resize-none transition-all"></textarea>
+                      <textarea v-model="form.description" rows="3" placeholder="Tell the story..." class="w-full rounded-2xl border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 px-6 py-4 text-xs font-medium  focus:border-neutral-400 outline-none resize-none transition-all"></textarea>
                     </label>
                   </div>
 
@@ -253,7 +253,7 @@
                         <div class="mb-4 flex items-center justify-between gap-4">
                           <div class="flex-1">
                             <label class="mb-1 block text-[8px] font-black uppercase tracking-widest text-slate-400">Color</label>
-                            <input v-model="variant.color" placeholder="e.g. Midnight Black" class="w-full rounded-xl bg-slate-50 dark:bg-neutral-800 border-none px-4 py-2 text-xs font-black shadow-inner" />
+                            <input v-model="variant.color" placeholder="e.g. Midnight Black" class="w-full rounded-xl bg-slate-50 dark:bg-neutral-800 border-none px-4 py-2 text-xs font-black " />
                           </div>
                           <button type="button" @click="removeVariantRow(vIndex)" class="mt-4 p-2 rounded-xl text-red-500 hover:bg-red-50 transition-all">
                             <Trash2 :size="14" />
@@ -262,8 +262,8 @@
 
                         <div class="space-y-2">
                           <div v-for="(option, oIndex) in variant.options" :key="oIndex" class="flex gap-2 items-center">
-                            <input v-model="option.size" placeholder="Size" class="flex-1 rounded-xl bg-slate-50 dark:bg-neutral-800 border-none px-4 py-2 text-[10px] font-bold shadow-inner" />
-                            <input v-model.number="option.stock" type="number" min="0" placeholder="Qty" class="w-20 rounded-xl bg-slate-50 dark:bg-neutral-800 border-none px-4 py-2 text-[10px] font-black text-center shadow-inner" />
+                            <input v-model="option.size" placeholder="Size" class="flex-1 rounded-xl bg-slate-50 dark:bg-neutral-800 border-none px-4 py-2 text-[10px] font-bold " />
+                            <input v-model.number="option.stock" type="number" min="0" placeholder="Qty" class="w-20 rounded-xl bg-slate-50 dark:bg-neutral-800 border-none px-4 py-2 text-[10px] font-black text-center " />
                             <button type="button" @click="removeOptionRow(vIndex, oIndex)" class="p-1.5 text-slate-200 hover:text-red-500">
                               <X :size="14" />
                             </button>
@@ -286,7 +286,7 @@
               <button @click="closeEditor" type="button" class="flex-1 rounded-xl border-2 border-slate-100 dark:border-neutral-800 py-3 text-xs font-black text-slate-400 hover:border-slate-200 transition-all">
                 Cancel
               </button>
-              <button :disabled="saving" form="product-form" type="submit" class="flex-[1.5] rounded-xl bg-slate-900 dark:bg-neutral-400 py-3 text-xs font-black text-white dark:text-neutral-950 shadow-lg shadow-slate-200 dark:shadow-none transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed">
+              <button :disabled="saving" form="product-form" type="submit" class="flex-[1.5] rounded-xl bg-slate-900 dark:bg-neutral-400 py-3 text-xs font-black text-white dark:text-neutral-950    transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed">
                 <span v-if="saving" class="flex items-center justify-center gap-2">
                   <Loader2 class="animate-spin" :size="16" />
                   Saving...

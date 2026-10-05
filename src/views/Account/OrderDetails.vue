@@ -2,7 +2,7 @@
   <AppShell subtitle="Order Details">
     <div v-if="loading" class="space-y-4">
       <div class="h-8 w-40 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
-      <div class="h-64 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"></div>
+      <div class="h-64 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white  dark:border-neutral-800 dark:bg-neutral-900"></div>
     </div>
 
     <section v-else-if="order" class="space-y-6">
@@ -14,7 +14,7 @@
         <span>Back to Order History</span>
       </router-link>
 
-      <div class="rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="rounded-2xl border border-neutral-200 bg-white  dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex flex-col gap-3 border-b border-neutral-100 p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 dark:border-neutral-800">
           <div class="flex items-center gap-3">
             <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
@@ -130,7 +130,7 @@
       </div>
     </section>
 
-    <div v-else class="rounded-2xl border border-neutral-200 bg-white p-12 text-center shadow-sm sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
+    <div v-else class="rounded-2xl border border-neutral-200 bg-white p-12 text-center  sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
       <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500">
         <PackageX :size="24" stroke-width="1.5" />
       </div>
@@ -139,7 +139,7 @@
 
       <router-link
         to="/account/orders"
-        class="mt-6 inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold text-neutral-700 shadow-sm transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+        class="mt-6 inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold text-neutral-700  transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
       >
         <ArrowLeft :size="14" />
         Back to Order History

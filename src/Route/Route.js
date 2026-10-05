@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useSession, waitForSessionReady } from '../composables/useSession'
+import { getLenis } from '../utils/lenis'
 
 // Route components are lazy-loaded so the initial bundle only ships what the
 // landing page needs; each view (and anything it alone depends on, like
@@ -103,7 +104,25 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  // Reset scroll on navigation so one page's scroll position never leaks into another.
+  // Routed through Lenis when available so jumps stay in sync with smooth scroll.
+  scrollBehavior(to, _from, savedPosition) {
+    const lenis = getLenis()
+    if (savedPosition) {
+      if (lenis) lenis.scrollTo(savedPosition.top, { immediate: true })
+      return savedPosition
+    }
+    if (to.hash) {
+      if (lenis) {
+        lenis.scrollTo(to.hash, { duration: 1.4 })
+        return false
+      }
+      return { el: to.hash, behavior: 'smooth' }
+    }
+    if (lenis) lenis.scrollTo(0, { immediate: true })
+    return { top: 0 }
+  }
 })
 
 router.beforeEach(async (to) => {

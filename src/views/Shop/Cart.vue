@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="Shopping Cart">
     <section class="grid gap-8 lg:grid-cols-[1.3fr_0.8fr]">
-      <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="rounded-2xl border border-neutral-200 bg-white p-6  sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-6 dark:border-neutral-800">
           <div class="flex items-center gap-3">
             <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
@@ -33,7 +33,7 @@
           </p>
           <router-link
             to="/shop"
-            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3 text-xs font-semibold text-white  transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
           >
             <ArrowLeft :size="14" />
             <span>Continue Shopping</span>
@@ -121,7 +121,7 @@
       </div>
 
       <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-2xl border border-neutral-200 bg-white p-6  dark:border-neutral-800 dark:bg-neutral-900">
           <div class="flex items-center gap-2.5 mb-6 border-b border-neutral-100 pb-4 dark:border-neutral-800">
             <ReceiptText :size="14" class="text-neutral-400 dark:text-neutral-500" />
             <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Order Summary</h2>
@@ -153,7 +153,7 @@
 
           <router-link
             to="/checkout"
-            class="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-[0.99] dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white  transition hover:bg-neutral-800 active:scale-[0.99] dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
             :class="items.length ? '' : 'pointer-events-none opacity-40'"
           >
             <span>Proceed to Checkout</span>

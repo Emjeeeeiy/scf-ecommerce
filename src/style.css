@@ -1,6 +1,74 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Production typography system (Tailwind v4 theme tokens)
+   - Display: Anton — heavy condensed sans for massive headlines (hero, section titles)
+   - Accent: Space Grotesk — subheadings, labels, buttons, eyebrows
+   - Body: Inter — paragraphs, UI, everything else
+   Utilities generated: `font-display`, `font-accent`, `font-sans` */
+@theme {
+  --font-display: "Anton", "Arial Narrow", "Impact", sans-serif;
+  --font-accent: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Reduced radius system for the ADMIN panel (sharp, modern — max 20px).
+     Every `rounded-*` class maps here, so admin cards/photos/buttons/modals
+     stay proportional. `rounded-full` is untouched (pills, badges, icon buttons).
+
+     The customer storefront overrides these tokens via `.store-scope` below,
+     collapsing its whole scale onto a single small radius. */
+  --radius-md: 0.25rem;   /* 4px  — tags, tiny tiles (was 6px) */
+  --radius-lg: 0.375rem;  /* 6px  — buttons, nav links, inputs (was 8px) */
+  --radius-xl: 0.5rem;    /* 8px  — cards, icon tiles (was 12px) */
+  --radius-2xl: 0.75rem;  /* 12px — panels, product tiles, dialogs (was 16px) */
+  --radius-3xl: 1rem;     /* 16px — large sections (was 24px) */
+  --radius-4xl: 1.25rem;  /* 20px — auth cards, modals (was 32px) */
+
+  /* The storefront's single corner radius (= rounded-lg). Every `rounded-*`
+     class inside `.store-scope` resolves to this. Raise it for softer cards. */
+  --radius-storefront: 0.375rem;  /* 6px */
+}
+
+/* Storefront radius.
+   `.store-scope` is applied to the root of AppShell (every customer-facing
+   route) and, for the globally-mounted ToastContainer/ConfirmDialog, to a
+   wrapper in App.vue on non-admin routes. The admin panel never renders
+   inside it, so the admin radius tokens above stay in effect there.
+
+   Every `rounded-*` utility resolves to `var(--radius-*)`, so overriding the
+   tokens here collapses the whole storefront scale onto one small radius.
+   Cards, buttons, inputs and photos all read as a single system instead of
+   the mixed 4/6/8/12/16/20px scale, while:
+
+     - `rounded-full` is unaffected (it compiles to a fixed huge value, not a
+       token), so avatars, the cart-count badge and status dots stay circular;
+     - elements with no radius utility at all (header, mobile nav, plain
+       sections) keep square corners, since nothing asks them to be rounded;
+     - the admin panel keeps its own radius scale.
+
+   Bump --radius-storefront to change the storefront's roundness in one place. */
+.store-scope {
+  --radius-xs: var(--radius-storefront);
+  --radius-sm: var(--radius-storefront);
+  --radius-md: var(--radius-storefront);
+  --radius-lg: var(--radius-storefront);
+  --radius-xl: var(--radius-storefront);
+  --radius-2xl: var(--radius-storefront);
+  --radius-3xl: var(--radius-storefront);
+  --radius-4xl: var(--radius-storefront);
+}
+
+html {
+  font-family: var(--font-sans);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 /* Hide scrollbar globally but keep scrolling functional */
 * {
   scrollbar-width: none; /* Firefox */

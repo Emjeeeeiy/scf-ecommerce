@@ -1,34 +1,45 @@
 <template>
-  <AppShell>
+  <AppShell transparent-header>
     <div class="space-y-10 pb-16 sm:space-y-16">
-      <!-- Hero Section -->
-     <section
+      <!-- Hero Section: full-screen photo background extending under transparent header -->
+      <section
         id="hero"
-        class="relative -mx-4 overflow-hidden bg-neutral-900 px-6 py-14 text-center text-white sm:mx-0 sm:rounded-3xl sm:px-10 sm:py-20 dark:ring-1 dark:ring-white/10"
-        style="background-image: linear-gradient(to bottom, rgba(23, 23, 23, 0.9), rgba(23, 23, 23, 0.8)), url('/scfphoto2.jpg'); background-size: cover; background-position: center;"
+        class="hero-fullscreen-transparent relative -mx-4 grid place-items-center overflow-hidden text-left text-white sm:-mx-6 lg:-mx-12"
       >
-        <div class="relative z-10 mx-auto max-w-4xl">
-          <h1 class="text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-            <span class="block text-white">{{ settings.hero.title.split(' ')[0] }}</span>
-            <span class="block text-amber-400">{{ settings.hero.title.split(' ').slice(1).join(' ') }}</span>
+        <!-- Background photo -->
+        <img
+          src="/scfphoto.jpg"
+          alt="SCF Photo"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <!-- Black overlay to darken image -->
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-black/50 via-black/15 to-black/25"></div>
+        <!-- Black fade under the text: from bottom-center on mobile, from left on desktop -->
+        <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-transparent sm:bg-linear-to-r"></div>
+
+        <div class="relative z-10 flex w-full flex-col items-center px-6 py-12 pt-28 text-center sm:items-start sm:px-10 sm:py-16 sm:pt-32 sm:text-left lg:px-16">
+          <h1 class="space-y-2 wrap-break-word text-center font-display uppercase leading-[1.02] tracking-wide text-[clamp(2rem,5.5vw,6rem)] sm:space-y-3 sm:text-left">
+            <span
+              v-for="(word, i) in heroWords"
+              :key="i"
+              class="block"
+              :class="i === heroWords.length - 1 ? 'text-amber-400' : 'text-white'"
+            >{{ word }}</span>
           </h1>
-          <p class="mt-6 text-sm leading-relaxed text-neutral-400 max-w-xl mx-auto sm:text-lg">
+          <p class="mt-6 max-w-xl text-center text-sm leading-relaxed text-neutral-200 sm:text-left sm:text-lg">
             {{ settings.hero.description }}
           </p>
-          <div class="mt-8 flex flex-col items-start justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
-            <router-link
-              to="/shop"
-              class="group w-fit rounded-xl bg-amber-400 px-5 py-3 text-left text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:scale-105 hover:bg-amber-300 sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:text-center flex items-center justify-center gap-2 shadow-xl shadow-amber-400/20"
-            >
-              <ShoppingBag :size="18" />
-              Shop Now
-            </router-link>
-          </div>
+          <router-link
+            to="/shop"
+            class="group relative mt-8 flex w-fit items-center justify-center gap-2 overflow-hidden rounded-none border border-white px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-white transition-colors duration-300 hover:text-neutral-900 sm:px-8 sm:py-3.5 sm:text-xs"
+          >
+            <span class="absolute inset-0 -translate-x-full bg-amber-400 transition-transform duration-300 ease-out group-hover:translate-x-0"></span>
+            <ShoppingBag :size="18" class="relative z-10" />
+            <span class="relative z-10">Shop Now</span>
+          </router-link>
         </div>
-        
-        <!-- Animated Background Accents (Optional: Pwedeng alisin kung masyadong magulo na sa background image) -->
-        <div class="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-amber-400/10 blur-[100px]"></div>
-        <div class="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-blue-500/10 blur-[100px]"></div>
+
       </section>
 
       <!-- Latest Arrivals -->
@@ -63,8 +74,8 @@
             :to="`/shop/product/${product.id}`"
             class="group block min-w-40  flex-1 lg:min-w-0"
           >
-            <div class="aspect-4/5 overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-neutral-100 transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-neutral-900/10 group-hover:ring-amber-200 dark:bg-neutral-900 dark:ring-neutral-800 dark:group-hover:ring-amber-500/30">
-              <div class="relative h-full w-full overflow-hidden rounded-xl bg-neutral-50 shadow-inner dark:bg-neutral-800">
+            <div class="aspect-4/5 overflow-hidden rounded-2xl ring-1 ring-neutral-100 transition-all duration-500 group-hover:-translate-y-1   group-hover:ring-amber-200 dark:ring-neutral-800 dark:group-hover:ring-amber-500/30">
+              <div class="relative h-full w-full overflow-hidden rounded-xl bg-neutral-50  dark:bg-neutral-800">
                 <img
                   v-if="product.base64Image"
                   :src="product.base64Image"
@@ -87,9 +98,9 @@
       </section>
 
       <!-- Mission & Vision -->
-      <section class="grid gap-8 lg:grid-cols-2 lg:items-center">
+      <section class="grid gap-8 lg:grid-cols-2 lg:items-center lg:px-32 xl:px-48">
         <div class="space-y-4">
-          <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+          <div class="rounded-2xl border border-neutral-200 bg-white p-6  sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
             <div class="flex items-start justify-between gap-3">
               <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
                 <Target :size="19" />
@@ -104,7 +115,7 @@
               {{ settings.mission.description }}
             </p>
           </div>
-          <div class="rounded-2xl border border-neutral-200 bg-neutral-900 p-6 text-white shadow-sm sm:p-8 dark:border-neutral-700">
+          <div class="rounded-2xl border border-neutral-200 bg-neutral-900 p-6 text-white  sm:p-8 dark:border-neutral-700">
             <div class="flex items-start justify-between gap-3">
               <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-amber-400">
                 <Eye :size="19" />
@@ -120,7 +131,7 @@
             </p>
           </div>
         </div>
-        <div class="relative rounded-3xl bg-neutral-200 aspect-square overflow-hidden flex items-center justify-center dark:bg-neutral-800">
+        <div class="relative rounded-3xl bg-neutral-200 aspect-square overflow-hidden hidden lg:flex items-center justify-center dark:bg-neutral-800">
             <!-- Background Image -->
             <img 
                 src="/scfphoto.jpg" 
@@ -155,7 +166,7 @@
       </section>
 
       <!-- Contact Section -->
-      <section class="mx-auto max-w-5xl rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
+      <section class="w-full rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
         <div class="grid gap-10 md:grid-cols-2">
           <div class="space-y-6">
             <div>
@@ -202,9 +213,9 @@
           </div>
 
           <form @submit.prevent class="flex flex-col gap-3 rounded-2xl bg-neutral-50 p-5 sm:p-6 dark:bg-neutral-800/50">
-            <input type="text" placeholder="Full Name" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
-            <input type="email" placeholder="Email Address" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
-            <textarea placeholder="Your Message" rows="3" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900 shadow-sm outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700"></textarea>
+            <input type="text" placeholder="Full Name" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
+            <input type="email" placeholder="Email Address" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
+            <textarea placeholder="Your Message" rows="3" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700"></textarea>
             <button class="mt-3 rounded-xl bg-neutral-900 py-4 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300">
               Send Message
             </button>
@@ -233,6 +244,7 @@ import { useSession } from '../composables/useSession'
 import { useCatalogStore } from '../stores/catalogStore'
 import { getLandingPageSettings, DEFAULT_LANDING_PAGE_SETTINGS } from '../services/settingsService'
 import { formatCurrency } from '../utils/format'
+import { getLenis } from '../utils/lenis'
 import { 
   ShoppingBag, 
   Heart, 
@@ -255,6 +267,13 @@ const { products, loadCatalog } = useCatalogStore()
 const latestProducts = computed(() => products.value.slice(0, 6))
 const loading = ref(true)
 const settings = ref(DEFAULT_LANDING_PAGE_SETTINGS)
+// Stacked hero title: one word per line like GOOD WORK / DESERVES TO / BE SEEN.
+// Falls back to full name when the stored title is still the legacy "SCF".
+const heroWords = computed(() => {
+  const raw = (settings.value.hero?.title || '').trim()
+  const source = raw === '' || raw.toUpperCase() === 'SCF' ? 'Silangan Christian Fellowship' : raw
+  return source.split(/\s+/).filter(Boolean)
+})
 const showScrollToTopButton = ref(false)
 
 const updateScrollState = () => {
@@ -266,7 +285,12 @@ const updateScrollState = () => {
 }
 
 const scrollToHero = () => {
-  document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const lenis = getLenis()
+  if (lenis) {
+    lenis.scrollTo('#hero', { duration: 1.4 })
+  } else {
+    document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 onMounted(async () => {
@@ -292,3 +316,15 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScrollState)
 })
 </script>
+
+<style scoped>
+/* Full-screen hero with photo background extending under the transparent header.
+   Fallback chain: 100vh -> 100svh (mobile URL bar) -> 100dvh (dynamic).
+   Full viewport height (header overlays via absolute positioning, so no offset).
+   Grid place-items:center on the section keeps content centered at any zoom (25%-200%). */
+.hero-fullscreen-transparent {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+</style>

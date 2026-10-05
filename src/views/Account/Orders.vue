@@ -1,6 +1,6 @@
 <template>
   <AppShell subtitle="Order History">
-    <section class="rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+    <section class="rounded-2xl border border-neutral-200 bg-white  dark:border-neutral-800 dark:bg-neutral-900">
       <div class="flex items-center gap-3 border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
         <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
           <Package :size="16" stroke-width="1.5" />
@@ -15,7 +15,7 @@
         <article
           v-for="order in orders"
           :key="order.id"
-          class="group overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/30 transition-all duration-200 hover:border-neutral-200 hover:bg-white hover:shadow-md hover:shadow-neutral-200/20 dark:border-neutral-800 dark:bg-neutral-800/30 dark:hover:border-neutral-700 dark:hover:bg-neutral-900 dark:hover:shadow-none"
+          class="group overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/30 transition-all duration-200 hover:border-neutral-200 hover:bg-white   dark:border-neutral-800 dark:bg-neutral-800/30 dark:hover:border-neutral-700 dark:hover:bg-neutral-900 "
         >
           <div class="flex flex-col p-5 sm:p-6">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-100 pb-4 mb-4 dark:border-neutral-800">
@@ -93,7 +93,7 @@
           </p>
           <router-link
             to="/shop"
-            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3 text-xs font-semibold text-white  transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
           >
             <Store :size="14" />
             <span>Go to Shop</span>

@@ -6,7 +6,7 @@ const settingsDoc = doc(db, 'settings', SETTINGS_DOC_ID)
 
 export const DEFAULT_LANDING_PAGE_SETTINGS = {
   hero: {
-    title: 'SCF',
+    title: 'Silangan Christian Fellowship',
     description: 'Silangan Christian Fellowship is a community of believers dedicated to sharing the love of Christ and serving our local community.',
     logoUrl: '/scfLogo.png'
   },
