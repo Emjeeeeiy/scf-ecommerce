@@ -1,21 +1,31 @@
 <template>
-  <AppShell>
+  <AppShell transparent-header>
     <div class="space-y-10 pb-16 sm:space-y-16">
-      <!-- Hero Section: full-screen, left-aligned massive stacked type -->
+      <!-- Hero Section: full-screen photo background extending under transparent header -->
       <section
         id="hero"
-        class="hero-fullscreen relative -mx-4 -mt-6 grid place-items-center overflow-hidden border-b-2 border-neutral-900 bg-white text-left text-neutral-900 sm:-mx-6 lg:-mx-12 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+        class="hero-fullscreen-transparent relative -mx-4 grid place-items-center overflow-hidden text-left text-white sm:-mx-6 lg:-mx-12"
       >
-        <div class="relative z-10 w-full px-6 py-12 sm:px-10 sm:py-16 lg:px-16">
-          <h1 class="space-y-2 wrap-break-word text-left font-display uppercase leading-[1.02] tracking-wide text-[clamp(2.5rem,7vw,8rem)] sm:space-y-3">
+        <!-- Background photo -->
+        <img
+          src="/scfphoto.jpg"
+          alt="SCF Photo"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <!-- Black overlay to darken image -->
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/30"></div>
+
+        <div class="relative z-10 w-full px-6 py-12 pt-28 sm:px-10 sm:py-16 sm:pt-32 lg:px-16">
+          <h1 class="space-y-2 wrap-break-word text-left font-display uppercase leading-[1.02] tracking-wide text-[clamp(2rem,5.5vw,6rem)] sm:space-y-3">
             <span
               v-for="(word, i) in heroWords"
               :key="i"
               class="block"
-              :class="i === heroWords.length - 1 ? 'text-amber-500' : 'text-neutral-900 dark:text-white'"
+              :class="i === heroWords.length - 1 ? 'text-amber-400' : 'text-white'"
             >{{ word }}</span>
           </h1>
-          <p class="mt-6 max-w-xl text-left text-sm leading-relaxed text-neutral-600 sm:text-lg dark:text-neutral-400">
+          <p class="mt-6 max-w-xl text-left text-sm leading-relaxed text-neutral-200 sm:text-lg">
             {{ settings.hero.description }}
           </p>
           <router-link
@@ -299,13 +309,13 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Full-screen hero: min-height (never fixed height) so content never clips.
+/* Full-screen hero with photo background extending under the transparent header.
    Fallback chain: 100vh -> 100svh (mobile URL bar) -> 100dvh (dynamic).
-   Header offset (sticky header = 4.25rem) subtracted so header + hero = 1 viewport.
+   Full viewport height (header overlays via absolute positioning, so no offset).
    Grid place-items:center on the section keeps content centered at any zoom (25%-200%). */
-.hero-fullscreen {
-  min-height: calc(100vh - 4.25rem);
-  min-height: calc(100svh - 4.25rem);
-  min-height: calc(100dvh - 4.25rem);
+.hero-fullscreen-transparent {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
 }
 </style>
