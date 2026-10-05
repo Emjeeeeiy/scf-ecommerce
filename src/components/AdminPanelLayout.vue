@@ -2,7 +2,7 @@
   <div :class="{ 'dark': isDarkMode }" class="h-screen overflow-hidden font-sans">
     <div class="grid h-full lg:grid-cols-[240px_minmax(0,1fr)] bg-[#f8fafc] dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
       <aside class="hidden h-screen border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 lg:block ">
-        <div class="flex h-full flex-col overflow-y-auto px-5 py-6">
+        <div data-lenis-prevent class="flex h-full flex-col overflow-y-auto px-5 py-6">
 
           <div class="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-800/50 p-4">
             <div class="flex items-center gap-2.5">
@@ -132,7 +132,7 @@
           </div>
         </header>
 
-        <main class="min-h-0 flex-1 overflow-y-auto bg-[#f8fafc] dark:bg-neutral-950 px-6 py-6 pb-24 lg:pb-6">
+        <main data-lenis-prevent class="min-h-0 flex-1 overflow-y-auto bg-[#f8fafc] dark:bg-neutral-950 px-6 py-6 pb-24 lg:pb-6">
           <div class="mx-auto max-w-6xl">
             <slot />
           </div>

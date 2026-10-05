@@ -18,6 +18,16 @@ export const DEFAULT_LANDING_PAGE_SETTINGS = {
     title: 'Our Vision',
     description: 'To see a community transformed by the Gospel, where every member is equipped to share their faith and every person in need is supported by the hands and feet of Silangan Christian Fellowship.'
   },
+  officers: {
+    title: 'SLC Officers',
+    members: [
+      { name: 'Juan Dela Cruz', position: 'President', photoBase64: '' },
+      { name: 'Maria Santos', position: 'Vice President', photoBase64: '' },
+      { name: 'Jose Reyes', position: 'Secretary', photoBase64: '' },
+      { name: 'Ana Bautista', position: 'Treasurer', photoBase64: '' },
+      { name: 'Mark Villanueva', position: 'Auditor', photoBase64: '' },
+    ]
+  },
   about: {
     title: 'About SCF',
     description: "Silangan Christian Fellowship started with a small group of believers committed to making a difference. Our fundraising shop isn't just about merchandise—it's a creative outlet for our members to design shirts that reflect our values. 100% of the proceeds go directly into our building fund and outreach projects."
