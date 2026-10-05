@@ -244,6 +244,7 @@ import { useSession } from '../composables/useSession'
 import { useCatalogStore } from '../stores/catalogStore'
 import { getLandingPageSettings, DEFAULT_LANDING_PAGE_SETTINGS } from '../services/settingsService'
 import { formatCurrency } from '../utils/format'
+import { getLenis } from '../utils/lenis'
 import { 
   ShoppingBag, 
   Heart, 
@@ -284,7 +285,12 @@ const updateScrollState = () => {
 }
 
 const scrollToHero = () => {
-  document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const lenis = getLenis()
+  if (lenis) {
+    lenis.scrollTo('#hero', { duration: 1.4 })
+  } else {
+    document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 onMounted(async () => {

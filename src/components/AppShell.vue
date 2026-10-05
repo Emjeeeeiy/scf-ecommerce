@@ -46,10 +46,10 @@
 
         <!-- Right Side Nav/Actions -->
         <div class="flex items-center gap-2">
-          <!-- Cart Link (Dedicated) - Hidden on Mobile (moved to bottom bar) -->
+          <!-- Cart Link (icon only, visible on mobile too) -->
           <router-link
             to="/cart"
-            class="hidden md:flex relative h-9 w-9 items-center justify-center rounded-lg transition-all"
+            class="flex relative h-9 w-9 items-center justify-center rounded-lg transition-all"
             :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900' : (isOverlay ? 'text-white/80 hover:bg-white/10 hover:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
           >
             <ShoppingCart :size="18" />
@@ -122,27 +122,22 @@
     </main>
 
     <!-- Mobile Navigation -->
-    <nav class="fixed bottom-0 inset-x-0 z-40 border-t border-neutral-200 bg-white md:hidden dark:border-neutral-800 dark:bg-neutral-900">
-      <div class="flex items-center justify-around py-2 px-1">
+    <nav
+      :class="(transparentHeader && headerProgress < 0.05) ? 'pointer-events-none translate-y-24 opacity-0' : 'translate-y-0 opacity-100'"
+      class="fixed bottom-4 left-1/2 z-40 w-fit -translate-x-1/2 rounded-[20px] border border-white/40 bg-white/40 shadow-xl backdrop-blur-md transition-all duration-500 md:hidden dark:border-white/10 dark:bg-neutral-900/40"
+    >
+      <div class="flex items-center gap-1 px-3 py-2">
         <router-link
           v-for="item in mobileNavigation"
           :key="item.to"
           :to="item.to"
-          class="relative flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+          class="relative flex flex-col items-center justify-center px-5 py-1 transition-all active:scale-95"
           :class="route.path === item.to ? 'text-neutral-900 dark:text-amber-400' : 'text-neutral-400 hover:text-neutral-900 dark:text-neutral-500 dark:hover:text-white'"
         >
           <!-- Icon -->
           <div class="flex items-center justify-center">
             <template v-if="item.to === '/'"><Home :size="20" /></template>
             <template v-else-if="item.to === '/shop'"><Store :size="20" /></template>
-            <template v-else-if="item.to === '/cart'">
-              <div class="relative">
-                <ShoppingCart :size="20" />
-                <span v-if="cartCount > 0" class="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white bg-amber-400 text-[8px] font-black text-neutral-900  dark:border-neutral-900">
-                  {{ cartCount }}
-                </span>
-              </div>
-            </template>
             <template v-else-if="item.to === '/login' || item.to === '/account/profile'"><User :size="20" /></template>
             <template v-else-if="item.to === '/register'"><UserPlus :size="20" /></template>
             <template v-else-if="item.to === '/account/orders'"><Package :size="20" /></template>
@@ -258,7 +253,6 @@ const mobileNavigation = computed(() => {
   const items = [
     navigation.value.find(i => i.to === '/'),
     navigation.value.find(i => i.to === '/shop'),
-    { to: '/cart', label: 'Cart' }
   ]
 
   if (isAuthenticated.value) {
