@@ -49,7 +49,7 @@
           <!-- Cart Link (icon only, visible on mobile too) -->
           <router-link
             to="/cart"
-            class="flex relative h-9 w-9 items-center justify-center rounded-lg transition-all"
+            class="flex relative h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-all"
             :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900' : (isOverlay ? 'text-white/80 hover:bg-white/10 hover:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
           >
             <ShoppingCart :size="18" />
@@ -131,7 +131,7 @@
           v-for="item in mobileNavigation"
           :key="item.to"
           :to="item.to"
-          class="relative flex flex-col items-center justify-center px-5 py-1 transition-all active:scale-95"
+          class="relative flex min-h-11 flex-col items-center justify-center px-5 py-2 transition-all active:scale-95"
           :class="route.path === item.to ? 'text-neutral-900 dark:text-amber-400' : 'text-neutral-400 hover:text-neutral-900 dark:text-neutral-500 dark:hover:text-white'"
         >
           <!-- Icon -->
