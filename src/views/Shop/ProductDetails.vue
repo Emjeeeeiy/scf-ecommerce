@@ -15,15 +15,16 @@
       </div>
     </div>
 
-    <section v-else-if="product" class="mx-auto grid w-full max-w-5xl gap-10 px-2 sm:px-6 lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
-        <div class="relative h-80 w-full overflow-hidden bg-neutral-100 sm:h-105 dark:bg-neutral-800">
+    <section v-else-if="product" class="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
+      <div class="flex flex-col gap-6">
+        <div class="overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
+          <div class="group relative h-80 w-full overflow-hidden sm:h-105">
           <img
             v-if="product.base64Image"
             :src="product.base64Image"
             :alt="product.name"
             decoding="async"
-            class="h-full w-full object-cover"
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div v-else class="flex h-full flex-col items-center justify-center gap-2 text-neutral-300 dark:text-neutral-600">
             <Image :size="36" stroke-width="1.5" />
@@ -32,22 +33,23 @@
 
           <router-link
             to="/shop"
-            class="absolute left-4 top-4 flex items-center gap-1.5 bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 transition-colors hover:text-neutral-950 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white"
+            class="absolute left-4 top-4 flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 transition-colors hover:text-neutral-950 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white"
           >
             <ArrowLeft :size="14" />
             <span>Back</span>
           </router-link>
+          </div>
         </div>
 
-        <div class="p-6 sm:p-8">
-          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Premium collection</p>
-          <h1 class="mt-3 text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl dark:text-white">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Premium collection</p>
+          <h1 class="mt-3 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-white">
             {{ product.name }}
           </h1>
           <div class="mt-5 flex flex-wrap items-baseline gap-x-8 gap-y-3 border-b border-neutral-200 pb-6 dark:border-neutral-800">
             <div>
               <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Student</p>
-              <p class="mt-1 text-xl font-medium tracking-tight text-neutral-900 dark:text-white">
+              <p class="mt-1 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
                 {{ formatCurrency(product.studentPrice) }}
               </p>
             </div>
@@ -69,7 +71,7 @@
       </div>
 
       <aside class="h-fit space-y-6 lg:sticky lg:top-24">
-        <div class="border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
           <div class="space-y-6">
             <!-- Color Selection -->
             <div>
@@ -81,7 +83,7 @@
                   v-for="color in availableColors"
                   :key="color"
                   type="button"
-                  class="min-w-12 border px-3 py-2 transition-colors"
+                  class="min-w-12 rounded-lg border px-3 py-2 transition-colors"
                   :class="selectedColor === color
                     ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
                     : 'border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300'"
@@ -102,7 +104,7 @@
                   v-for="v in availableSizesForSelectedColor"
                   :key="v.id"
                   type="button"
-                  class="flex flex-col items-center justify-center border p-2.5 text-center transition-colors"
+                  class="flex flex-col items-center justify-center rounded-lg border p-2.5 text-center transition-colors"
                   :class="[
                     selectedSize === v.size
                       ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
@@ -122,7 +124,7 @@
           </div>
         </div>
 
-        <div class="border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
           <h2 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Purchase</h2>
 
           <div class="mt-5 space-y-6">
@@ -132,7 +134,7 @@
               <div class="grid gap-2">
                 <button
                   @click="selectedPriceType = 'student'"
-                  class="flex items-center justify-between gap-4 border p-3 transition-colors"
+                  class="flex items-center justify-between gap-4 rounded-lg border p-3 transition-colors"
                   :class="selectedPriceType === 'student'
                     ? 'border-neutral-900 dark:border-white'
                     : 'border-neutral-200 hover:border-neutral-400 dark:border-neutral-700'"
@@ -148,7 +150,7 @@
 
                 <button
                   @click="selectedPriceType = 'regular'"
-                  class="flex items-center justify-between gap-4 border p-3 transition-colors"
+                  class="flex items-center justify-between gap-4 rounded-lg border p-3 transition-colors"
                   :class="selectedPriceType === 'regular'
                     ? 'border-neutral-900 dark:border-white'
                     : 'border-neutral-200 hover:border-neutral-400 dark:border-neutral-700'"
@@ -170,7 +172,7 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-between gap-4 border border-neutral-200 p-1.5 dark:border-neutral-700">
+            <div class="flex items-center justify-between gap-4 rounded-lg border border-neutral-200 p-1.5 dark:border-neutral-700">
               <button
                 type="button"
                 class="flex h-9 w-9 items-center justify-center text-neutral-600 transition hover:bg-neutral-100 disabled:opacity-40 dark:text-neutral-300 dark:hover:bg-neutral-800"
@@ -202,7 +204,7 @@
             <div class="grid gap-2 pt-2">
               <button
                 type="button"
-                class="flex w-full items-center justify-center gap-2 bg-neutral-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+                class="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
                 :disabled="adding"
                 @click="handleAddToCart"
               >
@@ -213,7 +215,7 @@
 
               <router-link
                 to="/cart"
-                class="flex w-full items-center justify-center gap-1.5 border border-neutral-200 bg-white px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-700 transition-colors hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300"
+                class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-700 transition-colors hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300"
               >
                 <span>View cart</span>
                 <ArrowRight :size="16" />
@@ -224,7 +226,7 @@
       </aside>
     </section>
 
-    <div v-else class="mx-auto w-full max-w-3xl border border-neutral-200 bg-white p-12 text-center sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
+    <div v-else class="mx-auto w-full max-w-3xl rounded-xl border border-neutral-200 bg-white p-12 text-center sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
       <h2 class="text-xl font-medium tracking-tight text-neutral-900 dark:text-white">Product not found</h2>
       <div class="mx-auto mt-5 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
       <p class="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">The item you are looking for might have been moved or removed.</p>
@@ -355,3 +357,4 @@ const handleAddToCart = async () => {
 
 onMounted(loadProduct)
 </script>
+

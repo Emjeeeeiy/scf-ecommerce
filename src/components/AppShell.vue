@@ -29,25 +29,26 @@
           </div>
         </div>
 
-        <!-- Main Desktop Nav -->
-        <nav class="hidden items-center gap-1 md:flex">
+        <!-- Main Desktop Nav: absolutely centered so it never shifts when cart/actions appear -->
+        <nav class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 md:flex">
           <router-link
             v-for="item in mainDesktopNavigation"
             :key="item.to"
             :to="item.to"
-            class="flex items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all"
-            :class="isOverlay ? (route.path === item.to ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white') : (route.path === item.to ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
+            class="relative pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:content-[''] after:transition-all"
+            :class="isOverlay
+              ? (route.path === item.to ? 'text-white after:bg-amber-400' : 'text-white/60 after:bg-transparent hover:text-white hover:after:bg-white/40')
+              : (route.path === item.to ? 'text-neutral-900 after:bg-amber-500 dark:text-white dark:after:bg-amber-400' : 'text-neutral-400 after:bg-transparent hover:text-neutral-900 hover:after:bg-neutral-300 dark:text-neutral-500 dark:hover:text-white')"
           >
-            <Home v-if="item.to === '/'" :size="12" />
-            <Store v-else-if="item.to === '/shop'" :size="12" />
-            <span>{{ item.label }}</span>
+            {{ item.label }}
           </router-link>
         </nav>
 
         <!-- Right Side Nav/Actions -->
         <div class="flex items-center gap-2">
-          <!-- Cart Link (icon only, visible on mobile too) -->
+          <!-- Cart Link (icon only, visible on mobile too; only on shop-related pages) -->
           <router-link
+            v-if="showCart"
             to="/cart"
             class="flex relative h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-all"
             :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900' : (isOverlay ? 'text-white/80 hover:bg-white/10 hover:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
@@ -58,7 +59,7 @@
             </span>
           </router-link>
 
-          <div :class="isOverlay ? 'h-5 w-px mx-1.5 bg-white/20' : 'h-5 w-px bg-neutral-300 mx-1.5 dark:bg-neutral-700'"></div>
+          <div v-if="showCart" :class="isOverlay ? 'h-5 w-px mx-1.5 bg-white/20' : 'h-5 w-px bg-neutral-300 mx-1.5 dark:bg-neutral-700'"></div>
 
           <!-- User Section -->
           <div class="flex items-center gap-1.5">
@@ -216,6 +217,11 @@ onBeforeUnmount(() => {
 const headerSolid = computed(() => headerProgress.value > 0.5)
 // True while the header is still overlaid on the hero (white text); false once solid (dark text).
 const isOverlay = computed(() => props.transparentHeader && !headerSolid.value)
+
+// Cart is only relevant on shopping-related pages.
+const showCart = computed(() =>
+  route.path.startsWith('/shop') || route.path === '/cart' || route.path === '/checkout'
+)
 
 const route = useRoute()
 const router = useRouter()
