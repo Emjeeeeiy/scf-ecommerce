@@ -97,7 +97,7 @@
             <template v-else>
               <router-link
                 to="/register"
-                :class="isOverlay ? 'flex items-center gap-2 rounded-lg border border-white/30 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-white/10 active:scale-95 sm:px-5' : 'flex items-center gap-2 rounded-lg border border-neutral-200 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-neutral-600 transition-all hover:bg-neutral-50 active:scale-95 sm:px-5 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800'"
+                :class="isOverlay ? 'hidden items-center gap-2 rounded-lg border border-white/30 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-white/10 active:scale-95 sm:flex sm:px-5' : 'hidden items-center gap-2 rounded-lg border border-neutral-200 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-neutral-600 transition-all hover:bg-neutral-50 active:scale-95 sm:flex sm:px-5 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800'"
               >
                 <UserPlus :size="14" />
                 <span class="hidden xs:inline sm:inline">Register</span>
