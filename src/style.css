@@ -1,14 +1,12 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Production typography system (Tailwind v4 theme tokens)
-   - Display: Anton — heavy condensed sans for massive headlines (hero, section titles)
-   - Accent: Space Grotesk — subheadings, labels, buttons, eyebrows
+/* Typography system (Tailwind v4 theme tokens)
+   - Heading: Plus Jakarta Sans — headings, section titles
    - Body: Inter — paragraphs, UI, everything else
-   Utilities generated: `font-display`, `font-accent`, `font-sans` */
+   Utilities generated: `font-heading`, `font-sans` */
 @theme {
-  --font-display: "Anton", "Arial Narrow", "Impact", sans-serif;
-  --font-accent: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Reduced radius system for the ADMIN panel (sharp, modern — max 20px).
@@ -60,6 +58,10 @@
 
 html {
   font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
 }
 
 body {
