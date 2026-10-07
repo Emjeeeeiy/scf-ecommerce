@@ -1,19 +1,23 @@
 <template>
   <AppShell subtitle="Premium collection for your lifestyle">
-    <!-- Header Section — minimalist -->
-    <section class="mx-auto w-full max-w-5xl px-2 pt-4 sm:px-6 sm:pt-8">
-      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <!-- Header Section -->
+    <section class="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 sm:pt-8 lg:px-8">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div class="max-w-2xl">
           <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Our collection</p>
-          <h1 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Shop catalog</h1>
+          <h1 class="mt-3 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Shop catalog</h1>
           <div class="mt-5 h-px w-12 bg-neutral-900 dark:bg-white"></div>
           <p class="mt-4 text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
             Discover {{ loading ? '…' : filteredProducts.length }} premium items handpicked for you.
           </p>
         </div>
-        <div class="relative w-full lg:max-w-xs">
+      </div>
+
+      <!-- Toolbar: search + horizontal category pills -->
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="relative w-full sm:max-w-xs">
           <Search
-            class="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-400"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"
             :size="16"
             stroke-width="1.5"
           />
@@ -21,24 +25,17 @@
             v-model="query"
             type="text"
             placeholder="Search products..."
-            class="w-full border-0 border-b border-neutral-200 bg-transparent py-2.5 pl-7 pr-2 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
+            class="w-full rounded-lg border border-neutral-300 bg-white py-2.5 pl-9 pr-3 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-500 focus:ring-2 focus:ring-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:focus:border-neutral-500 dark:focus:ring-neutral-800"
           />
         </div>
-      </div>
-    </section>
 
-    <!-- Main Content Grid -->
-    <section class="mx-auto mt-10 grid w-full max-w-5xl gap-10 px-2 sm:px-6 lg:grid-cols-[200px_1fr]">
-      <!-- Category Sidebar/Top Bar — minimalist -->
-      <aside class="lg:sticky lg:top-24 lg:h-fit">
-        <p class="hidden text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 lg:block dark:text-neutral-500">Filter</p>
-        <div class="mt-0 flex gap-6 overflow-x-auto border-b border-neutral-200 pb-0 scrollbar-hide lg:mt-4 lg:flex-col lg:gap-0 lg:border-b-0 dark:border-neutral-800">
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           <button
             type="button"
-            class="shrink-0 border-b-2 border-transparent pb-3 text-sm transition-colors lg:border-b-0 lg:border-l-2 lg:pb-0 lg:pl-4 lg:py-2 lg:text-left"
+            class="shrink-0 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors"
             :class="selectedCategory === ''
-              ? 'border-neutral-900 text-neutral-900 dark:border-white dark:text-white'
-              : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'"
+              ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
+              : 'border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:border-neutral-500 dark:hover:text-white'"
             @click="selectedCategory = ''"
           >
             All
@@ -47,27 +44,29 @@
             v-for="category in categories"
             :key="category.id"
             type="button"
-            class="shrink-0 border-b-2 border-transparent pb-3 text-sm transition-colors lg:border-b-0 lg:border-l-2 lg:pb-0 lg:pl-4 lg:py-2 lg:text-left"
+            class="shrink-0 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors"
             :class="selectedCategory === category.id
-              ? 'border-neutral-900 text-neutral-900 dark:border-white dark:text-white'
-              : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'"
+              ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
+              : 'border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:border-neutral-500 dark:hover:text-white'"
             @click="selectedCategory = category.id"
           >
             {{ category.name }}
           </button>
         </div>
-      </aside>
+      </div>
+    </section>
 
-      <!-- Product Grid — minimalist -->
-      <div v-if="loading" class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="space-y-4">
-          <div class="aspect-4/5 w-full animate-pulse bg-neutral-200/70 dark:bg-neutral-800"></div>
-          <div class="h-3 w-2/3 animate-pulse bg-neutral-200/70 dark:bg-neutral-800"></div>
-          <div class="h-3 w-1/3 animate-pulse bg-neutral-200/70 dark:bg-neutral-800"></div>
+    <!-- Product Grid -->
+    <section class="mx-auto mt-10 w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+      <div v-if="loading" class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <div v-for="i in 8" :key="i" class="space-y-4">
+          <div class="aspect-[4/5] w-full animate-pulse rounded-xl bg-neutral-200/70 dark:bg-neutral-800"></div>
+          <div class="h-3 w-2/3 animate-pulse rounded bg-neutral-200/70 dark:bg-neutral-800"></div>
+          <div class="h-3 w-1/3 animate-pulse rounded bg-neutral-200/70 dark:bg-neutral-800"></div>
         </div>
       </div>
 
-      <div v-else class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3">
+      <div v-else class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
         <article
           v-for="product in pagedProducts"
           :key="product.id"
@@ -75,7 +74,7 @@
         >
           <router-link
             :to="`/shop/product/${product.id}`"
-            class="relative block aspect-4/5 w-full overflow-hidden border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-800"
+            class="relative block aspect-[4/5] w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800"
           >
             <img
               v-if="product.base64Image"
@@ -83,25 +82,28 @@
               :alt="product.name"
               loading="lazy"
               decoding="async"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div v-else class="flex h-full items-center justify-center text-neutral-300 dark:text-neutral-600">
               <Image :size="28" stroke-width="1.5" />
             </div>
+            <div class="absolute inset-x-0 bottom-0 flex translate-y-full items-center justify-center bg-neutral-900/70 py-3 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm transition-transform duration-300 group-hover:translate-y-0 dark:bg-white/80 dark:text-neutral-900">
+              Quick View
+            </div>
           </router-link>
 
           <div class="flex flex-1 flex-col pt-4">
-            <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">{{ categoryName(product.categoryId) || 'New' }}</p>
+            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">{{ categoryName(product.categoryId) || 'New' }}</p>
             <router-link :to="`/shop/product/${product.id}`" class="mt-1 block">
-              <h2 class="line-clamp-1 text-sm font-medium text-neutral-900 transition-colors group-hover:text-neutral-500 dark:text-white">
+              <h2 class="line-clamp-1 text-base font-bold text-neutral-900 transition-colors group-hover:text-black dark:text-white">
                 {{ product.name }}
               </h2>
             </router-link>
-            <div class="mt-2 flex items-baseline gap-3">
-              <p class="text-sm text-neutral-900 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
-              <p class="text-xs text-neutral-400 line-through dark:text-neutral-500">{{ formatCurrency(product.nonStudentPrice) }}</p>
+            <div class="mt-2 flex items-baseline">
+              <p class="text-sm font-semibold text-neutral-900 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
+              <p class="ml-2 text-xs text-neutral-400 line-through dark:text-neutral-500">{{ formatCurrency(product.nonStudentPrice) }}</p>
             </div>
-            <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">{{ product.variants?.length || 0 }} {{ product.variants?.length === 1 ? 'style' : 'styles' }}</p>
+            <p class="mt-1 text-xs font-medium text-neutral-500 dark:text-neutral-400">{{ product.variants?.length || 0 }} {{ product.variants?.length === 1 ? 'style' : 'styles' }}</p>
           </div>
         </article>
 
@@ -122,7 +124,7 @@
         </div>
       </div>
 
-      <Pagination class="lg:col-span-2" :page="page" :total-pages="totalPages" :total-items="filteredProducts.length" @update:page="goToPage" />
+      <Pagination class="mt-8" :page="page" :total-pages="totalPages" :total-items="filteredProducts.length" @update:page="goToPage" />
     </section>
   </AppShell>
 </template>

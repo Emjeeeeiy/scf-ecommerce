@@ -124,7 +124,7 @@
     <!-- Mobile Navigation -->
     <nav
       :class="(transparentHeader && headerProgress < 0.05) ? 'pointer-events-none translate-y-24 opacity-0' : 'translate-y-0 opacity-100'"
-      class="fixed bottom-4 left-1/2 z-40 w-fit -translate-x-1/2 rounded-[20px] border border-white/40 bg-white/40 shadow-xl backdrop-blur-md transition-all duration-500 md:hidden dark:border-white/10 dark:bg-neutral-900/40"
+      class="fixed bottom-4 left-1/2 z-40 w-fit -translate-x-1/2 rounded-full border border-neutral-200 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-500 md:hidden dark:border-neutral-700 dark:bg-neutral-900/60"
     >
       <div class="flex items-center gap-1 px-3 py-2">
         <router-link

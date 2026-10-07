@@ -18,21 +18,24 @@
         <!-- Black fade under the text: from bottom-center on mobile, from left on desktop -->
         <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-transparent sm:bg-linear-to-r"></div>
 
-        <div class="relative z-10 flex w-full flex-col items-center px-6 py-12 pt-28 text-center sm:items-start sm:px-10 sm:py-16 sm:pt-32 sm:text-left lg:px-16">
-          <h1 class="space-y-2 wrap-break-word text-center font-display uppercase leading-[1.02] tracking-wide text-[clamp(2rem,5.5vw,6rem)] sm:space-y-3 sm:text-left">
-            <span
-              v-for="(word, i) in heroWords"
-              :key="i"
-              class="block"
-              :class="i === heroWords.length - 1 ? 'text-amber-400' : 'text-white'"
-            >{{ word }}</span>
-          </h1>
-          <p class="mt-6 max-w-xl text-center text-sm leading-relaxed text-neutral-200 sm:text-left sm:text-lg">
-            {{ settings.hero.description }}
-          </p>
+        <div class="relative z-10 flex w-full flex-col items-center gap-6 px-6 py-12 pt-28 text-center sm:items-start sm:gap-8 sm:px-10 sm:py-16 sm:pt-32 sm:text-left lg:px-16">
+          <div class="flex max-w-2xl flex-col items-center gap-5 sm:items-start">
+            <h1 class="space-y-1 font-heading text-center text-[clamp(1.9rem,4.5vw,4rem)] font-extrabold uppercase leading-[1.05] tracking-wide sm:space-y-2 sm:text-left">
+              <span
+                v-for="(word, i) in heroWords"
+                :key="i"
+                class="block"
+                :class="i === heroWords.length - 1 ? 'text-amber-400' : 'text-white'"
+              >{{ word }}</span>
+            </h1>
+            <div class="h-px w-12 bg-amber-400/80"></div>
+            <p class="max-w-xl text-center text-sm leading-relaxed text-neutral-200 sm:text-left sm:text-lg">
+              {{ settings.hero.description }}
+            </p>
+          </div>
           <router-link
             to="/shop"
-            class="group relative mt-8 flex w-fit items-center justify-center gap-2 overflow-hidden rounded-none border border-white px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-white transition-colors duration-300 hover:text-neutral-900 sm:px-8 sm:py-3.5 sm:text-xs"
+            class="group relative flex w-fit items-center justify-center gap-2 overflow-hidden rounded-none border border-white px-5 py-3 text-center text-[10px] font-black uppercase tracking-widest text-white transition-colors duration-300 hover:text-neutral-900 sm:px-8 sm:py-3.5 sm:text-xs"
           >
             <span class="absolute inset-0 -translate-x-full bg-amber-400 transition-transform duration-300 ease-out group-hover:translate-x-0"></span>
             <ShoppingBag :size="18" class="relative z-10" />
