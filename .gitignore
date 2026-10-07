@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment variables (secrets — never commit)
+.env
+.env.*
+!.env.example
+
 # Local backup of discarded 2026-10-02 redesign work (delete after redo)
 .recovery/
 
