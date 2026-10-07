@@ -97,179 +97,170 @@
         </div>
       </section>
 
-      <!-- Mission & Vision -->
-      <section class="grid gap-8 lg:grid-cols-2 lg:items-center lg:px-32 xl:px-48">
-        <div class="space-y-4">
-          <div class="rounded-2xl border border-neutral-200 bg-white p-6  sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
-            <div class="flex items-start justify-between gap-3">
-              <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
-                <Target :size="19" />
-              </div>
-              <div class="text-right">
-                <h2 class="mt-1 text-lg font-black tracking-tight text-neutral-900 dark:text-white">
-                  {{ settings.mission.title }}
-                </h2>
-              </div>
+      <!-- Mission & Vision — minimalist -->
+      <section class="mx-auto w-full max-w-5xl px-2 sm:px-6">
+        <div class="max-w-2xl">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Our Purpose</p>
+          <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Mission &amp; Vision</h2>
+          <div class="mt-5 h-px w-12 bg-neutral-900 dark:bg-white"></div>
+        </div>
+
+        <div class="mt-10 grid gap-10 md:grid-cols-2 md:gap-12">
+          <div class="border-t border-neutral-200 pt-8 dark:border-neutral-800">
+            <div class="flex items-center gap-2.5 text-neutral-900 dark:text-white">
+              <Target :size="16" stroke-width="1.5" class="text-neutral-400" />
+              <h3 class="text-sm font-semibold tracking-tight">{{ settings.mission.title }}</h3>
             </div>
-            <p class="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+            <p class="mt-4 text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
               {{ settings.mission.description }}
             </p>
           </div>
-          <div class="rounded-2xl border border-neutral-200 bg-neutral-900 p-6 text-white  sm:p-8 dark:border-neutral-700">
-            <div class="flex items-start justify-between gap-3">
-              <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-amber-400">
-                <Eye :size="19" />
-              </div>
-              <div class="text-right">
-                <h2 class="mt-1 text-lg font-black tracking-tight text-white">
-                  {{ settings.vision.title }}
-                </h2>
-              </div>
+          <div class="border-t border-neutral-200 pt-8 dark:border-neutral-800">
+            <div class="flex items-center gap-2.5 text-neutral-900 dark:text-white">
+              <Eye :size="16" stroke-width="1.5" class="text-neutral-400" />
+              <h3 class="text-sm font-semibold tracking-tight">{{ settings.vision.title }}</h3>
             </div>
-            <p class="mt-5 text-sm leading-relaxed text-neutral-300 sm:text-base">
+            <p class="mt-4 text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
               {{ settings.vision.description }}
             </p>
           </div>
         </div>
-        <div class="rounded-3xl border border-neutral-200 bg-white p-6 sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
-            <div class="flex items-start justify-between gap-3">
-              <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
-                <Users :size="19" />
-              </div>
-              <div class="text-right">
-                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-500">Leadership</p>
-                <h2 class="mt-1 text-lg font-black tracking-tight text-neutral-900 dark:text-white">
-                  {{ officers.title }}
-                </h2>
-              </div>
+
+        <!-- Leadership — clean list -->
+        <div class="mt-16 sm:mt-20">
+          <div class="flex items-baseline justify-between gap-4 border-b border-neutral-200 pb-5 dark:border-neutral-800">
+            <div>
+              <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Leadership</p>
+              <h3 class="mt-2 text-xl font-medium tracking-tight text-neutral-900 dark:text-white">{{ officers.title }}</h3>
             </div>
-            <ul class="mt-6 divide-y divide-neutral-200 dark:divide-neutral-800">
-              <li
-                v-for="(member, i) in officers.members"
-                :key="i"
-                class="flex items-center gap-4 py-4"
-              >
-                <img
-                  v-if="member.photoBase64"
-                  :src="member.photoBase64"
-                  :alt="member.name"
-                  class="h-14 w-14 shrink-0 rounded-full object-cover"
-                />
-                <span v-else class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-sm font-black uppercase text-amber-400 dark:bg-amber-400 dark:text-neutral-950">
-                  {{ (member.name || '?').trim().charAt(0) }}
-                </span>
-                <div class="min-w-0">
-                  <p class="truncate text-xs font-black uppercase tracking-widest text-neutral-900 dark:text-white">{{ member.name }}</p>
-                  <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">{{ member.position }}</p>
-                </div>
-              </li>
-            </ul>
+            <p class="shrink-0 text-xs text-neutral-400 tabular-nums dark:text-neutral-500">{{ officers.members.length }} members</p>
+          </div>
+          <ul class="grid gap-x-12 sm:grid-cols-2">
+            <li
+              v-for="(member, i) in officers.members"
+              :key="i"
+              class="flex items-center gap-4 border-b border-neutral-200 py-5 dark:border-neutral-800"
+            >
+              <img
+                v-if="member.photoBase64"
+                :src="member.photoBase64"
+                :alt="member.name"
+                class="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-amber-400/70 ring-offset-2 ring-offset-neutral-50 dark:ring-amber-400/60 dark:ring-offset-neutral-900"
+              />
+              <span v-else class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-400 text-sm font-bold uppercase text-neutral-900 ring-2 ring-amber-400/30 ring-offset-2 ring-offset-neutral-50 dark:bg-amber-400 dark:text-neutral-950 dark:ring-offset-neutral-900">
+                {{ (member.name || '?').trim().charAt(0) }}
+              </span>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-neutral-900 dark:text-white">{{ member.name }}</p>
+                <p class="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">{{ member.position }}</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </section>
 
-      <!-- Basis of Faith Section -->
-      <section class="rounded-3xl border border-neutral-300 bg-white p-6 ring-1 ring-neutral-100 sm:p-12 lg:mx-64 xl:mx-96 dark:border-neutral-800 dark:bg-neutral-900 dark:ring-neutral-800">
-        <div class="mx-auto max-w-3xl">
-          <!-- IVCF Philippines mark -->
-          <div class="flex flex-col items-center">
-            <div class="flex">
-              <span class="flex h-10 w-10 items-center justify-center bg-yellow-400 text-xl font-black text-white">I</span>
-              <span class="flex h-10 w-10 items-center justify-center bg-green-500 text-xl font-black text-white">V</span>
-              <span class="flex h-10 w-10 items-center justify-center bg-blue-500 text-xl font-black text-white">C</span>
-              <span class="flex h-10 w-10 items-center justify-center bg-red-500 text-xl font-black text-white">F</span>
+      <!-- Basis of Faith — minimalist -->
+      <section class="mx-auto w-full max-w-3xl px-2 sm:px-6">
+        <div class="border-t border-neutral-200 pt-16 dark:border-neutral-800 sm:pt-20">
+          <div class="mx-auto max-w-xl text-center">
+            <div class="flex flex-col items-center">
+              <div class="flex">
+                <span class="flex h-10 w-10 items-center justify-center bg-yellow-400 text-xl font-black text-white">I</span>
+                <span class="flex h-10 w-10 items-center justify-center bg-green-500 text-xl font-black text-white">V</span>
+                <span class="flex h-10 w-10 items-center justify-center bg-blue-500 text-xl font-black text-white">C</span>
+                <span class="flex h-10 w-10 items-center justify-center bg-red-500 text-xl font-black text-white">F</span>
+              </div>
+              <p class="mt-1.5 text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900 dark:text-white">Philippines</p>
             </div>
-            <p class="mt-1 text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900 dark:text-white">Philippines</p>
+            <p class="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">What We Believe</p>
+            <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Basis of Faith</h2>
+            <div class="mx-auto mt-6 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
           </div>
-          <p class="mt-6 text-center text-[9px] font-black uppercase tracking-[0.3em] text-amber-500">What We Believe</p>
-          <h2 class="mt-2 text-center text-2xl font-black uppercase tracking-tight text-neutral-900 sm:text-3xl dark:text-white">Basis of Faith</h2>
-          <div class="mx-auto mt-6 h-1 w-16 rounded-full bg-amber-400/60"></div>
-          <ol class="mt-8 space-y-4">
+          <ol class="mt-10 divide-y divide-neutral-200 dark:divide-neutral-800">
             <li
               v-for="(point, i) in basisOfFaith"
               :key="i"
-              class="flex items-start gap-4"
+              class="flex gap-5 py-5 sm:gap-6"
             >
-              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-400 text-[11px] font-black text-neutral-900">{{ i + 1 }}</span>
-              <p class="text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">{{ point }}</p>
+              <span class="w-7 shrink-0 pt-0.5 text-xs font-medium tabular-nums text-neutral-400 dark:text-neutral-500">{{ String(i + 1).padStart(2, '0') }}</span>
+              <p class="text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">{{ point }}</p>
             </li>
           </ol>
         </div>
       </section>
 
-      <!-- About Section -->
-      <section id="about" class="relative overflow-hidden rounded-3xl bg-neutral-900 px-6 py-12 sm:px-12 sm:py-16 lg:mx-32 xl:mx-48 dark:ring-1 dark:ring-white/10">
-        <!-- Dot Pattern Background Overlay -->
-        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[16px_16px] opacity-10"></div>
-
-        <!-- Content Container (z-10 ensures text renders above dots) -->
-        <div class="relative z-10 mx-auto max-w-3xl text-center">
-          <h2 class="text-2xl font-black uppercase tracking-tight text-amber-300 sm:text-4xl">
+      <!-- About — minimalist -->
+      <section id="about" class="mx-auto w-full max-w-3xl px-2 sm:px-6">
+        <div class="border-t border-neutral-200 pt-16 text-center dark:border-neutral-800 sm:pt-20">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">About</p>
+          <h2 class="mx-auto mt-3 max-w-md text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">
             {{ settings.about.title }}
           </h2>
-          
-          <div class="mx-auto mt-6 h-1 w-16 rounded-full bg-amber-300/40"></div>
-          
-          <p class="mt-6 text-sm leading-relaxed text-neutral-300 opacity-90 sm:text-lg">
+          <div class="mx-auto mt-6 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
+          <p class="mx-auto mt-6 max-w-2xl text-[15px] leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
             {{ settings.about.description }}
           </p>
         </div>
       </section>
 
-      <!-- Contact Section -->
-      <section class="w-full rounded-3xl bg-white p-6 border border-neutral-300 ring-1 ring-neutral-100 sm:p-12 lg:mx-32 lg:w-auto xl:mx-48 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
-        <div class="grid gap-10 md:grid-cols-2">
-          <div class="space-y-6">
+      <!-- Contact — minimalist -->
+      <section class="mx-auto w-full max-w-5xl px-2 sm:px-6">
+        <div class="border-t border-neutral-200 pt-16 dark:border-neutral-800 sm:pt-20">
+          <div class="grid gap-12 md:grid-cols-2 md:gap-16">
             <div>
-              <p class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-500 mb-1.5">Connect</p>
-              <h2 class="text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl dark:text-white">Get in Touch</h2>
-              <p class="mt-3 text-xs leading-relaxed text-neutral-500 sm:text-sm dark:text-neutral-400">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Contact</p>
+              <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Get in touch</h2>
+              <p class="mt-4 max-w-sm text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
                 Have questions about your order, sizing, or how to get involved with SCF? We'd love to hear from you.
               </p>
+
+              <ul class="mt-10 space-y-7">
+                <li class="flex items-start gap-4">
+                  <Mail :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-400" />
+                  <div>
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Email</p>
+                    <p class="mt-1 text-sm text-neutral-900 dark:text-white">{{ settings.contact.email }}</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-4">
+                  <MapPin :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-400" />
+                  <div>
+                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Location</p>
+                    <p class="mt-1 text-sm text-neutral-900 dark:text-white">{{ settings.contact.address }}</p>
+                  </div>
+                </li>
+                <li>
+                  <a :href="settings.contact.facebook" target="_blank" rel="noopener" class="group flex items-start gap-4">
+                    <Facebook :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-400 transition-colors group-hover:text-neutral-900 dark:group-hover:text-white" />
+                    <div>
+                      <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Social</p>
+                      <p class="mt-1 text-sm text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors group-hover:decoration-neutral-900 dark:text-white dark:decoration-neutral-700 dark:group-hover:decoration-white">Facebook Page</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
             </div>
 
-            <div class="space-y-4">
-              <div class="flex items-center gap-4">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 transition-colors hover:bg-neutral-900 hover:text-white dark:bg-neutral-800 dark:hover:bg-amber-400 dark:hover:text-neutral-950">
-                  <Mail :size="18" />
+            <form @submit.prevent class="h-fit border border-neutral-200 bg-white p-6 sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+              <div class="space-y-6">
+                <div>
+                  <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Name</label>
+                  <input type="text" placeholder="Full name" class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white" />
                 </div>
                 <div>
-                   <p class="text-[7px] font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Email Us</p>
-                   <span class="text-neutral-900 font-black text-xs sm:text-sm dark:text-white">{{ settings.contact.email }}</span>
+                  <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Email</label>
+                  <input type="email" placeholder="Email address" class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white" />
                 </div>
+                <div>
+                  <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Message</label>
+                  <textarea placeholder="How can we help?" rows="4" class="mt-2 w-full resize-none border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"></textarea>
+                </div>
+                <button class="w-full bg-neutral-900 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200">
+                  Send message
+                </button>
               </div>
-              <div class="flex items-center gap-4">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 transition-colors hover:bg-neutral-900 hover:text-white dark:bg-neutral-800 dark:hover:bg-amber-400 dark:hover:text-neutral-950">
-                  <MapPin :size="18" />
-                </div>
-                <div>
-                   <p class="text-[7px] font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Visit Us</p>
-                   <span class="text-neutral-900 font-black text-xs sm:text-sm dark:text-white">{{ settings.contact.address }}</span>
-                </div>
-              </div>
-              <a
-                :href="settings.contact.facebook"
-                target="_blank"
-                class="flex items-center gap-4 group"
-              >
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 transition-colors group-hover:bg-blue-600 group-hover:text-white dark:bg-neutral-800">
-                  <Facebook :size="18" />
-                </div>
-                <div>
-                   <p class="text-[7px] font-black uppercase tracking-widest text-neutral-400 group-hover:text-blue-600 transition-colors dark:text-neutral-500">Follow Us</p>
-                   <span class="text-neutral-900 font-black text-xs sm:text-sm group-hover:text-blue-700 transition-colors dark:text-white">Facebook Page</span>
-                </div>
-              </a>
-            </div>
+            </form>
           </div>
-
-          <form @submit.prevent class="flex flex-col gap-3 rounded-2xl bg-neutral-50 p-5 sm:p-6 dark:bg-neutral-800/50">
-            <input type="text" placeholder="Full Name" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
-            <input type="email" placeholder="Email Address" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700" />
-            <textarea placeholder="Your Message" rows="3" class="rounded-xl border-none bg-white p-4 text-xs font-bold text-neutral-900  outline-none ring-1 ring-neutral-100 focus:ring-2 focus:ring-amber-400 transition-all dark:bg-neutral-900 dark:text-white dark:ring-neutral-700"></textarea>
-            <button class="mt-3 rounded-xl bg-neutral-900 py-4 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300">
-              Send Message
-            </button>
-          </form>
         </div>
       </section>
 
@@ -297,19 +288,14 @@ import { formatCurrency } from '../utils/format'
 import { getLenis } from '../utils/lenis'
 import {
   ShoppingBag,
-  Heart,
   Target,
   Eye,
   Mail,
   MapPin,
   Facebook,
-  CheckCircle,
-  Truck,
-  Palette,
   Image,
   ArrowRight,
-  ArrowUp,
-  Users
+  ArrowUp
 } from 'lucide-vue-next'
 
 const { isAuthenticated } = useSession()

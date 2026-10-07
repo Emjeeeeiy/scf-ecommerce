@@ -1,142 +1,111 @@
 <template>
   <AppShell subtitle="Account Settings">
-    <section class="grid gap-8 lg:grid-cols-2">
-      
-      <div class="rounded-2xl border border-neutral-200 bg-white  flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
-        <div class="flex items-center gap-3 border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
-          <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
-            <UserCircle :size="16" stroke-width="1.5" />
-          </div>
-          <div>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5 dark:text-neutral-500">Personal Info</p>
-            <h1 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-white">Account Details</h1>
-          </div>
+    <section class="mx-auto grid w-full max-w-5xl gap-10 px-2 sm:px-6 lg:grid-cols-2">
+
+      <div class="flex h-fit flex-col border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="border-b border-neutral-200 p-6 sm:px-8 dark:border-neutral-800">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Personal info</p>
+          <h1 class="mt-2 text-2xl font-medium tracking-tight text-neutral-900 dark:text-white">Account details</h1>
         </div>
 
-        <form class="p-6 sm:p-8 grid gap-5" @submit.prevent="handleSaveProfile">
-          <div class="space-y-1.5">
-            <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-              <AtSign :size="10" stroke-width="1.5" />
-              <span>Username</span>
-            </label>
+        <form class="grid gap-6 p-6 sm:p-8" @submit.prevent="handleSaveProfile">
+          <div>
+            <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Username</label>
             <input
               v-model="profileForm.username"
               type="text"
               placeholder="Your username"
-              class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-white dark:placeholder:text-neutral-500 dark:focus:bg-neutral-900 dark:focus:border-neutral-600 dark:focus:ring-neutral-800"
+              class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
             />
           </div>
 
-          <div class="grid gap-5 sm:grid-cols-2">
-            <div class="space-y-1.5">
-              <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-                <User :size="10" stroke-width="1.5" />
-                <span>First Name</span>
-              </label>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">First name</label>
               <input
                 v-model="profileForm.firstName"
                 type="text"
                 placeholder="First name"
-                class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-white dark:placeholder:text-neutral-500 dark:focus:bg-neutral-900 dark:focus:border-neutral-600 dark:focus:ring-neutral-800"
+                class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
               />
             </div>
-            <div class="space-y-1.5">
-              <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-                <User :size="10" stroke-width="1.5" />
-                <span>Last Name</span>
-              </label>
+            <div>
+              <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Last name</label>
               <input
                 v-model="profileForm.lastName"
                 type="text"
                 placeholder="Last name"
-                class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-white dark:placeholder:text-neutral-500 dark:focus:bg-neutral-900 dark:focus:border-neutral-600 dark:focus:ring-neutral-800"
+                class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
               />
             </div>
           </div>
 
-          <div class="space-y-1.5">
-            <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-              <Phone :size="10" stroke-width="1.5" />
-              <span>Contact Number</span>
-            </label>
+          <div>
+            <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Contact number</label>
             <input
               v-model="profileForm.contact"
               type="tel"
               placeholder="09xx xxx xxxx"
-              class="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 outline-none transition focus:bg-white focus:border-neutral-300 focus:ring-4 focus:ring-neutral-100 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-white dark:placeholder:text-neutral-500 dark:focus:bg-neutral-900 dark:focus:border-neutral-600 dark:focus:ring-neutral-800"
+              class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
             />
           </div>
 
-          <div class="flex items-center gap-3 rounded-xl border border-neutral-100 bg-neutral-50/30 p-4 dark:border-neutral-800 dark:bg-neutral-800/30">
+          <div class="flex items-center gap-3 border-t border-neutral-200 pt-6 dark:border-neutral-800">
             <input
               id="isStudent"
               v-model="profileForm.isStudent"
               type="checkbox"
-              class="h-5 w-5 rounded border-neutral-200 text-neutral-900 focus:ring-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 dark:text-amber-400 dark:focus:ring-neutral-800"
+              class="h-4 w-4 border-neutral-300 text-neutral-900 focus:ring-neutral-900 dark:border-neutral-600 dark:bg-neutral-800"
             />
-            <label for="isStudent" class="text-xs font-bold text-neutral-600 cursor-pointer select-none dark:text-neutral-300">
-              I am a student (Eligible for student pricing)
+            <label for="isStudent" class="cursor-pointer select-none text-sm text-neutral-600 dark:text-neutral-400">
+              I am a student <span class="text-neutral-400">(eligible for student pricing)</span>
             </label>
           </div>
 
           <button
             type="submit"
-            class="group mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white  transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="mt-2 inline-flex items-center justify-center gap-1.5 bg-neutral-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
           >
             <Save :size="14" />
-            <span>Save Changes</span>
+            <span>Save changes</span>
           </button>
         </form>
 
-        <div v-if="message" class="mx-6 mb-6 sm:mx-8 sm:mb-8 flex items-start gap-2.5 rounded-xl bg-emerald-50 border border-emerald-100 p-4 text-xs font-medium text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">
-          <CheckCircle :size="14" stroke-width="1.5" class="shrink-0 mt-0.5" />
+        <div v-if="message" class="mx-6 mb-6 border border-neutral-200 p-4 text-sm text-neutral-700 sm:mx-8 sm:mb-8 dark:border-neutral-700 dark:text-neutral-300">
           <p>{{ message }}</p>
         </div>
       </div>
 
-      <div class="rounded-2xl border border-neutral-200 bg-white  flex flex-col h-fit dark:border-neutral-800 dark:bg-neutral-900">
-        <div class="flex items-center justify-between border-b border-neutral-100 p-6 sm:px-8 dark:border-neutral-800">
-          <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
-              <MapPinned :size="16" stroke-width="1.5" />
-            </div>
-            <div>
-              <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5 dark:text-neutral-500">Shipping</p>
-              <h2 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-white">Saved Addresses</h2>
-            </div>
-          </div>
+      <div class="flex h-fit flex-col border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="border-b border-neutral-200 p-6 sm:px-8 dark:border-neutral-800">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Shipping</p>
+          <h2 class="mt-2 text-2xl font-medium tracking-tight text-neutral-900 dark:text-white">Saved addresses</h2>
         </div>
 
-        <div class="p-6 sm:p-8 space-y-3.5">
+        <div class="space-y-0 p-6 sm:p-8">
           <article
             v-for="address in addresses"
             :key="address.id"
-            class="group relative flex items-start justify-between rounded-xl border border-neutral-100 bg-neutral-50/30 p-4 transition duration-200 hover:border-neutral-200 hover:bg-white  dark:border-neutral-800 dark:bg-neutral-800/30 dark:hover:border-neutral-700 dark:hover:bg-neutral-900"
+            class="group flex items-start justify-between gap-4 border-b border-neutral-200 py-5 first:pt-0 last:border-0 last:pb-0 dark:border-neutral-800"
           >
-            <div class="flex items-start gap-3">
-              <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-neutral-400 border border-neutral-100 transition group-hover:bg-neutral-950 group-hover:text-white group-hover:border-neutral-950 dark:bg-neutral-900 dark:text-neutral-500 dark:border-neutral-700 dark:group-hover:bg-amber-400 dark:group-hover:text-neutral-950 dark:group-hover:border-amber-400">
-                <Home :size="14" stroke-width="1.5" />
-              </div>
-              <div class="min-w-0">
-                <p class="text-xs font-bold tracking-tight text-neutral-900 truncate dark:text-white">{{ address.street }}</p>
-                <p class="mt-0.5 text-[11px] font-medium text-neutral-500 dark:text-neutral-400">{{ address.city }}, {{ address.postalCode }}</p>
-                <p class="mt-1 text-[9px] font-bold text-neutral-400 uppercase tracking-wider dark:text-neutral-500">{{ address.country }}</p>
-              </div>
+            <div class="min-w-0">
+              <p class="truncate text-sm text-neutral-900 dark:text-white">{{ address.street }}</p>
+              <p class="mt-1 text-sm text-neutral-500">{{ address.city }}, {{ address.postalCode }}</p>
+              <p class="mt-1 text-[11px] uppercase tracking-[0.18em] text-neutral-400">{{ address.country }}</p>
             </div>
             <button
               type="button"
-              class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-rose-50 text-rose-600 transition hover:bg-rose-100 active:scale-90 dark:bg-rose-500/10 dark:text-rose-400 dark:hover:bg-rose-500/20"
+              class="shrink-0 text-xs text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
               @click="handleDeleteAddress(address.id)"
             >
-              <Trash2 :size="12" />
+              Delete
             </button>
           </article>
 
-          <div v-if="!addresses.length" class="flex flex-col items-center justify-center py-12 text-center">
-            <div class="mb-3.5 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-300 dark:bg-neutral-800 dark:text-neutral-600">
-              <MapPinOff :size="24" stroke-width="1.5" />
-            </div>
-            <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider dark:text-neutral-500">No Addresses Saved</p>
+          <div v-if="!addresses.length" class="py-12 text-center">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">No addresses saved</p>
+            <div class="mx-auto mt-5 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
+            <p class="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-neutral-500">Addresses you save will appear here.</p>
           </div>
         </div>
       </div>
@@ -156,17 +125,8 @@ import {
   updateUserProfile,
 } from '../../services/userService'
 import { useConfirmAction } from '../../composables/useConfirmAction'
-import { 
-  UserCircle, 
-  User, 
-  AtSign, 
-  Phone, 
-  Save, 
-  CheckCircle, 
-  MapPinned, 
-  Home, 
-  Trash2, 
-  MapPinOff 
+import {
+  Save
 } from 'lucide-vue-next'
 
 const { confirmAndRun } = useConfirmAction()
