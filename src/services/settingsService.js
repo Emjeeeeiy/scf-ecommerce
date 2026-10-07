@@ -6,9 +6,9 @@ const settingsDoc = doc(db, 'settings', SETTINGS_DOC_ID)
 
 export const DEFAULT_LANDING_PAGE_SETTINGS = {
   hero: {
-    title: 'SCF',
+    title: 'Silangan Christian Fellowship',
     description: 'Silangan Christian Fellowship is a community of believers dedicated to sharing the love of Christ and serving our local community.',
-    logoUrl: '/scfLogo.png'
+    logoUrl: '/images/scfLogo.png'
   },
   mission: {
     title: 'Our Mission',
@@ -17,6 +17,16 @@ export const DEFAULT_LANDING_PAGE_SETTINGS = {
   vision: {
     title: 'Our Vision',
     description: 'To see a community transformed by the Gospel, where every member is equipped to share their faith and every person in need is supported by the hands and feet of Silangan Christian Fellowship.'
+  },
+  officers: {
+    title: 'SLC Officers',
+    members: [
+      { name: 'Juan Dela Cruz', position: 'President', photoBase64: '' },
+      { name: 'Maria Santos', position: 'Vice President', photoBase64: '' },
+      { name: 'Jose Reyes', position: 'Secretary', photoBase64: '' },
+      { name: 'Ana Bautista', position: 'Treasurer', photoBase64: '' },
+      { name: 'Mark Villanueva', position: 'Auditor', photoBase64: '' },
+    ]
   },
   about: {
     title: 'About SCF',

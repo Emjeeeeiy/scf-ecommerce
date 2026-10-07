@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useSession, waitForSessionReady } from '../composables/useSession'
+import { getLenis } from '../utils/lenis'
 
 // Route components are lazy-loaded so the initial bundle only ships what the
 // landing page needs; each view (and anything it alone depends on, like
@@ -103,7 +104,42 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  // Reset scroll on navigation so one page's scroll position never leaks into another.
+  // Routed through Lenis when available so jumps stay in sync with smooth scroll.
+  scrollBehavior(to, _from, savedPosition) {
+    const lenis = getLenis()
+    if (savedPosition) {
+      if (lenis) lenis.scrollTo(savedPosition.top, { immediate: true })
+      return savedPosition
+    }
+    if (to.hash) {
+      if (lenis) {
+        lenis.scrollTo(to.hash, { duration: 1.4 })
+        return false
+      }
+      return { el: to.hash, behavior: 'smooth' }
+    }
+    if (lenis) lenis.scrollTo(0, { immediate: true })
+    return { top: 0 }
+  }
+})
+
+// A tap that hits a stale/missing lazy chunk (old PWA precache, partial deploy)
+// otherwise fails silently and the button looks dead. Reload once to pull a
+// fresh shell, then let later failures surface normally.
+router.onError((error) => {
+  const staleChunk = /loading chunk|failed to fetch dynamically|importing a module|chunkloaderror/i.test(
+    error?.message || ''
+  )
+  if (staleChunk && !sessionStorage.getItem('chunk-reload')) {
+    sessionStorage.setItem('chunk-reload', '1')
+    window.location.reload()
+  }
+})
+
+router.afterEach(() => {
+  sessionStorage.removeItem('chunk-reload')
 })
 
 router.beforeEach(async (to) => {

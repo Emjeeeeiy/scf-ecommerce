@@ -18,8 +18,8 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification?.title || 'New Order!';
   const notificationOptions = {
     body: payload.notification?.body || 'A new order has been placed in your shop.',
-    icon: '/favicon.svg',
-    badge: '/favicon.svg',
+    icon: '/icons/favicon.svg',
+    badge: '/icons/favicon.svg',
     data: payload.data
   };
 

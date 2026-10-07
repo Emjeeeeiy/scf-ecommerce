@@ -1,105 +1,88 @@
 <template>
   <AppShell subtitle="Sign In">
-    <div class="mx-auto max-w-md">
-      <div class="overflow-hidden rounded-4xl bg-white border border-neutral-300 ring-1 ring-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 dark:ring-neutral-800">
-        <!-- Header -->
-        <div class="relative overflow-hidden bg-white px-6 py-10 sm:px-8 sm:py-12 border-b border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800">
-          <!-- Subtle Background Accent -->
-          <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-neutral-50/50 blur-3xl dark:bg-neutral-800/30"></div>
+    <div class="mx-auto grid w-full max-w-5xl gap-12 px-2 pt-8 sm:px-6 sm:pt-12 md:grid-cols-2 md:gap-16">
+      <div class="md:sticky md:top-24 md:self-start">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Welcome back</p>
+        <h1 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Account login</h1>
+        <div class="mt-5 h-px w-12 bg-neutral-900 dark:bg-white"></div>
+        <p class="mt-4 max-w-sm text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">Sign in to access your profile and track your orders.</p>
 
-          <div class="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex flex-col gap-3">
-              <!-- Icon & Label Row -->
-              <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-neutral-900 shadow-sm">
-                  <Lock :size="20" class="text-white" />
-                </div>
-                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
-                 — Welcome Back
-                </span>
-              </div>
+        <ul class="mt-10 hidden divide-y divide-neutral-200 border-y border-neutral-200 md:block dark:divide-neutral-800 dark:border-neutral-800">
+          <li class="flex gap-5 py-4">
+            <span class="w-7 shrink-0 text-xs tabular-nums text-neutral-400">01</span>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">Track orders and view purchase history</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="w-7 shrink-0 text-xs tabular-nums text-neutral-400">02</span>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">Faster checkout with saved details</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="w-7 shrink-0 text-xs tabular-nums text-neutral-400">03</span>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">Student pricing when eligible</p>
+          </li>
+        </ul>
+      </div>
 
-              <!-- Heading & Subtext -->
-              <div class="space-y-1">
-                <h1 class="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl dark:text-white">
-                  Account Login
-                </h1>
-                <p class="max-w-sm text-sm font-medium leading-snug text-neutral-500 dark:text-neutral-400">
-                  Sign in to access your profile and track your orders.
-                </p>
-              </div>
-            </div>
-          </div>
+      <div class="h-fit border border-neutral-200 bg-white p-6 sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+        <div
+          v-if="errorMessage"
+          class="mb-8 flex items-start gap-3 border border-rose-200 bg-rose-50 p-4 text-xs text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400"
+        >
+          <AlertCircle :size="16" class="shrink-0" />
+          <p>{{ errorMessage }}</p>
         </div>
 
-        <!-- Form -->
-        <div class="p-8 sm:p-10">
-          <div
-            v-if="errorMessage"
-            class="mb-8 flex items-start gap-3 rounded-2xl bg-rose-50 p-4 text-[11px] font-bold text-rose-600 ring-1 ring-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20"
-          >
-            <AlertCircle :size="16" class="shrink-0" />
-            <p>{{ errorMessage }}</p>
+        <form class="space-y-6" @submit.prevent="handleLogin">
+          <div>
+            <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Email address</label>
+            <input
+              v-model="email"
+              type="email"
+              class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
+              placeholder="you@example.com"
+              required
+            />
           </div>
 
-          <form class="space-y-5" @submit.prevent="handleLogin">
-            <div class="space-y-2">
-              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-                <Mail :size="12" />
-                Email Address
-              </label>
+          <div>
+            <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Password</label>
+            <div class="relative">
               <input
-                v-model="email"
-                type="email"
-                class="w-full rounded-2xl border border-neutral-300 bg-neutral-50 px-5 py-3.5 text-sm font-bold text-neutral-900 outline-none ring-1 ring-neutral-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-white dark:ring-neutral-700 dark:focus:bg-neutral-800"
-                placeholder="you@example.com"
+                v-model="password"
+                :type="showPassword ? 'text' : 'password'"
+                class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 pr-10 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
+                placeholder="••••••••"
                 required
               />
+              <button
+                type="button"
+                @click="showPassword = !showPassword"
+                class="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-neutral-400 transition-colors hover:text-neutral-900 dark:hover:text-white"
+              >
+                <Eye v-if="!showPassword" :size="16" />
+                <EyeOff v-else :size="16" />
+              </button>
             </div>
-
-            <div class="space-y-2">
-              <label class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-                <KeyRound :size="12" />
-                Password
-              </label>
-              <div class="relative">
-                <input
-                  v-model="password"
-                  :type="showPassword ? 'text' : 'password'"
-                  class="w-full rounded-2xl border border-neutral-300 bg-neutral-50 px-5 py-3.5 pr-12 text-sm font-bold text-neutral-900 outline-none ring-1 ring-neutral-100 transition-all focus:bg-white focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-white dark:ring-neutral-700 dark:focus:bg-neutral-800"
-                  placeholder="••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  @click="showPassword = !showPassword"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600 dark:text-neutral-500 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                >
-                  <Eye v-if="!showPassword" :size="16" />
-                  <EyeOff v-else :size="16" />
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              :disabled="loading"
-              class="group mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-neutral-900 px-6 py-5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 active:scale-95 disabled:bg-neutral-100 disabled:text-neutral-300 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300 dark:disabled:bg-neutral-800 dark:disabled:text-neutral-600"
-            >
-              <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white dark:border-neutral-950/20 dark:border-t-neutral-950"></span>
-              <template v-else>
-                <span>Sign In</span>
-                <LogIn :size="18" class="transition-transform group-hover:translate-x-1" />
-              </template>
-            </button>
-          </form>
-
-          <div class="mt-5 flex flex-col items-center gap-6 border-t border-neutral-300 pt-3 text-center dark:border-neutral-800">
-            <p class="text-[11px] font-medium leading-relaxed text-neutral-400 dark:text-neutral-500">
-              Don't have an account yet?
-              <router-link to="/register" class="block mt-1 font-black text-neutral-900 hover:underline dark:text-white">Create Account</router-link>
-            </p>
           </div>
+
+          <button
+            type="submit"
+            :disabled="loading"
+            class="group flex w-full items-center justify-center gap-2 bg-neutral-900 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 disabled:opacity-50 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+          >
+            <span v-if="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white dark:border-neutral-900/20 dark:border-t-neutral-900"></span>
+            <template v-else>
+              <span>Sign in</span>
+              <LogIn :size="16" class="transition-transform group-hover:translate-x-0.5" />
+            </template>
+          </button>
+        </form>
+
+        <div class="mt-8 border-t border-neutral-200 pt-6 text-center dark:border-neutral-800">
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Don't have an account yet?
+            <router-link to="/register" class="mt-1 block text-sm text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900 dark:text-white dark:decoration-neutral-700 dark:hover:decoration-white">Create account</router-link>
+          </p>
         </div>
       </div>
     </div>

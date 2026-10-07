@@ -1,105 +1,79 @@
 <template>
   <AppShell subtitle="Shopping Cart">
-    <section class="grid gap-8 lg:grid-cols-[1.3fr_0.8fr]">
-      <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-6 dark:border-neutral-800">
-          <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 border border-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:border-neutral-700">
-              <ShoppingCart :size="16" stroke-width="1.5" />
-            </div>
-            <div>
-              <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5 dark:text-neutral-500">Your Selection</p>
-              <h1 class="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">Shopping Cart</h1>
-            </div>
+    <section class="mx-auto grid w-full max-w-5xl gap-10 px-2 sm:px-6 lg:grid-cols-[1.3fr_0.8fr]">
+      <div class="border border-neutral-200 bg-white p-6 sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-6 dark:border-neutral-800">
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Your selection</p>
+            <h1 class="mt-2 text-2xl font-medium tracking-tight text-neutral-900 dark:text-white">Shopping cart</h1>
           </div>
           <button
             v-if="items.length"
             type="button"
-            class="flex items-center gap-2 rounded-lg bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-600 transition hover:bg-rose-100 active:scale-95 dark:bg-rose-500/10 dark:text-rose-400 dark:hover:bg-rose-500/20"
+            class="text-xs text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 hover:decoration-neutral-900 dark:text-neutral-400 dark:decoration-neutral-700 dark:hover:text-white"
             @click="handleClearCart"
           >
-            <Trash2 :size="14" />
-            <span>Clear Cart</span>
+            Clear cart
           </button>
         </div>
 
-        <div v-if="!items.length" class="flex flex-col items-center justify-center py-16 text-center">
-          <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-300 dark:bg-neutral-800 dark:text-neutral-600">
-            <ShoppingBag :size="24" stroke-width="1.5" />
-          </div>
-          <h2 class="text-lg font-bold text-neutral-900 tracking-tight dark:text-white">Your cart is empty</h2>
-          <p class="mt-1 max-w-xs text-xs text-neutral-500 mx-auto leading-relaxed dark:text-neutral-400">
-            Looks like you haven't added anything to your cart yet. Let's find something beautiful for you.
+        <div v-if="!items.length" class="py-16 text-center">
+          <h2 class="text-xl font-medium tracking-tight text-neutral-900 dark:text-white">Your cart is empty</h2>
+          <div class="mx-auto mt-5 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
+          <p class="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+            Looks like you haven't added anything yet. Let's find something for you.
           </p>
           <router-link
             to="/shop"
-            class="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="mt-8 inline-flex items-center gap-1.5 bg-neutral-900 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
           >
             <ArrowLeft :size="14" />
-            <span>Continue Shopping</span>
+            <span>Continue shopping</span>
           </router-link>
         </div>
 
-        <div v-else class="mt-6 divide-y divide-neutral-100 dark:divide-neutral-800">
+        <div v-else class="divide-y divide-neutral-200 dark:divide-neutral-800">
           <article
             v-for="item in items"
             :key="item.cartKey || item.id"
-            class="group py-6 first:pt-0 last:pb-0"
+            class="group py-6"
           >
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800">
+            <div class="flex gap-4">
+              <div class="h-16 w-16 shrink-0 overflow-hidden border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-800">
                 <img
                   v-if="item.base64Image"
                   :src="item.base64Image"
                   :alt="item.productName"
                   loading="lazy"
                   decoding="async"
-                  class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                  class="h-full w-full object-cover"
                 />
-                <div v-else class="flex h-full items-center justify-center text-[9px] text-neutral-400 font-bold uppercase tracking-wider dark:text-neutral-500">
-                  No Image
+                <div v-else class="flex h-full items-center justify-center text-[10px] uppercase tracking-wider text-neutral-400">
+                  No image
                 </div>
               </div>
 
-              <div class="flex-1 min-w-0">
+              <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-start justify-between gap-2">
-                  <div class="space-y-1">
-                    <h2 class="truncate text-sm font-semibold text-neutral-950 transition-colors group-hover:text-neutral-700 dark:text-white dark:group-hover:text-neutral-300">{{ item.productName }}</h2>
-                    <div class="flex flex-wrap items-center gap-1.5">
-                      <span v-if="item.isStudentPrice" class="inline-flex items-center gap-1 rounded bg-amber-50 border border-amber-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-amber-700 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
-                        Student Price
-                      </span>
-                      <span v-else class="inline-flex items-center gap-1 rounded bg-neutral-50 border border-neutral-100 px-1.5 py-0.5 text-[8px] font-black uppercase text-neutral-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
-                        Regular Price
-                      </span>
-                      <span class="inline-flex items-center gap-1 rounded bg-neutral-50 border border-neutral-100 px-1.5 py-0.5 text-[9px] font-medium text-neutral-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300">
-                        <Palette :size="8" />
-                        {{ item.color || 'Standard' }}
-                      </span>
-                      <span class="inline-flex items-center gap-1 rounded bg-neutral-50 border border-neutral-100 px-1.5 py-0.5 text-[9px] font-medium text-neutral-600 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300">
-                        <Maximize :size="8" />
-                        {{ item.size || 'Free size' }}
-                      </span>
-                    </div>
+                  <div class="min-w-0">
+                    <h2 class="truncate text-sm font-medium text-neutral-900 dark:text-white">{{ item.productName }}</h2>
+                    <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">{{ item.isStudentPrice ? 'Student' : 'Regular' }} · {{ item.color || 'Standard' }} · {{ item.size || 'Free size' }}</p>
                   </div>
-                  <div class="text-left sm:text-right">
-                    <p class="text-sm font-bold text-neutral-950 dark:text-white">{{ formatCurrency(item.price) }}</p>
-                    <p class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Each</p>
-                  </div>
+                  <p class="text-sm font-medium tabular-nums text-neutral-900 dark:text-white">{{ formatCurrency(item.price) }}</p>
                 </div>
 
                 <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
-                  <div class="flex items-center gap-2.5 rounded-lg border border-neutral-200 bg-white p-1 dark:border-neutral-700 dark:bg-neutral-900">
+                  <div class="flex items-center gap-3 border border-neutral-200 px-1 py-1 dark:border-neutral-700">
                     <button
                       @click="updateQuantity(item, { target: { value: Math.max(1, item.quantity - 1) } })"
-                      class="flex h-6 w-6 items-center justify-center rounded text-neutral-400 transition hover:bg-neutral-50 hover:text-neutral-900 active:scale-90 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                      class="flex h-6 w-6 items-center justify-center text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white"
                     >
                       <Minus :size="12" />
                     </button>
-                    <span class="w-4 text-center text-xs font-semibold text-neutral-900 dark:text-white">{{ item.quantity }}</span>
+                    <span class="w-4 text-center text-sm tabular-nums text-neutral-900 dark:text-white">{{ item.quantity }}</span>
                     <button
                       @click="updateQuantity(item, { target: { value: item.quantity + 1 } })"
-                      class="flex h-6 w-6 items-center justify-center rounded text-neutral-400 transition hover:bg-neutral-50 hover:text-neutral-900 active:scale-90 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                      class="flex h-6 w-6 items-center justify-center text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-white"
                     >
                       <Plus :size="12" />
                     </button>
@@ -107,11 +81,10 @@
 
                   <button
                     type="button"
-                    class="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-rose-500 transition hover:text-rose-600 active:scale-95 dark:text-rose-400 dark:hover:text-rose-300"
+                    class="text-xs text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
                     @click="handleRemove(item)"
                   >
-                    <X :size="12" />
-                    <span>Remove</span>
+                    Remove
                   </button>
                 </div>
               </div>
@@ -120,57 +93,45 @@
         </div>
       </div>
 
-      <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <div class="flex items-center gap-2.5 mb-6 border-b border-neutral-100 pb-4 dark:border-neutral-800">
-            <ReceiptText :size="14" class="text-neutral-400 dark:text-neutral-500" />
-            <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Order Summary</h2>
+      <aside class="h-fit space-y-6 lg:sticky lg:top-24">
+        <div class="border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+          <h2 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Order summary</h2>
+
+          <div class="mt-5 space-y-3 border-b border-neutral-200 pb-5 text-sm dark:border-neutral-800">
+            <div class="flex items-center justify-between">
+              <span class="text-neutral-500 dark:text-neutral-400">Subtotal</span>
+              <span class="tabular-nums text-neutral-900 dark:text-white">{{ formatCurrency(totalAmount) }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-neutral-500 dark:text-neutral-400">Total items</span>
+              <span class="tabular-nums text-neutral-900 dark:text-white">{{ totalItems || 0 }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-neutral-500 dark:text-neutral-400">Shipping</span>
+              <span class="text-xs text-neutral-500">Calculated next</span>
+            </div>
           </div>
 
-          <div class="space-y-3.5">
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-neutral-500 dark:text-neutral-400">Subtotal</span>
-              <span class="font-bold text-neutral-900 dark:text-white">{{ formatCurrency(totalAmount) }}</span>
-            </div>
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-neutral-500 dark:text-neutral-400">Total Items</span>
-              <span class="font-bold text-neutral-900 dark:text-white">{{ totalItems || 0 }}</span>
-            </div>
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-neutral-500 dark:text-neutral-400">Shipping</span>
-              <span class="rounded bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400">Calculated Next</span>
-            </div>
-
-            <div class="mt-5 border-t border-neutral-100 pt-5 flex items-end justify-between dark:border-neutral-800">
-              <div>
-                <p class="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-0.5 dark:text-neutral-500">Grand Total</p>
-                <p class="text-2xl font-extrabold tracking-tight text-neutral-950 dark:text-white">
-                  {{ formatCurrency(totalAmount) }}
-                </p>
-              </div>
-            </div>
+          <div class="flex items-end justify-between pt-5">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400">Total</p>
+            <p class="text-2xl font-medium tabular-nums tracking-tight text-neutral-900 dark:text-white">
+              {{ formatCurrency(totalAmount) }}
+            </p>
           </div>
 
           <router-link
             to="/checkout"
-            class="group mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-neutral-800 active:scale-[0.99] dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+            class="group mt-6 flex w-full items-center justify-center gap-1.5 bg-neutral-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
             :class="items.length ? '' : 'pointer-events-none opacity-40'"
           >
-            <span>Proceed to Checkout</span>
+            <span>Proceed to checkout</span>
             <ArrowRight :size="14" class="transition-transform group-hover:translate-x-0.5" />
           </router-link>
         </div>
 
-        <div class="rounded-2xl border border-neutral-200 bg-neutral-50/50 p-5 dark:border-neutral-800 dark:bg-neutral-800/50">
-          <div class="flex items-start gap-2.5">
-            <div class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-amber-50 text-amber-600 border border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">
-              <Info :size="12" />
-            </div>
-            <p class="text-[11px] leading-relaxed text-neutral-500 font-medium dark:text-neutral-400">
-              By proceeding, you agree to our terms. <span class="text-neutral-800 font-semibold dark:text-neutral-200">100% of proceeds</span> support SCF missions.
-            </p>
-          </div>
-        </div>
+        <p class="border-t border-neutral-200 pt-5 text-xs leading-relaxed text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+          By proceeding, you agree to our terms. 100% of proceeds support SCF missions.
+        </p>
       </aside>
     </section>
   </AppShell>
@@ -182,18 +143,10 @@ import { useCartStore } from '../../stores/cartStore'
 import { formatCurrency } from '../../utils/format'
 import { useConfirmAction } from '../../composables/useConfirmAction'
 import {
-  ShoppingCart,
-  Trash2,
-  ShoppingBag,
   ArrowLeft,
   ArrowRight,
   Plus,
-  Minus,
-  X,
-  Palette,
-  Maximize,
-  ReceiptText,
-  Info
+  Minus
 } from 'lucide-vue-next'
 
 const { confirmAndRun } = useConfirmAction()

@@ -1,102 +1,81 @@
 <template>
   <AppShell subtitle="Premium collection for your lifestyle">
-    <!-- Header Section -->
-    <section class="relative overflow-hidden rounded-2xl bg-neutral-950 p-6 border border-neutral-900 sm:p-10 dark:ring-1 dark:ring-white/10">
-      <div class="relative z-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-        
-        <div class="space-y-2">
-          <div class="inline-flex items-center gap-1.5">
-            <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Our Collection</p>
-          </div>
-          <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">Shop Catalog</h1>
-          <p class="text-xs text-neutral-400 font-medium">
-            Discover <span class="text-neutral-200 font-semibold">{{ loading ? '...' : filteredProducts.length }}</span> premium items handpicked for you.
+    <!-- Header Section — minimalist -->
+    <section class="mx-auto w-full max-w-5xl px-2 pt-4 sm:px-6 sm:pt-8">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-2xl">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Our collection</p>
+          <h1 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Shop catalog</h1>
+          <div class="mt-5 h-px w-12 bg-neutral-900 dark:bg-white"></div>
+          <p class="mt-4 text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
+            Discover {{ loading ? '…' : filteredProducts.length }} premium items handpicked for you.
           </p>
         </div>
-        
-        <div class="relative w-full lg:max-w-sm">
-          <Search 
-            class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 transition-colors group-focus-within:text-neutral-200" 
-            :size="16" 
+        <div class="relative w-full lg:max-w-xs">
+          <Search
+            class="absolute left-0 top-1/2 -translate-y-1/2 text-neutral-400"
+            :size="16"
             stroke-width="1.5"
           />
           <input
             v-model="query"
             type="text"
             placeholder="Search products..."
-            class="w-full rounded-xl bg-white/3 border border-white/10 px-11 py-3.5 text-xs text-white placeholder:text-neutral-500 outline-none transition-all duration-200 focus:bg-white/6 focus:border-white/20 focus:ring-2 focus:ring-white/5"
+            class="w-full border-0 border-b border-neutral-200 bg-transparent py-2.5 pl-7 pr-2 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"
           />
         </div>
       </div>
-
-      <div class="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 h-64 w-64 rounded-full bg-amber-400/3 blur-[80px] pointer-events-none"></div>
-      <div class="absolute left-0 bottom-0 translate-y-1/4 -translate-x-1/4 h-64 w-64 rounded-full bg-neutral-400/2 blur-[80px] pointer-events-none"></div>
     </section>
 
     <!-- Main Content Grid -->
-    <section class="mt-6 sm:mt-10 grid gap-6 lg:grid-cols-[240px_1fr]">
-      <!-- Category Sidebar/Top Bar -->
-      <aside class="sticky top-16 z-30 -mx-4 px-4 bg-neutral-50/80 dark:bg-neutral-950/80 backdrop-blur-md py-1.5 lg:sticky lg:top-24 lg:h-fit lg:p-0 lg:bg-transparent lg:backdrop-blur-none lg:mx-0">
-        <div class="rounded-xl border border-neutral-200 bg-white p-1.5 lg:p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-
-          <div class="hidden lg:flex items-center gap-2 mb-4">
-            <Filter :size="12" class="text-neutral-400 dark:text-neutral-500" />
-            <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Filter By Category</p>
-          </div>
-          
-          <div class="flex gap-1.5 overflow-x-auto pb-0.5 lg:flex-col lg:overflow-visible lg:pb-0 scrollbar-hide">
-            <button
-              type="button"
-              class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
-              :class="selectedCategory === ''
-                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
-                : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white'"
-              @click="selectedCategory = ''"
-            >
-              <LayoutGrid :size="12" stroke-width="1.5" />
-              <span>All</span>
-            </button>
-
-            <button
-              v-for="category in categories"
-              :key="category.id"
-              type="button"
-              class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] border font-semibold tracking-wide transition-all duration-150 lg:w-full lg:py-2"
-              :class="selectedCategory === category.id
-                ? 'border-neutral-950 bg-neutral-950 text-white shadow-sm dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
-                : 'border-neutral-100 bg-neutral-50 text-neutral-600 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white'"
-              @click="selectedCategory = category.id"
-            >
-              <Tag :size="12" stroke-width="1.5" />
-              <span>{{ category.name }}</span>
-            </button>
-          </div>
+    <section class="mx-auto mt-10 grid w-full max-w-5xl gap-10 px-2 sm:px-6 lg:grid-cols-[200px_1fr]">
+      <!-- Category Sidebar/Top Bar — minimalist -->
+      <aside class="lg:sticky lg:top-24 lg:h-fit">
+        <p class="hidden text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 lg:block dark:text-neutral-500">Filter</p>
+        <div class="mt-0 flex gap-6 overflow-x-auto border-b border-neutral-200 pb-0 scrollbar-hide lg:mt-4 lg:flex-col lg:gap-0 lg:border-b-0 dark:border-neutral-800">
+          <button
+            type="button"
+            class="shrink-0 border-b-2 border-transparent pb-3 text-sm transition-colors lg:border-b-0 lg:border-l-2 lg:pb-0 lg:pl-4 lg:py-2 lg:text-left"
+            :class="selectedCategory === ''
+              ? 'border-neutral-900 text-neutral-900 dark:border-white dark:text-white'
+              : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'"
+            @click="selectedCategory = ''"
+          >
+            All
+          </button>
+          <button
+            v-for="category in categories"
+            :key="category.id"
+            type="button"
+            class="shrink-0 border-b-2 border-transparent pb-3 text-sm transition-colors lg:border-b-0 lg:border-l-2 lg:pb-0 lg:pl-4 lg:py-2 lg:text-left"
+            :class="selectedCategory === category.id
+              ? 'border-neutral-900 text-neutral-900 dark:border-white dark:text-white'
+              : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'"
+            @click="selectedCategory = category.id"
+          >
+            {{ category.name }}
+          </button>
         </div>
       </aside>
 
-      <!-- Product Grid -->
-      <div v-if="loading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        <div v-for="i in 6" :key="i" class="overflow-hidden rounded-3xl bg-white p-1.5 ring-1 ring-neutral-100 dark:bg-neutral-900 dark:ring-neutral-800">
-          <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100 dark:bg-neutral-800"></div>
-          <div class="space-y-3 p-4 sm:p-6">
-            <div class="h-3 w-20 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
-            <div class="h-6 w-40 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
-            <div class="h-10 w-full animate-pulse rounded-xl bg-neutral-100 dark:bg-neutral-800"></div>
-          </div>
+      <!-- Product Grid — minimalist -->
+      <div v-if="loading" class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3">
+        <div v-for="i in 6" :key="i" class="space-y-4">
+          <div class="aspect-4/5 w-full animate-pulse bg-neutral-200/70 dark:bg-neutral-800"></div>
+          <div class="h-3 w-2/3 animate-pulse bg-neutral-200/70 dark:bg-neutral-800"></div>
+          <div class="h-3 w-1/3 animate-pulse bg-neutral-200/70 dark:bg-neutral-800"></div>
         </div>
       </div>
 
-      <div v-else class="grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 px-4 py-6">  
+      <div v-else class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3">
         <article
           v-for="product in pagedProducts"
           :key="product.id"
-          class="group relative flex flex-col bg-white rounded-lg dark:bg-neutral-900"
+          class="group flex flex-col"
         >
-          <!-- Image Section: Clickable Link -->
           <router-link
             :to="`/shop/product/${product.id}`"
-            class="relative aspect-4/5 w-full overflow-hidden rounded-xl bg-gray-100 border border-neutral-300 block dark:bg-neutral-800 dark:border-neutral-800"
+            class="relative block aspect-4/5 w-full overflow-hidden border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-800"
           >
             <img
               v-if="product.base64Image"
@@ -106,95 +85,39 @@
               decoding="async"
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <!-- Fallback Placeholder -->
-            <div v-else class="flex h-full items-center justify-center text-gray-300 dark:text-neutral-600">
-              <Image :size="40" stroke-width="1.5" />
-            </div>
-
-            <!-- Category Badge -->
-            <div class="absolute left-2 top-2 sm:left-3 sm:top-3">
-              <span class="rounded-full bg-white/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-medium backdrop-blur-md text-gray-900 shadow-sm dark:bg-neutral-900/80 dark:text-white">
-                {{ categoryName(product.categoryId) || 'New' }}
-              </span>
-            </div>
-            
-            <!-- Overlay: Desktop Only (Hidden on Mobile) -->
-            <div class="absolute inset-0 hidden sm:flex items-end justify-center p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-black/5">
-              <div class="w-full rounded-xl bg-neutral-800/90 py-3 text-center text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
-                View Details
-              </div>
+            <div v-else class="flex h-full items-center justify-center text-neutral-300 dark:text-neutral-600">
+              <Image :size="28" stroke-width="1.5" />
             </div>
           </router-link>
 
-          <!-- Content Section -->
-          <div class="flex flex-1 flex-col pt-3">
-            <div class="flex flex-col gap-1">
-              <div class="flex items-start justify-between gap-2">
-                <!-- Product Name Link -->
-                <router-link :to="`/shop/product/${product.id}`" class="block flex-1">
-                  <h2 class="text-xs sm:text-sm font-semibold text-gray-900 group-hover:text-neutral-600 transition-colors line-clamp-1 dark:text-white dark:group-hover:text-neutral-300">
-                    {{ product.name }}
-                  </h2>
-                </router-link>
-
-              <div class="flex flex-col gap-1 items-end">
-                <div class="flex flex-col items-end">
-                  <p class="text-[9px] font-black text-amber-600 uppercase tracking-tighter dark:text-amber-400">Student</p>
-                  <p class="text-xs sm:text-sm font-black text-neutral-950 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
-                </div>
-                <div class="flex flex-col items-end">
-                  <p class="text-[9px] font-black text-neutral-400 uppercase tracking-tighter dark:text-neutral-500">Regular</p>
-                  <p class="text-xs sm:text-sm font-black text-neutral-950 dark:text-white">{{ formatCurrency(product.nonStudentPrice) }}</p>
-                </div>
-              </div>
+          <div class="flex flex-1 flex-col pt-4">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">{{ categoryName(product.categoryId) || 'New' }}</p>
+            <router-link :to="`/shop/product/${product.id}`" class="mt-1 block">
+              <h2 class="line-clamp-1 text-sm font-medium text-neutral-900 transition-colors group-hover:text-neutral-500 dark:text-white">
+                {{ product.name }}
+              </h2>
+            </router-link>
+            <div class="mt-2 flex items-baseline gap-3">
+              <p class="text-sm text-neutral-900 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
+              <p class="text-xs text-neutral-400 line-through dark:text-neutral-500">{{ formatCurrency(product.nonStudentPrice) }}</p>
             </div>
-
-            <p class="mt-1 line-clamp-1 text-[10px] sm:text-[11px] text-gray-500 dark:text-neutral-400">
-              {{ product.description }}
-            </p>
-          </div>
-
-          <!-- Highlight applied price if logged in -->
-          <div v-if="isAuthenticated" class="px-3 pb-2">
-            <span v-if="isStudent" class="text-[8px] font-black text-amber-600 uppercase tracking-widest bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">
-              Eligible for Student Price
-            </span>
-            <span v-else class="text-[8px] font-black text-neutral-400 uppercase tracking-widest bg-neutral-50 px-2 py-0.5 rounded-full border border-neutral-100 dark:bg-neutral-800/50 dark:text-neutral-500 dark:border-neutral-800">
-              Regular Price Applied
-            </span>
-          </div>
-
-            <!-- Variant/Style Footer -->
-            <div class="mt-2 flex items-center gap-2">
-              <div class="flex -space-x-1">
-                <div
-                  v-for="n in Math.min(product.variants?.length || 0, 3)"
-                  :key="n"
-                  class="h-2 w-2 rounded-full border border-white bg-neutral-300 dark:border-neutral-900 dark:bg-neutral-700"
-                ></div>
-              </div>
-              <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium dark:text-neutral-500">
-                {{ product.variants?.length || 0 }} {{ product.variants?.length === 1 ? 'Style' : 'Styles' }}
-              </span>
-            </div>
+            <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">{{ product.variants?.length || 0 }} {{ product.variants?.length === 1 ? 'style' : 'styles' }}</p>
           </div>
         </article>
 
         <!-- Empty State -->
         <div
           v-if="!filteredProducts.length"
-          class="col-span-full rounded-3xl bg-white p-12 text-center shadow-xl shadow-neutral-200/50 ring-1 ring-neutral-100 sm:p-16 dark:bg-neutral-900 dark:ring-neutral-800"
+          class="col-span-full border border-neutral-200 bg-white p-12 text-center sm:p-16 dark:border-neutral-800 dark:bg-neutral-900"
         >
-          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-50 text-neutral-200 shadow-inner mb-6 dark:bg-neutral-800 dark:text-neutral-600">
-            <SearchX :size="32" />
-          </div>
-          <h3 class="text-xl font-black text-neutral-900 tracking-tight dark:text-white">No products found</h3>
-          <p class="mt-2 text-xs text-neutral-400 font-medium max-w-xs mx-auto dark:text-neutral-500">We couldn't find any items matching your search or filters. Try another keyword!</p>
+          <h3 class="text-xl font-medium tracking-tight text-neutral-900 dark:text-white">No products found</h3>
+          <div class="mx-auto mt-5 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
+          <p class="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">We couldn't find any items matching your search or filters.</p>
           <button
             @click="query = ''; selectedCategory = ''"
-            class="mt-8 rounded-full bg-neutral-100 px-8 py-3 text-[10px] font-black uppercase tracking-widest text-neutral-900 transition-all hover:bg-neutral-900 hover:text-white active:scale-95 dark:bg-neutral-800 dark:text-white dark:hover:bg-amber-400 dark:hover:text-neutral-950"
+            class="mt-8 bg-neutral-900 px-8 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
           >
-            Clear All Filters
+            Clear all filters
           </button>
         </div>
       </div>
@@ -215,11 +138,6 @@ import { formatCurrency } from '../../utils/format'
 import { useSession } from '../../composables/useSession'
 import {
   Search,
-  Filter,
-  Tag,
-  LayoutGrid,
-  ArrowRight,
-  SearchX,
   Image
 } from 'lucide-vue-next'
 

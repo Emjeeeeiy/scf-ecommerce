@@ -42,8 +42,8 @@ const requestNotificationPermission = async () => {
 const triggerBrowserNotification = (title, options) => {
   if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
     const notification = new Notification(title, {
-      icon: '/favicon.svg',
-      badge: '/favicon.svg',
+      icon: '/icons/favicon.svg',
+      badge: '/icons/favicon.svg',
       ...options
     })
     notification.onclick = () => {
@@ -66,9 +66,12 @@ const registerFCM = async (userId) => {
   }
 
   try {
-    // Register the firebase-messaging-sw.js service worker
-    console.log('[FCM] Registering Service Worker...')
-    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+    // Single worker: production uses the PWA service worker (src/sw.js already
+    // bundles Firebase Messaging), so push setup never evicts it. Dev falls
+    // back to the standalone file since the PWA worker is build-only.
+    const swUrl = import.meta.env.PROD ? '/sw.js' : '/firebase-messaging-sw.js'
+    console.log('[FCM] Registering Service Worker...', swUrl)
+    const registration = await navigator.serviceWorker.register(swUrl, {
       scope: '/'
     })
     console.log('[FCM] Service Worker registered:', registration)

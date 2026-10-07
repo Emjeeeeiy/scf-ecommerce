@@ -1,7 +1,7 @@
 <template>
   <AppShell subtitle="Product details">
     <div v-if="loading" class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="overflow-hidden rounded-2xl border border-neutral-100 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <div class="overflow-hidden rounded-2xl border border-neutral-100 bg-white p-2  dark:border-neutral-800 dark:bg-neutral-900">
         <div class="h-80 w-full animate-pulse rounded-xl bg-neutral-100 dark:bg-neutral-800"></div>
         <div class="space-y-4 p-6">
           <div class="h-3 w-20 animate-pulse rounded bg-neutral-100 dark:bg-neutral-800"></div>
@@ -10,14 +10,14 @@
         </div>
       </div>
       <div class="space-y-6">
-        <div class="h-64 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"></div>
-        <div class="h-48 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"></div>
+        <div class="h-64 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white  dark:border-neutral-800 dark:bg-neutral-900"></div>
+        <div class="h-48 w-full animate-pulse rounded-2xl border border-neutral-100 bg-white  dark:border-neutral-800 dark:bg-neutral-900"></div>
       </div>
     </div>
 
-    <section v-else-if="product" class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-        <div class="relative h-80 w-full overflow-hidden rounded-xl bg-neutral-50 sm:h-105 dark:bg-neutral-800">
+    <section v-else-if="product" class="mx-auto grid w-full max-w-5xl gap-10 px-2 sm:px-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <div class="border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="relative h-80 w-full overflow-hidden bg-neutral-100 sm:h-105 dark:bg-neutral-800">
           <img
             v-if="product.base64Image"
             :src="product.base64Image"
@@ -32,107 +32,88 @@
 
           <router-link
             to="/shop"
-            class="absolute left-4 top-4 flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium text-neutral-700 shadow-sm transition-all hover:bg-neutral-50 hover:text-neutral-950 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+            class="absolute left-4 top-4 flex items-center gap-1.5 bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 transition-colors hover:text-neutral-950 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white"
           >
             <ArrowLeft :size="14" />
-            <span>Back to Shop</span>
+            <span>Back</span>
           </router-link>
         </div>
 
-        <div class="px-4 py-6 sm:p-8">
-          <div class="flex flex-wrap items-start justify-between gap-4">
-            <div class="flex-1 space-y-2">
-              <div class="flex items-center">
-                <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-400">
-                  <Tag :size="10" />
-                  Premium Collection
-                </span>
-              </div>
-              <h1 class="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
-                {{ product.name }}
-              </h1>
-            </div>
-            <div class="text-left sm:text-right">
-              <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Student Price</p>
-              <p class="text-xl font-extrabold tracking-tight text-amber-600 sm:text-2xl dark:text-amber-400">
+        <div class="p-6 sm:p-8">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Premium collection</p>
+          <h1 class="mt-3 text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl dark:text-white">
+            {{ product.name }}
+          </h1>
+          <div class="mt-5 flex flex-wrap items-baseline gap-x-8 gap-y-3 border-b border-neutral-200 pb-6 dark:border-neutral-800">
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Student</p>
+              <p class="mt-1 text-xl font-medium tracking-tight text-neutral-900 dark:text-white">
                 {{ formatCurrency(product.studentPrice) }}
               </p>
-              <p class="mt-4 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Regular Price</p>
-              <p class="text-xl font-extrabold tracking-tight text-neutral-950 sm:text-2xl dark:text-white">
+            </div>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Regular</p>
+              <p class="mt-1 text-xl font-medium tracking-tight text-neutral-500 dark:text-neutral-400">
                 {{ formatCurrency(product.nonStudentPrice) }}
               </p>
             </div>
           </div>
 
-          <div class="mt-6 border-t border-neutral-100 pt-6 dark:border-neutral-800">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Description</span>
-            </div>
-            <p class="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+          <div class="mt-6">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Description</p>
+            <p class="mt-3 text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
               {{ product.description }}
             </p>
           </div>
         </div>
       </div>
 
-      <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <aside class="h-fit space-y-6 lg:sticky lg:top-24">
+        <div class="border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
           <div class="space-y-6">
             <!-- Color Selection -->
             <div>
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                  <Palette :size="14" class="text-neutral-400 dark:text-neutral-500" />
-                  <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Color</h2>
-                </div>
-                <span v-if="selectedColor" class="text-[10px] font-semibold text-neutral-900 bg-neutral-100 px-2 py-0.5 rounded-md dark:text-white dark:bg-neutral-800">
-                  {{ selectedColor }}
-                </span>
+              <div class="mb-3 flex items-center justify-between">
+                <h2 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Color{{ selectedColor ? ` — ${selectedColor}` : '' }}</h2>
               </div>
               <div class="flex flex-wrap gap-2">
                 <button
                   v-for="color in availableColors"
                   :key="color"
                   type="button"
-                  class="relative group flex items-center justify-center min-w-12 px-3 py-2 rounded-lg border transition-all duration-200"
+                  class="min-w-12 border px-3 py-2 transition-colors"
                   :class="selectedColor === color
-                    ? 'border-neutral-950 bg-neutral-950 text-white dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
-                    : 'border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:bg-neutral-800'"
+                    ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
+                    : 'border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300'"
                   @click="selectedColor = color"
                 >
-                  <span class="text-[10px] font-bold uppercase tracking-tight">{{ color }}</span>
+                  <span class="text-xs font-medium">{{ color }}</span>
                 </button>
               </div>
             </div>
 
             <!-- Size Selection (Only visible if color is selected) -->
-            <div v-if="selectedColor" class="animate-in fade-in slide-in-from-top-2 duration-300">
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                  <Layers :size="14" class="text-neutral-400 dark:text-neutral-500" />
-                  <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Size</h2>
-                </div>
-                <span v-if="selectedSize" class="text-[10px] font-semibold text-neutral-900 bg-neutral-100 px-2 py-0.5 rounded-md dark:text-white dark:bg-neutral-800">
-                  {{ selectedSize }}
-                </span>
+            <div v-if="selectedColor">
+              <div class="mb-3 flex items-center justify-between">
+                <h2 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Size{{ selectedSize ? ` — ${selectedSize}` : '' }}</h2>
               </div>
               <div class="grid grid-cols-3 gap-2">
                 <button
                   v-for="v in availableSizesForSelectedColor"
                   :key="v.id"
                   type="button"
-                  class="flex flex-col items-center justify-center rounded-lg border p-2.5 text-center transition-all duration-200"
+                  class="flex flex-col items-center justify-center border p-2.5 text-center transition-colors"
                   :class="[
                     selectedSize === v.size
-                      ? 'border-neutral-950 bg-neutral-950 text-white dark:border-amber-400 dark:bg-amber-400 dark:text-neutral-950'
-                      : 'border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:bg-neutral-800',
-                    v.stock <= 0 ? 'opacity-40 cursor-not-allowed bg-neutral-50 dark:bg-neutral-800' : ''
+                      ? 'border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900'
+                      : 'border-neutral-200 bg-white text-neutral-600 hover:border-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300',
+                    v.stock <= 0 ? 'cursor-not-allowed opacity-40' : ''
                   ]"
                   :disabled="v.stock <= 0"
                   @click="selectedSize = v.size"
                 >
-                  <span class="text-[10px] font-bold uppercase tracking-tight">{{ v.size }}</span>
-                  <span class="text-[8px] font-medium mt-0.5" :class="selectedSize === v.size ? 'text-neutral-400 dark:text-neutral-700' : 'text-neutral-500 dark:text-neutral-400'">
+                  <span class="text-xs font-medium">{{ v.size }}</span>
+                  <span class="mt-0.5 text-[11px] text-neutral-400">
                     {{ v.stock > 0 ? `${v.stock}` : 'Out' }}
                   </span>
                 </button>
@@ -141,73 +122,70 @@
           </div>
         </div>
 
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <div class="flex items-center gap-2 mb-4">
-            <ShoppingBag :size="14" class="text-neutral-400 dark:text-neutral-500" />
-            <h2 class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Purchase Details</h2>
-          </div>
+        <div class="border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+          <h2 class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Purchase</h2>
 
-          <div class="space-y-6">
+          <div class="mt-5 space-y-6">
             <!-- Price Tier Selection -->
             <div class="space-y-2">
-              <p class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 ml-1 dark:text-neutral-500">Select Price Tier</p>
+              <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Price tier</p>
               <div class="grid gap-2">
                 <button
                   @click="selectedPriceType = 'student'"
-                  class="flex items-center justify-between gap-4 rounded-xl border-2 p-3 transition-all"
+                  class="flex items-center justify-between gap-4 border p-3 transition-colors"
                   :class="selectedPriceType === 'student'
-                    ? 'border-amber-400 bg-amber-50 shadow-sm dark:bg-amber-500/10'
-                    : 'border-neutral-100 bg-white hover:border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700'"
+                    ? 'border-neutral-900 dark:border-white'
+                    : 'border-neutral-200 hover:border-neutral-400 dark:border-neutral-700'"
                 >
                   <div class="text-left">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Student</p>
-                    <p class="text-base font-black text-neutral-900 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
+                    <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400">Student</p>
+                    <p class="mt-0.5 text-base font-medium text-neutral-900 dark:text-white">{{ formatCurrency(product.studentPrice) }}</p>
                   </div>
-                  <div v-if="selectedPriceType === 'student'" class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-white">
-                    <Check :size="12" stroke-width="4" />
+                  <div v-if="selectedPriceType === 'student'" class="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
+                    <Check :size="12" stroke-width="3" />
                   </div>
                 </button>
 
                 <button
                   @click="selectedPriceType = 'regular'"
-                  class="flex items-center justify-between gap-4 rounded-xl border-2 p-3 transition-all"
+                  class="flex items-center justify-between gap-4 border p-3 transition-colors"
                   :class="selectedPriceType === 'regular'
-                    ? 'border-amber-400 bg-amber-50 shadow-sm dark:bg-amber-500/10'
-                    : 'border-neutral-100 bg-white hover:border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700'"
+                    ? 'border-neutral-900 dark:border-white'
+                    : 'border-neutral-200 hover:border-neutral-400 dark:border-neutral-700'"
                 >
                   <div class="text-left">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Regular</p>
-                    <p class="text-base font-black">{{ formatCurrency(product.nonStudentPrice) }}</p>
+                    <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400">Regular</p>
+                    <p class="mt-0.5 text-base font-medium text-neutral-900 dark:text-white">{{ formatCurrency(product.nonStudentPrice) }}</p>
                   </div>
-                  <div v-if="selectedPriceType === 'regular'" class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-neutral-950">
-                    <Check :size="12" stroke-width="4" />
+                  <div v-if="selectedPriceType === 'regular'" class="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
+                    <Check :size="12" stroke-width="3" />
                   </div>
                 </button>
               </div>
 
               <div v-if="isStudent && selectedPriceType !== 'student'" class="mt-2 px-1">
-                <p class="text-[9px] font-bold text-amber-600 uppercase tracking-tight animate-pulse dark:text-amber-400">
-                  You are eligible for Student Pricing!
+                <p class="text-xs text-neutral-500">
+                  You are eligible for student pricing.
                 </p>
               </div>
             </div>
 
-            <div class="flex items-center justify-between gap-4 rounded-xl border border-neutral-100 bg-neutral-50/50 p-1.5 dark:border-neutral-800 dark:bg-neutral-800/50">
+            <div class="flex items-center justify-between gap-4 border border-neutral-200 p-1.5 dark:border-neutral-700">
               <button
                 type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-600 transition shadow-sm hover:bg-neutral-50 active:scale-95 disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                class="flex h-9 w-9 items-center justify-center text-neutral-600 transition hover:bg-neutral-100 disabled:opacity-40 dark:text-neutral-300 dark:hover:bg-neutral-800"
                 :disabled="quantity <= 1"
                 @click="quantity = Math.max(1, quantity - 1)"
               >
                 <Minus :size="14" />
               </button>
               <div class="flex-1 text-center">
-                <p class="text-lg font-bold text-neutral-900 dark:text-white">{{ quantity }}</p>
-                <p class="text-[8px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Quantity</p>
+                <p class="text-base font-medium tabular-nums text-neutral-900 dark:text-white">{{ quantity }}</p>
+                <p class="text-[11px] uppercase tracking-[0.18em] text-neutral-400">Qty</p>
               </div>
               <button
                 type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-600 transition shadow-sm hover:bg-neutral-50 active:scale-95 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                class="flex h-9 w-9 items-center justify-center text-neutral-600 transition hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
                 @click="quantity = quantity + 1"
               >
                 <Plus :size="14" />
@@ -215,31 +193,29 @@
             </div>
 
             <div v-if="message"
-              class="flex items-start gap-2.5 rounded-xl border p-3.5 text-xs transition-all duration-300"
-              :class="isSuccess ? 'border-emerald-100 bg-emerald-50/50 text-emerald-800 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400' : 'border-amber-100 bg-amber-50/50 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400'"
+              class="flex items-start gap-2.5 border p-3.5 text-sm"
+              :class="isSuccess ? 'border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200' : 'border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200'"
             >
-              <Check v-if="isSuccess" :size="14" class="shrink-0 text-emerald-600 mt-0.5 dark:text-emerald-400" />
-              <AlertCircle v-else :size="14" class="shrink-0 text-amber-600 mt-0.5 dark:text-amber-400" />
-              <p class="font-medium leading-relaxed">{{ message }}</p>
+              <p class="leading-relaxed">{{ message }}</p>
             </div>
 
             <div class="grid gap-2 pt-2">
               <button
                 type="button"
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-6 py-3.5 text-xs font-semibold text-white transition-all hover:bg-neutral-800 active:scale-[0.99] shadow-sm shadow-neutral-950/10 disabled:opacity-70 disabled:cursor-not-allowed dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+                class="flex w-full items-center justify-center gap-2 bg-neutral-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
                 :disabled="adding"
                 @click="handleAddToCart"
               >
                 <ShoppingCart v-if="!adding" :size="16" />
                 <span v-else class="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white"></span>
-                <span>{{ adding ? 'Adding to Selection...' : 'Add to Selection' }}</span>
+                <span>{{ adding ? 'Adding…' : 'Add to selection' }}</span>
               </button>
 
               <router-link
                 to="/cart"
-                class="flex w-full items-center justify-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-6 py-3.5 text-xs font-semibold text-neutral-700 transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                class="flex w-full items-center justify-center gap-1.5 border border-neutral-200 bg-white px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-700 transition-colors hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300"
               >
-                <span>View Cart</span>
+                <span>View cart</span>
                 <ArrowRight :size="16" />
               </router-link>
             </div>
@@ -248,19 +224,17 @@
       </aside>
     </section>
 
-    <div v-else class="rounded-2xl border border-neutral-200 bg-white p-12 text-center shadow-sm sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
-      <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-50 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500">
-        <PackageX :size="24" stroke-width="1.5" />
-      </div>
-      <h2 class="text-lg font-bold text-neutral-900 tracking-tight dark:text-white">Product Not Found</h2>
-      <p class="mt-1 text-xs text-neutral-500 max-w-xs mx-auto dark:text-neutral-400">The item you are looking for might have been moved or removed from our catalog.</p>
+    <div v-else class="mx-auto w-full max-w-3xl border border-neutral-200 bg-white p-12 text-center sm:p-16 dark:border-neutral-800 dark:bg-neutral-900">
+      <h2 class="text-xl font-medium tracking-tight text-neutral-900 dark:text-white">Product not found</h2>
+      <div class="mx-auto mt-5 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
+      <p class="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">The item you are looking for might have been moved or removed.</p>
 
       <router-link
         to="/shop"
-        class="mt-6 inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold text-neutral-700 shadow-sm transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+        class="mt-8 inline-flex items-center gap-1.5 border border-neutral-200 bg-white px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-700 transition-colors hover:border-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300"
       >
         <ArrowLeft :size="14" />
-        Return to Shop
+        Return to shop
       </router-link>
     </div>
   </AppShell>
@@ -274,19 +248,13 @@ import { useCatalogStore } from '../../stores/catalogStore'
 import { useCartStore } from '../../stores/cartStore'
 import { formatCurrency, sortSizes } from '../../utils/format'
 import { useSession } from '../../composables/useSession'
-import { 
-  ArrowLeft, 
-  ArrowRight, 
-  ShoppingCart, 
-  ShoppingBag, 
-  Plus, 
-  Minus, 
-  Tag, 
-  Palette, 
-  Layers, 
-  AlertCircle, 
+import {
+  ArrowLeft,
+  ArrowRight,
+  ShoppingCart,
+  Plus,
+  Minus,
   Check,
-  PackageX,
   Image
 } from 'lucide-vue-next'
 

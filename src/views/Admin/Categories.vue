@@ -1,7 +1,7 @@
 <template>
   <AdminPanelLayout subtitle="Create and remove storefront categories">
     <section class="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-neutral-800">
+      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6  ring-1 ring-slate-100 dark:ring-neutral-800">
         <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">
           <PlusCircle :size="14" />
           <span>Taxonomy setup</span>
@@ -16,14 +16,14 @@
               <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Category name</span>
               <input v-model="name" class="w-full rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-semibold text-neutral-900 dark:text-white focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400 transition-all" placeholder="Example: Accessories" required />
             </label>
-            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 dark:bg-neutral-400 px-4 py-3.5 text-sm font-bold text-white dark:text-neutral-950 transition hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98] shadow-md shadow-neutral-100 dark:shadow-none">
+            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 dark:bg-neutral-400 px-4 py-3.5 text-sm font-bold text-white dark:text-neutral-950 transition hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98]   ">
             <Save :size="16" />
             Save category
           </button>
         </form>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-sm ring-1 ring-slate-100 dark:ring-neutral-800">
+      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6  ring-1 ring-slate-100 dark:ring-neutral-800">
         <div class="flex items-center justify-between gap-4">
           <div>
             <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">
