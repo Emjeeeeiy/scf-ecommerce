@@ -1,258 +1,194 @@
 <template>
-  <AdminPanelLayout subtitle="Admin overview for catalog and order operations">
-    <section class="rounded-xl bg-neutral-950 p-5 text-white  relative overflow-hidden">
-      <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
-        <LayoutDashboard :size="80" />
-      </div>
-      <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between relative z-10">
-        <div class="max-w-2xl">
-          <div class="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-400">
-            <ShieldCheck :size="12" />
-            <span>Control center</span>
-          </div>
-          <h2 class="mt-2 text-xl font-black leading-tight tracking-tight sm:text-2xl">
-            Keep products, categories, and order flow aligned.
-          </h2>
-          <p class="mt-2 text-xs text-slate-300 font-medium leading-relaxed">
-            Review storefront health, jump into high-priority tasks, and monitor recent order activity from one central hub.
-          </p>
-        </div>
-      </div>
-    </section>
+  <AdminPanelLayout>
+  <div class="space-y-4 sm:space-y-5">
+    <AdminPageHead
+      :eyebrow="today"
+      :title="`${greeting}, ${displayName}`"
+      description="Here's what's happening across your store today."
+    />
 
-    <!-- Metrics Cards -->
-    <section class="mt-5">
-  <div class="mb-3">
-    <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Snapshot</p>
-    <h3 class="mt-0.5 text-lg font-black tracking-tight text-slate-900 dark:text-white">Key metrics</h3>
-  </div>
-
+    <!-- Metrics -->
+    <section>
   <div class="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
     <article
       v-for="metric in metrics"
       :key="metric.label"
-      class="group relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-4  transition-all duration-300 hover:border-neutral-300  dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 sm:p-5"
+      class="admin-card p-4 sm:p-5"
     >
-      <!-- Subtle Accent Strip -->
-      <div class="absolute inset-x-0 top-0 h-1 transition-opacity duration-300 opacity-60 group-hover:opacity-100" :class="metric.glow"></div>
-
       <div class="flex items-start justify-between gap-3">
-        <div>
-          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-neutral-500">{{ metric.label }}</p>
-          <h3 class="mt-1 text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">{{ metric.value }}</h3>
+        <div class="min-w-0">
+          <p class="admin-eyebrow">{{ metric.label }}</p>
+          <p class="mt-1.5 truncate font-heading text-2xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-[1.7rem]">{{ metric.value }}</p>
         </div>
 
-        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1 transition-transform duration-300 group-hover:rotate-6 sm:h-10 sm:w-10" :class="metric.iconClass">
-          <component :is="metric.icon" :size="18" />
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-md ring-1" :class="metric.iconClass">
+          <component :is="metric.icon" :size="17" />
         </div>
       </div>
 
-      <p class="mt-3 text-xs font-medium text-slate-500 dark:text-neutral-400">{{ metric.caption }}</p>
+      <p class="mt-2 truncate text-xs text-neutral-500 dark:text-neutral-400">{{ metric.caption }}</p>
     </article>
   </div>
 </section>
 
-    <!-- Charts and Low Stock Section -->
-    <section class="mt-5 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+    <!-- Charts and Low Stock -->
+    <section class="grid gap-4 xl:grid-cols-[1.2fr_0.8fr] sm:gap-5">
       <!-- Sales Chart -->
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="admin-card p-4 sm:p-5">
+        <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Performance</p>
-            <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Sales Trends</h3>
+            <p class="admin-eyebrow">Performance</p>
+            <h3 class="admin-card-title mt-0.5">Sales trends</h3>
           </div>
-          <div class="flex items-center gap-1 rounded-lg bg-neutral-50 dark:bg-neutral-800 p-1">
-            <button 
-              v-for="f in filters" 
+          <div class="flex items-center gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800">
+            <button
+              v-for="f in filters"
               :key="f.id"
               @click="activeFilter = f.id"
-              class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider transition-all rounded-md"
-              :class="activeFilter === f.id ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white ' : 'text-neutral-400 hover:text-neutral-600'"
+              class="rounded-md px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] transition"
+              :class="activeFilter === f.id ? 'bg-white text-neutral-900  dark:bg-neutral-700 dark:text-white' : 'text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300'"
             >
               {{ f.label }}
             </button>
           </div>
         </div>
-        
+
         <div class="h-70 w-full">
           <Line v-if="chartData.labels.length" :data="chartData" :options="chartOptions" />
-          <div v-else class="flex h-full items-center justify-center text-xs text-slate-400 font-medium">
+          <div v-else class="flex h-full items-center justify-center text-xs font-medium text-neutral-400">
             Generating chart data...
           </div>
         </div>
       </div>
 
       <!-- Low Stock Warnings -->
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800 flex flex-col">
-        <div class="flex items-center justify-between mb-5">
+      <div class="admin-card flex flex-col p-4 sm:p-5">
+        <div class="mb-4 flex items-center justify-between gap-3">
           <div>
-            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-rose-500">Inventory Alert</p>
-            <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Low Stock Products</h3>
+            <p class="admin-eyebrow text-rose-500">Inventory alert</p>
+            <h3 class="admin-card-title mt-0.5">Low stock</h3>
           </div>
-          <span class="rounded-full bg-rose-50 dark:bg-rose-500/10 px-2 py-0.5 text-[10px] font-bold text-rose-600 dark:text-rose-400">
-            {{ lowStockItems.length }} alerts
+          <span class="admin-pill border-rose-100 bg-rose-50 text-rose-600 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400">
+            {{ lowStockItems.length }}
           </span>
         </div>
 
-        <div class="flex-1 space-y-3 overflow-y-auto max-h-75 pr-2 custom-scrollbar">
-          <div 
-            v-for="item in lowStockItems" 
+        <div class="max-h-75 flex-1 space-y-2.5 overflow-y-auto pr-1">
+          <div
+            v-for="item in lowStockItems"
             :key="item.variantKey"
-            class="group flex items-center gap-3 rounded-lg border border-slate-100 dark:border-neutral-800 p-2.5 transition hover:border-rose-200 dark:hover:border-rose-900/30 hover:bg-rose-50/30 dark:hover:bg-rose-500/5"
+            class="flex items-center gap-3 rounded-lg border border-neutral-100 p-2.5 transition hover:border-rose-200 hover:bg-rose-50/40 dark:border-neutral-800 dark:hover:border-rose-500/20 dark:hover:bg-rose-500/5"
           >
-            <div class="h-10 w-10 shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-neutral-800 border border-slate-100 dark:border-neutral-800">
+            <div class="h-10 w-10 shrink-0 overflow-hidden rounded-md border border-neutral-100 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800">
               <img v-if="item.image" :src="item.image" loading="lazy" decoding="async" class="h-full w-full object-cover" />
-              <div v-else class="flex h-full items-center justify-center text-slate-300"><Package :size="16" /></div>
+              <div v-else class="flex h-full items-center justify-center text-neutral-300 dark:text-neutral-600"><Package :size="16" /></div>
             </div>
             <div class="min-w-0 flex-1">
-              <p class="truncate text-[11px] font-bold text-slate-900 dark:text-white">{{ item.name }}</p>
-              <p class="text-[9px] font-medium text-slate-500 dark:text-neutral-400 uppercase tracking-wider">
+              <p class="truncate text-xs font-bold text-neutral-900 dark:text-white">{{ item.name }}</p>
+              <p class="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400 dark:text-neutral-500">
                 {{ item.color }} / {{ item.size }}
               </p>
             </div>
-            <div class="text-right">
-              <p class="text-xs font-black" :class="item.stock === 0 ? 'text-rose-600' : 'text-neutral-600'">{{ item.stock }}</p>
-              <p class="text-[8px] font-bold uppercase tracking-widest text-slate-400">Left</p>
+            <div class="shrink-0 text-right">
+              <p class="text-sm font-bold" :class="item.stock === 0 ? 'text-rose-600 dark:text-rose-400' : 'text-neutral-900 dark:text-white'">{{ item.stock }}</p>
+              <p class="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">left</p>
             </div>
           </div>
 
-          <div v-if="!lowStockItems.length" class="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-neutral-600">
-            <ShieldCheck :size="24" class="opacity-20 mb-2" />
-            <p class="text-[10px] font-bold uppercase tracking-widest">Stock levels healthy</p>
+          <div v-if="!lowStockItems.length" class="flex flex-col items-center justify-center py-12 text-neutral-300 dark:text-neutral-600">
+            <ShieldCheck :size="24" class="mb-2 opacity-40" />
+            <p class="text-[10px] font-bold uppercase tracking-[0.14em]">Stock levels healthy</p>
           </div>
         </div>
-        
-        <router-link to="/admin/products" class="mt-5 flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 py-2 text-[10px] font-bold text-neutral-600 dark:text-neutral-400 transition hover:bg-neutral-50 dark:hover:bg-neutral-800">
-          Manage Inventory
+
+        <router-link to="/admin/products" class="admin-btn admin-btn-quiet mt-4 w-full">
+          Manage inventory
         </router-link>
       </div>
     </section>
 
-    <!-- Operational Workspaces & Pipeline -->
-    <section class="mt-5 grid gap-5 xl:grid-cols-[1fr_0.7fr]">
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
-        <div class="flex items-center justify-between gap-4">
-          <div>
-            <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Management areas</p>
-            <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Operational workspaces</h3>
-          </div>
-        </div>
-
-        <div class="mt-5 grid gap-2.5 md:grid-cols-3">
-          <router-link
-            v-for="workspace in workspaces"
-            :key="workspace.to"
-            :to="workspace.to"
-            class="group rounded-xl border border-slate-100 dark:border-neutral-800 p-4 transition hover:border-slate-300 dark:hover:border-neutral-700 hover:bg-slate-50 dark:hover:bg-neutral-800 active:scale-[0.98]"
-          >
-            <div class="flex items-center justify-between">
-              <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-neutral-500">{{ workspace.tag }}</p>
-              <component :is="workspace.icon" :size="12" class="text-slate-300 dark:text-neutral-600 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
-            </div>
-            <h4 class="mt-2 text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-950 dark:group-hover:text-neutral-300 transition-colors">{{ workspace.title }}</h4>
-            <p class="mt-1.5 text-[11px] font-medium text-slate-500 dark:text-neutral-400 leading-relaxed">{{ workspace.description }}</p>
-          </router-link>
-        </div>
-      </div>
-
-      <div class="rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
-        <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Status breakdown</p>
-        <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Order pipeline</h3>
-
-        <div class="mt-5 grid gap-2.5 grid-cols-2">
-          <div
-            v-for="statusCard in statusCards"
-            :key="statusCard.label"
-            class="rounded-lg bg-slate-50 dark:bg-neutral-800/50 p-3 border border-transparent transition hover:border-slate-200 dark:hover:border-neutral-700"
-          >
-            <div class="flex items-center justify-between">
-              <p class="text-[10px] font-bold text-slate-600 dark:text-neutral-400">{{ statusCard.label }}</p>
-              <span class="text-base font-black text-slate-950 dark:text-white">{{ statusCard.value }}</span>
-            </div>
-          </div>
-        </div>
-        <p class="mt-3 text-[9px] font-medium text-slate-400 dark:text-neutral-500 italic">Live count from fulfillment status pipeline.</p>
-      </div>
-    </section>
-
-    <!-- Recent Activity -->
-    <section class="mt-5 rounded-xl bg-white dark:bg-neutral-900 p-5  ring-1 ring-slate-200 dark:ring-neutral-800">
-      <div class="flex items-center justify-between gap-4">
+    <!-- Order pipeline -->
+    <section class="admin-card p-4 sm:p-5">
+      <div class="flex items-center justify-between gap-3">
         <div>
-          <p class="text-[9px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">Recent orders</p>
-          <h3 class="mt-0.5 text-lg font-black text-slate-900 dark:text-white tracking-tight">Latest activity</h3>
+          <p class="admin-eyebrow">Status breakdown</p>
+          <h3 class="admin-card-title mt-0.5">Order pipeline</h3>
         </div>
-        <router-link to="/admin/orders" class="flex items-center gap-1.5 rounded-lg bg-slate-950 dark:bg-neutral-400 px-3.5 py-1.5 text-[10px] font-bold text-white dark:text-neutral-950 transition hover:bg-slate-800 dark:hover:bg-neutral-300 active:scale-95">
-          <ShoppingCart :size="12" />
+        <router-link to="/admin/orders" class="text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-400 transition hover:text-neutral-900 dark:hover:text-white">
           View all
         </router-link>
       </div>
 
-      <div class="mt-5 grid gap-2.5">
+      <div class="mt-4 grid grid-cols-2 gap-2.5 md:grid-cols-4">
+        <div
+          v-for="statusCard in statusCards"
+          :key="statusCard.label"
+          class="rounded-lg bg-neutral-100/70 p-3 dark:bg-neutral-800/50"
+        >
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400">{{ statusCard.label }}</p>
+            <span class="font-heading text-lg font-bold text-neutral-900 dark:text-white">{{ statusCard.value }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent activity -->
+    <section class="admin-card p-4 sm:p-5">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <p class="admin-eyebrow">Recent orders</p>
+          <h3 class="admin-card-title mt-0.5">Latest activity</h3>
+        </div>
+        <router-link to="/admin/orders" class="admin-btn admin-btn-quiet px-3.5 py-1.5">
+          View all
+        </router-link>
+      </div>
+
+      <div class="mt-4 grid gap-2.5">
         <div
           v-for="order in recentOrders"
           :key="order.id"
-          class="rounded-lg border border-slate-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3.5 transition hover:border-slate-200 dark:hover:border-neutral-700 "
+          class="rounded-lg border border-neutral-100 bg-white p-3.5 transition hover:border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
         >
-          <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div class="flex items-center gap-3">
-              <div class="h-8 w-8 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-500 dark:text-neutral-400">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex min-w-0 items-center gap-3">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
                 <User :size="14" />
               </div>
               <div class="min-w-0">
-                <div class="flex items-center gap-2">
-                  <p class="text-xs font-black text-slate-950 dark:text-white">#{{ order.id.slice(0, 8) }}</p>
-                  <span class="text-[9px] font-bold text-slate-400 dark:text-neutral-600 uppercase tracking-widest">•</span>
-                  <p class="text-[11px] font-bold text-slate-600 dark:text-neutral-300">
-                    {{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}
-                  </p>
-                </div>
-                <div class="flex items-center gap-2 mt-0.5">
-                   <p class="text-[10px] font-medium text-slate-400 dark:text-neutral-500">{{ order.customerDetails?.email }}</p>
-                </div>
+                <p class="truncate text-xs font-bold text-neutral-900 dark:text-white">
+                  #{{ order.id.slice(0, 8) }}
+                  <span class="font-semibold text-neutral-400"> · {{ order.customerDetails?.firstName }} {{ order.customerDetails?.lastName }}</span>
+                </p>
+                <p class="mt-0.5 truncate text-[11px] text-neutral-400 dark:text-neutral-500">{{ order.customerDetails?.email }}</p>
               </div>
             </div>
 
-            <div class="flex items-center justify-between lg:justify-end gap-5 border-t lg:border-t-0 pt-2.5 lg:pt-0 border-slate-50 dark:border-neutral-800">
-              <div class="flex flex-col items-end">
-                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500">Status</p>
-                <span 
-                  class="mt-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider"
-                  :class="{
-                    'bg-neutral-50 dark:bg-neutral-800/10 text-neutral-600 dark:text-neutral-400': order.status === 'received',
-                    'bg-slate-50 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400': order.status === 'processing',
-                    'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400': order.status === 'shipped',
-                    'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400': order.status === 'completed'
-                  }"
-                >
-                  {{ order.status }}
-                </span>
-              </div>
-              <div class="flex flex-col items-end">
-                <p class="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500">Amount</p>
-                <span class="mt-0.5 text-xs font-black text-slate-950 dark:text-white">{{ formatCurrency(order.totalAmount) }}</span>
-              </div>
+            <div class="flex shrink-0 items-center justify-between gap-5 border-t border-neutral-100 pt-2.5 dark:border-neutral-800 sm:justify-end sm:border-t-0 sm:pt-0">
+              <span :class="getStatusClass(order.status)" class="admin-pill">
+                {{ order.status }}
+              </span>
+              <span class="text-sm font-bold text-neutral-900 dark:text-white">{{ formatCurrency(order.totalAmount) }}</span>
             </div>
           </div>
         </div>
 
-        <div v-if="!recentOrders.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50 dark:bg-neutral-800/50 py-10 text-slate-400 dark:text-neutral-600">
-          <PackageSearch :size="32" class="opacity-20 mb-2" />
-          <p class="text-xs font-medium">No orders recorded yet</p>
+        <div v-if="!recentOrders.length" class="flex flex-col items-center justify-center rounded-lg bg-neutral-50 py-10 text-neutral-300 dark:bg-neutral-800/50 dark:text-neutral-600">
+          <PackageSearch :size="28" stroke-width="1.5" class="mb-2 opacity-50" />
+          <p class="text-[11px] font-semibold uppercase tracking-[0.14em]">No orders yet</p>
         </div>
       </div>
     </section>
+  </div>
   </AdminPanelLayout>
 </template>
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { 
-  LayoutDashboard, 
-  Layers, 
-  ShoppingCart, 
-  Package, 
-  Briefcase,
+import {
+  ShoppingCart,
+  Package,
   ShieldCheck,
   User,
   PackageSearch,
@@ -272,9 +208,11 @@ import {
   Filler
 } from 'chart.js'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
+import AdminPageHead from '../../components/AdminPageHead.vue'
 import { useCatalogStore } from '../../stores/catalogStore'
 import { useOrderStore } from '../../stores/orderStore'
-import { formatCurrency } from '../../utils/format'
+import { useSession } from '../../composables/useSession'
+import { formatCurrency, getOrderStatusClasses } from '../../utils/format'
 
 import { useAdminTheme } from '../../composables/useAdminTheme'
 
@@ -290,9 +228,26 @@ ChartJS.register(
 )
 
 const { isDarkMode } = useAdminTheme()
+const { profile } = useSession()
 const { products, loadCatalog, lowStockVariants } = useCatalogStore()
 const { orders, subscribeOrders, unsubscribeOrders, countByStatus } = useOrderStore()
 const activeFilter = ref('week')
+
+const displayName = computed(() =>
+  profile.value?.username || profile.value?.email?.split('@')[0] || 'Admin',
+)
+const greeting = computed(() => {
+  const h = new Date().getHours()
+  if (h < 5) return 'Good evening'
+  if (h < 12) return 'Good morning'
+  if (h < 18) return 'Good afternoon'
+  return 'Good evening'
+})
+const today = new Date().toLocaleDateString('en-US', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+})
 
 const filters = [
   { id: 'today', label: 'Today' },
@@ -301,32 +256,10 @@ const filters = [
   { id: 'year', label: 'Year' },
 ]
 
-const workspaces = [
-  {
-    to: '/admin/categories',
-    tag: 'Structure',
-    title: 'Categories',
-    icon: Layers,
-    description: 'Control the storefront taxonomy customers use to browse.',
-  },
-  {
-    to: '/admin/products',
-    tag: 'Catalog',
-    title: 'Products',
-    icon: Package,
-    description: 'Create products, manage pricing, and inventory.',
-  },
-  {
-    to: '/admin/orders',
-    tag: 'Fulfillment',
-    title: 'Orders',
-    icon: ShoppingCart,
-    description: 'Track incoming orders and processing pipeline.',
-  },
-]
-
 // Orders arrive pre-sorted (createdAt desc) from the shared realtime subscription.
 const recentOrders = computed(() => orders.value.slice(0, 5))
+
+const getStatusClass = getOrderStatusClasses
 
 const lowStockItems = computed(() => lowStockVariants(5))
 
@@ -401,8 +334,8 @@ const chartData = computed(() => {
     })
   }
 
-  const primaryColor = isDarkMode.value ? '#fbbf24' : '#0f172a'
-  const bgColor = isDarkMode.value ? 'rgba(251, 191, 36, 0.05)' : 'rgba(15, 23, 42, 0.05)'
+  const primaryColor = isDarkMode.value ? '#e5e5e5' : '#171717'
+  const bgColor = isDarkMode.value ? 'rgba(255, 255, 255, 0.04)' : 'rgba(23, 23, 23, 0.05)'
 
   return {
     labels,
@@ -428,9 +361,9 @@ const chartOptions = computed(() => ({
     tooltip: {
       mode: 'index',
       intersect: false,
-      backgroundColor: isDarkMode.value ? '#171717' : '#0f172a',
-      titleColor: isDarkMode.value ? '#fbbf24' : '#fff',
-      titleFont: { size: 10, weight: 'bold' },
+      backgroundColor: '#171717',
+      titleColor: '#fff',
+      titleFont: { size: 11, weight: 'bold' },
       bodyFont: { size: 12 },
       callbacks: {
         label: (context) => ` ${formatCurrency(context.raw)}`
@@ -440,18 +373,18 @@ const chartOptions = computed(() => ({
   scales: {
     y: {
       beginAtZero: true,
-      grid: { color: isDarkMode.value ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)' },
+      grid: { color: isDarkMode.value ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' },
       ticks: { 
-        font: { size: 9 },
-        color: isDarkMode.value ? '#737373' : '#64748b',
+        font: { size: 10 },
+        color: isDarkMode.value ? '#737373' : '#a3a3a3',
         callback: (value) => formatCurrency(value)
       }
     },
     x: {
       grid: { display: false },
       ticks: { 
-        font: { size: 9 },
-        color: isDarkMode.value ? '#737373' : '#64748b'
+        font: { size: 10 },
+        color: isDarkMode.value ? '#737373' : '#a3a3a3'
       }
     }
   }
@@ -464,7 +397,6 @@ const metrics = computed(() => [
     icon: TrendingUp,
     caption: 'Total lifetime sales',
     iconClass: 'bg-emerald-50 text-emerald-600 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20',
-    glow: 'bg-emerald-200 dark:bg-emerald-500/20',
   },
   {
     label: 'Products',
@@ -472,15 +404,13 @@ const metrics = computed(() => [
     icon: Package,
     caption: 'Total catalog entries',
     iconClass: 'bg-blue-50 text-blue-600 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/20',
-    glow: 'bg-blue-200 dark:bg-blue-500/20',
   },
   {
     label: 'Orders',
     value: orders.value.length,
     icon: ShoppingCart,
     caption: 'Lifetime order count',
-    iconClass: 'bg-neutral-50 text-neutral-600 ring-neutral-100 dark:bg-neutral-500/10 dark:text-neutral-400 dark:ring-neutral-500/20',
-    glow: 'bg-neutral-200 dark:bg-neutral-500/20',
+    iconClass: 'bg-neutral-100 text-neutral-600 ring-neutral-200 dark:bg-neutral-500/10 dark:text-neutral-400 dark:ring-neutral-500/20',
   },
   {
     label: 'Low Stock',
@@ -488,7 +418,6 @@ const metrics = computed(() => [
     icon: AlertTriangle,
     caption: 'Items requiring attention',
     iconClass: 'bg-rose-50 text-rose-600 ring-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/20',
-    glow: 'bg-rose-200 dark:bg-rose-500/20',
   },
 ])
 
@@ -505,16 +434,3 @@ onMounted(() => {
 })
 onUnmounted(unsubscribeOrders)
 </script>
-
-<style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 10px;
-}
-</style>

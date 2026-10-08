@@ -116,3 +116,148 @@ body::-webkit-scrollbar {
 ::view-transition-new(root) {
   z-index: 2;
 }
+
+/* ------------------------------------------------------------------
+   Admin kit — mirrors the storefront language (single 6px radius,
+   neutral-only surfaces, 11px semibold eyebrows) so every admin view
+   reads as one system instead of six one-off styles.
+------------------------------------------------------------------- */
+@layer components {
+  /* Eyebrow label over card / page titles */
+  .admin-eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500;
+  }
+
+  /* Page H1 rendered by AdminPanelLayout */
+  .admin-title {
+    @apply font-heading text-xl font-bold tracking-tight text-neutral-900 dark:text-white;
+  }
+
+  /* Card / modal section title */
+  .admin-card-title {
+    @apply font-heading text-base font-bold tracking-tight text-neutral-900 dark:text-white;
+  }
+
+  .admin-muted {
+    @apply text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400;
+  }
+
+  /* Default surface: white card, hairline ring, storefront radius */
+  .admin-card {
+    @apply rounded-lg border border-neutral-200/70 bg-white dark:border-neutral-800 dark:bg-neutral-900;
+  }
+
+  /* Bordered text input / select / textarea */
+  .admin-field {
+    @apply w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:placeholder:text-neutral-500 dark:focus:border-neutral-500;
+  }
+
+  /* Filled, borderless search input with left icon (pl-10) + clear btn (pr-9) */
+  .admin-search {
+    @apply w-full rounded-lg border border-transparent bg-neutral-100 py-2.5 pl-10 pr-9 text-sm font-medium text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-300 focus:bg-white dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500 dark:focus:border-neutral-700 dark:focus:bg-neutral-900;
+  }
+
+  /* Small caps label placed above a field */
+  .admin-label {
+    @apply mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-500 dark:text-neutral-400;
+  }
+
+  /* Roomy content-editing field (settings, bios, long copy) */
+  .admin-field-lg {
+    @apply w-full rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm font-medium text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-400 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-white dark:placeholder:text-neutral-500 dark:focus:border-neutral-500;
+  }
+
+  /* Buttons — always compose `admin-btn` with one variant */
+  .admin-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] transition active:scale-[0.98];
+  }
+  .admin-btn-primary {
+    @apply bg-neutral-900 text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200;
+  }
+  .admin-btn-quiet {
+    @apply border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white;
+  }
+
+  /* Quiet 36px icon button; compose with a color override when needed */
+  .admin-icon-btn {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700 active:scale-95 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-200;
+  }
+
+  /* Table header cell */
+  .admin-th {
+    @apply whitespace-nowrap px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500;
+  }
+
+  /* Status / tier pill base — compose with color classes */
+  .admin-pill {
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em];
+  }
+}
+
+/* Responsive admin tables: below md, rows become labeled cards.
+   Tables opt in with `.admin-card-table` + `data-label` on each td. */
+@media (max-width: 767px) {
+  .admin-card-table-wrap {
+    overflow-x: visible;
+  }
+
+  .admin-card-table,
+  .admin-card-table thead,
+  .admin-card-table tbody,
+  .admin-card-table tr,
+  .admin-card-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-card-table thead {
+    display: none;
+  }
+
+  .admin-card-table tbody {
+    display: grid;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .admin-card-table tbody tr {
+    border: 1px solid rgb(229 229 229);
+    border-radius: 6px;
+    background: white;
+    overflow: hidden;
+  }
+
+  .dark .admin-card-table tbody tr {
+    border-color: rgb(38 38 38);
+    background: rgb(23 23 23);
+  }
+
+  .admin-card-table tbody tr > td:not([colspan]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    text-align: right;
+    white-space: normal;
+    border-bottom: 1px solid rgb(245 245 245);
+  }
+
+  .dark .admin-card-table tbody tr > td:not([colspan]) {
+    border-bottom-color: rgb(38 38 38 / 0.75);
+  }
+
+  .admin-card-table tbody tr > td:not([colspan])::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(163 163 163);
+  }
+
+  .admin-card-table tbody tr > td:last-child {
+    border-bottom: 0;
+  }
+}

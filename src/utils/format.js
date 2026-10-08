@@ -19,11 +19,11 @@ export const formatDate = (timestamp, { withTime = false } = {}) => {
 // Shared badge styling for the order fulfillment pipeline (received -> processing -> shipped -> completed).
 export const getOrderStatusClasses = (status) => {
   switch (status) {
-    case 'received': return 'bg-blue-50 text-blue-600 border-blue-100'
-    case 'processing': return 'bg-amber-50 text-amber-600 border-amber-100'
-    case 'shipped': return 'bg-indigo-50 text-indigo-600 border-indigo-100'
-    case 'completed': return 'bg-emerald-50 text-emerald-600 border-emerald-100'
-    default: return 'bg-slate-50 text-slate-600 border-slate-100'
+    case 'received': return 'bg-neutral-100 text-neutral-500 border-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:border-neutral-700'
+    case 'processing': return 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20'
+    case 'shipped': return 'bg-indigo-50 text-indigo-600 border-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20'
+    case 'completed': return 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20'
+    default: return 'bg-neutral-100 text-neutral-500 border-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:border-neutral-700'
   }
 }
 
