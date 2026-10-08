@@ -176,7 +176,7 @@
               <p class="mt-1.5 text-[10px] font-bold uppercase tracking-[0.5em] text-neutral-900 dark:text-white">Philippines</p>
             </div>
             <p class="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">What We Believe</p>
-            <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Basis of Faith</h2>
+            <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">{{ basisTitle }}</h2>
             <div class="mx-auto mt-6 h-px w-12 bg-neutral-300 dark:bg-neutral-700"></div>
           </div>
           <ol class="mt-10 divide-y divide-neutral-200 dark:divide-neutral-800">
@@ -212,9 +212,9 @@
           <div class="grid gap-12 md:grid-cols-2 md:gap-16">
             <div>
               <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Contact</p>
-              <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">Get in touch</h2>
+              <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">{{ contactTitle }}</h2>
               <p class="mt-4 max-w-sm text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
-                Have questions about your order, sizing, or how to get involved with SCF? We'd love to hear from you.
+                {{ contactIntro }}
               </p>
 
               <ul class="mt-10 space-y-7">
@@ -309,19 +309,12 @@ const loading = ref(true)
 const settings = ref(DEFAULT_LANDING_PAGE_SETTINGS)
 // Officers card falls back to defaults when older saved settings lack the key.
 const officers = computed(() => settings.value.officers ?? DEFAULT_LANDING_PAGE_SETTINGS.officers)
-const basisOfFaith = [
-  'The unity of the Father, Son and Holy Spirit in the Godhead.',
-  'The sovereignty of God in creation, revelation, redemption and final judgment.',
-  'The divine inspiration and the entire trustworthiness of the Holy Scriptures, as originally given, and its supreme authority in all matters of faith and conduct.',
-  'The universal sinfulness and guilt of all men since the fall, rendering them subject to God\u2019s wrath and condemnation.',
-  'Redemption from the guilt, penalty, dominion and pollution of sin, solely through the sacrificial death (as our Representative and Substitute) of the Lord Jesus Christ, the Incarnate Son of God.',
-  'The bodily resurrection of the Lord Jesus Christ from the dead and His ascension to the right hand of God the Father.',
-  'The presence and power of the Holy Spirit in the work of regeneration.',
-  'The justification of the sinner by the grace of God through faith alone.',
-  'The indwelling and work of the Holy Spirit in the believer.',
-  'The one Holy Universal Church which is the Body of Christ and to which all true believers belong.',
-  'The expectation of the personal return of the Lord Jesus Christ.',
-]
+// Basis of Faith + contact heading/intro fall back the same way so older
+// saved settings documents keep rendering until they are re-saved.
+const basisTitle = computed(() => settings.value.basisOfFaith?.title || DEFAULT_LANDING_PAGE_SETTINGS.basisOfFaith.title)
+const basisOfFaith = computed(() => settings.value.basisOfFaith?.points ?? DEFAULT_LANDING_PAGE_SETTINGS.basisOfFaith.points)
+const contactTitle = computed(() => settings.value.contact?.title || DEFAULT_LANDING_PAGE_SETTINGS.contact.title)
+const contactIntro = computed(() => settings.value.contact?.intro || DEFAULT_LANDING_PAGE_SETTINGS.contact.intro)
 // Stacked hero title: one word per line like GOOD WORK / DESERVES TO / BE SEEN.
 // Falls back to full name when the stored title is still the legacy "SCF".
 const heroWords = computed(() => {

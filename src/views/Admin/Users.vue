@@ -1,228 +1,217 @@
 <template>
-  <AdminPanelLayout subtitle="Monitor and search registered user accounts">
-    <div class="max-w-7xl mx-auto space-y-6">
-      
-      <!-- Search Bar Only -->
-      <section>
-        <div class="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-slate-100 dark:border-neutral-800 ">
-          <div class="relative w-full">
-            <Search class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-neutral-500" :size="18" />
-            <input 
-              v-model="searchQuery"
-              type="text" 
-              placeholder="Search users by name, email, or username..." 
-              class="w-full pl-12 pr-10 py-3 rounded-xl border-none bg-neutral-50 dark:bg-neutral-800/50 text-sm font-medium text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-400/20 transition-all"
-            >
-            <button 
-              v-if="searchQuery" 
-              @click="searchQuery = ''"
-              class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-neutral-300"
-            >
-              <X :size="16" />
-            </button>
-          </div>
-        </div>
-      </section>
+  <AdminPanelLayout>
+    <div class="mx-auto max-w-7xl space-y-4 sm:space-y-5">
+      <AdminPageHead
+        eyebrow="Community"
+        title="Users"
+        :description="`${users.length} registered ${users.length === 1 ? 'account' : 'accounts'}.`"
+      />
 
-      <!-- Users Table -->
-      <section class="bg-white dark:bg-neutral-900 rounded-3xl border border-slate-100 dark:border-neutral-800  overflow-hidden">
+      <!-- Search -->
+      <div class="relative">
+        <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" :size="16" />
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search users by name, email, or username..."
+          class="admin-search admin-card"
+        >
+        <button
+          v-if="searchQuery"
+          @click="searchQuery = ''"
+          title="Clear search"
+          aria-label="Clear search"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 transition hover:text-neutral-600 dark:hover:text-neutral-300"
+        >
+          <X :size="15" />
+        </button>
+      </div>
+
+      <!-- Users table -->
+      <section class="admin-card overflow-hidden">
         <div class="admin-card-table-wrap overflow-x-auto">
-          <table class="admin-card-table w-full text-left border-collapse border-spacing-0">
+          <table class="admin-card-table w-full border-collapse border-spacing-0 text-left">
             <thead>
-              <tr class="bg-slate-50/50 dark:bg-neutral-800/50 border-b border-slate-100 dark:border-neutral-800">
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">User</th>
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Tier</th>
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Role</th>
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Email</th>
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap">Registration Date</th>
-                <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 whitespace-nowrap text-center">Actions</th>
+              <tr class="border-b border-neutral-100 bg-neutral-50/60 dark:border-neutral-800 dark:bg-neutral-800/40">
+                <th class="admin-th">User</th>
+                <th class="admin-th">Tier</th>
+                <th class="admin-th">Role</th>
+                <th class="admin-th">Email</th>
+                <th class="admin-th">Joined</th>
+                <th class="admin-th text-center">Actions</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50 dark:divide-neutral-800/50">
+            <tbody class="divide-y divide-neutral-100 dark:divide-neutral-800">
               <tr
                 v-for="user in pagedUsers"
                 :key="user.id"
-                class="hover:bg-slate-50/50 dark:hover:bg-neutral-800/30 transition-colors cursor-pointer group"
+                class="cursor-pointer transition-colors hover:bg-neutral-50/70 dark:hover:bg-neutral-800/30"
               >
-                <td class="px-6 py-4 whitespace-nowrap" data-label="User" @click="openDetails(user)">
+                <td class="whitespace-nowrap px-5 py-3.5" data-label="User" @click="openDetails(user)">
                   <div class="flex items-center gap-3">
-                    <div class="relative">
-                      <div class="h-9 w-9 rounded-full bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-slate-400 dark:text-neutral-500 border border-slate-200 dark:border-neutral-700">
-                        <UserIcon :size="18" />
-                      </div>
-                      <span 
-                        v-if="!user.seenByAdmin" 
-                        class="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-red-500 ring-2 ring-white dark:ring-neutral-900"
-                      ></span>
+                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 text-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-500">
+                      <UserIcon :size="16" />
                     </div>
-                    <div>
-                      <p class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        {{ user.firstName }} {{ user.lastName }}
-                        <span v-if="!user.seenByAdmin" class="inline-flex items-center rounded-full bg-red-50 dark:bg-red-500/10 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-red-600 dark:text-red-400 border border-red-100 dark:border-red-500/20">New</span>
+                    <div class="min-w-0">
+                      <p class="flex items-center gap-1.5 text-xs font-bold text-neutral-900 dark:text-white">
+                        <span class="truncate">{{ user.firstName }} {{ user.lastName }}</span>
+                        <span v-if="!user.seenByAdmin" class="admin-pill shrink-0 border-rose-100 bg-rose-50 text-rose-600 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400">New</span>
                       </p>
-                      <p class="text-[10px] font-medium text-slate-400 dark:text-neutral-500">@{{ user.username }}</p>
+                      <p class="truncate text-[11px] text-neutral-400 dark:text-neutral-500">@{{ user.username }}</p>
                     </div>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" data-label="Tier" @click="openDetails(user)">
-                  <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
-                    :class="user.isStudent ? 'bg-neutral-50 text-neutral-600 border-neutral-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
+                <td class="whitespace-nowrap px-5 py-3.5" data-label="Tier" @click="openDetails(user)">
+                  <span
+                    class="admin-pill"
+                    :class="user.isStudent ? 'border-neutral-200 bg-neutral-100 text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300' : 'border-neutral-100 bg-neutral-50 text-neutral-400 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-500'"
                   >
                     {{ user.isStudent ? 'Student' : 'Regular' }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" data-label="Role" @click="openDetails(user)">
-                  <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
+                <td class="whitespace-nowrap px-5 py-3.5" data-label="Role" @click="openDetails(user)">
+                  <span
+                    class="admin-pill"
                     :class="getRoleClass(user.role)"
                   >
                     {{ user.role }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" data-label="Email" @click="openDetails(user)">
-                  <p class="text-xs font-semibold text-slate-500 dark:text-neutral-400">{{ user.email }}</p>
+                <td class="whitespace-nowrap px-5 py-3.5" data-label="Email" @click="openDetails(user)">
+                  <p class="text-xs text-neutral-500 dark:text-neutral-400">{{ user.email }}</p>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" data-label="Registration Date" @click="openDetails(user)">
-                  <p class="text-xs font-semibold text-slate-400 dark:text-neutral-500">{{ formatDate(user.createdAt) }}</p>
+                <td class="whitespace-nowrap px-5 py-3.5" data-label="Joined" @click="openDetails(user)">
+                  <p class="text-xs text-neutral-400 dark:text-neutral-500">{{ formatDate(user.createdAt) }}</p>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap" data-label="Actions">
+                <td class="whitespace-nowrap px-5 py-3.5" data-label="Actions">
                   <div class="flex items-center justify-center gap-1">
-                    <button 
+                    <button
                       @click.stop="openDetails(user)"
-                      class="p-2 text-slate-300 dark:text-neutral-700 hover:text-neutral-500 dark:hover:text-neutral-300 transition-colors"
-                      title="View Profile"
+                      class="admin-icon-btn h-8 w-8"
+                      title="View profile"
+                      aria-label="View profile"
                     >
-                      <Eye :size="16" />
+                      <Eye :size="15" />
                     </button>
-                    <button 
+                    <button
                       v-if="user.role !== 'admin'"
                       @click.stop="handleDeleteUser(user)"
-                      class="p-2 text-slate-300 dark:text-neutral-700 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-                      title="Delete User"
+                      class="admin-icon-btn h-8 w-8 text-rose-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-300"
+                      title="Delete user"
+                      aria-label="Delete user"
                     >
-                      <Trash2 :size="16" />
+                      <Trash2 :size="15" />
                     </button>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          
-          <div v-if="!filteredUsers.length" class="flex flex-col items-center justify-center py-20 text-center px-6">
-            <div class="w-12 h-12 bg-slate-50 dark:bg-neutral-800 rounded-full flex items-center justify-center text-slate-200 dark:text-neutral-700 mb-3">
-              <UsersIcon :size="24" />
+
+          <div v-if="!filteredUsers.length" class="flex flex-col items-center justify-center px-6 py-16 text-center">
+            <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 text-neutral-300 dark:bg-neutral-800 dark:text-neutral-600">
+              <UsersIcon :size="22" />
             </div>
-            <p class="text-xs font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest">No matching records found</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500">No matching users</p>
           </div>
           <Pagination :page="page" :total-pages="totalPages" :total-items="totalFilteredUsers" @update:page="goToPage" />
         </div>
       </section>
     </div>
 
-    <!-- User Detail Modal (Remains for viewing details) -->
-    <Transition 
+    <!-- User detail modal -->
+    <Transition
       name="modal"
-      enter-active-class="transition duration-500 ease-out"
-      enter-from-class="opacity-0 translate-y-8 scale-95"
-      enter-to-class="opacity-100 translate-y-0 scale-100"
-      leave-active-class="transition duration-300 ease-in"
-      leave-from-class="opacity-100 translate-y-0 scale-100"
-      leave-to-class="opacity-0 translate-y-8 scale-95"
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95"
     >
-      <div v-if="selectedUser" class="fixed inset-0 z-100 flex items-center justify-center p-4 backdrop-blur-md">
-        <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60" @click="selectedUser = null"></div>
-        
-        <div class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white dark:bg-neutral-900  flex flex-col">
-          <div class="px-8 py-6 border-b border-slate-50 dark:border-neutral-800 flex items-center justify-between bg-slate-50/30 dark:bg-neutral-800/30 shrink-0">
-            <div class="flex items-center gap-4">
-              <div class="h-10 w-10 rounded-full bg-slate-900 dark:bg-neutral-400 flex items-center justify-center text-white dark:text-neutral-950">
-                <UserIcon :size="20" />
+      <div v-if="selectedUser" class="fixed inset-0 z-100 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-neutral-950/40 backdrop-blur-sm dark:bg-black/60" @click="selectedUser = null"></div>
+
+        <div class="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-lg bg-white dark:bg-neutral-900">
+          <div class="flex shrink-0 items-center justify-between gap-3 border-b border-neutral-100 px-5 py-4 dark:border-neutral-800 sm:px-6">
+            <div class="flex min-w-0 items-center gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
+                <UserIcon :size="18" />
               </div>
-              <div>
-                <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight">User Profile</h3>
-                <p class="text-[10px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest">ID: {{ selectedUser.id }}</p>
+              <div class="min-w-0">
+                <h3 class="truncate font-heading text-base font-bold tracking-tight text-neutral-900 dark:text-white">{{ selectedUser.firstName }} {{ selectedUser.lastName }}</h3>
+                <p class="truncate text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400 dark:text-neutral-500">ID: {{ selectedUser.id }}</p>
               </div>
             </div>
-            <button @click="selectedUser = null" class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-              <X :size="20" />
+            <button @click="selectedUser = null" title="Close" aria-label="Close profile" class="admin-icon-btn">
+              <X :size="18" />
             </button>
           </div>
 
-          <div class="p-8 overflow-y-auto scrollbar-hide flex-1">
-            <div class="space-y-8">
-              <div class="grid sm:grid-cols-2 gap-6">
-                <div class="bg-slate-50 dark:bg-neutral-800/50 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800">
-                  <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Full Name</p>
-                  <p class="text-sm font-bold text-slate-900 dark:text-white">{{ selectedUser.firstName }} {{ selectedUser.lastName }}</p>
+          <div class="flex-1 overflow-y-auto p-5 sm:p-6">
+            <div class="space-y-5">
+              <div class="grid gap-2.5 sm:grid-cols-2">
+                <div class="rounded-lg border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40">
+                  <p class="admin-eyebrow mb-1">Username</p>
+                  <p class="text-sm font-bold text-neutral-900 dark:text-white">@{{ selectedUser.username }}</p>
                 </div>
-                <div class="bg-slate-50 dark:bg-neutral-800/50 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800">
-                  <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Username</p>
-                  <p class="text-sm font-bold text-slate-900 dark:text-white">@{{ selectedUser.username }}</p>
+                <div class="rounded-lg border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40">
+                  <p class="admin-eyebrow mb-1">Email</p>
+                  <p class="break-all text-sm font-bold text-neutral-900 dark:text-white">{{ selectedUser.email }}</p>
                 </div>
-                <div class="bg-slate-50 dark:bg-neutral-800/50 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800">
-                  <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Email Address</p>
-                  <p class="text-sm font-bold text-slate-900 dark:text-white">{{ selectedUser.email }}</p>
-                </div>
-                <div class="bg-slate-50 dark:bg-neutral-800/50 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800">
-                  <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Role</p>
-                  <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
+                <div class="rounded-lg border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40">
+                  <p class="admin-eyebrow mb-1.5">Role</p>
+                  <span
+                    class="admin-pill"
                     :class="getRoleClass(selectedUser.role)"
                   >
                     {{ selectedUser.role }}
                   </span>
                 </div>
-                <div class="bg-slate-50 dark:bg-neutral-800/50 p-5 rounded-2xl border border-slate-100 dark:border-neutral-800">
-                  <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-1.5">Account Tier</p>
-                  <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border"
-                    :class="selectedUser.isStudent ? 'bg-neutral-50 text-neutral-600 border-neutral-100' : 'bg-slate-50 text-slate-500 border-slate-100'"
+                <div class="rounded-lg border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40">
+                  <p class="admin-eyebrow mb-1.5">Tier</p>
+                  <span
+                    class="admin-pill"
+                    :class="selectedUser.isStudent ? 'border-neutral-200 bg-white text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300' : 'border-neutral-100 bg-neutral-100 text-neutral-400 dark:border-neutral-800 dark:bg-neutral-800 dark:text-neutral-500'"
                   >
-                    {{ selectedUser.isStudent ? 'Student Pricing' : 'Regular Pricing' }}
+                    {{ selectedUser.isStudent ? 'Student pricing' : 'Regular pricing' }}
                   </span>
                 </div>
               </div>
 
-              <div class="space-y-4">
-                <h4 class="text-[10px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest flex items-center gap-2">
-                  <Phone :size="12" /> Contact & Delivery
+              <div>
+                <h4 class="admin-eyebrow mb-3 flex items-center gap-1.5">
+                  <Phone :size="12" /> Contact
                 </h4>
-                <div class="bg-slate-50 dark:bg-neutral-800/50 p-6 rounded-3xl border border-slate-100 dark:border-neutral-800 space-y-4">
-                  <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900  flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
-                      <Phone :size="18" />
+                <div class="space-y-3 rounded-lg border border-neutral-100 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40 sm:p-5">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-neutral-100 bg-white text-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-500">
+                      <Phone :size="16" />
                     </div>
-                    <div>
-                      <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-0.5">Contact Number</p>
-                      <p class="text-sm font-bold text-slate-900 dark:text-white">{{ selectedUser.contact || 'N/A' }}</p>
-                    </div>
+                    <p class="text-sm font-semibold text-neutral-900 dark:text-white">{{ selectedUser.contact || 'N/A' }}</p>
                   </div>
-                  <div class="flex items-start gap-4 pt-4 border-t border-slate-200/50 dark:border-neutral-700">
-                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900  flex items-center justify-center text-slate-400 dark:text-neutral-600 border border-slate-100 dark:border-neutral-800">
-                      <MapPin :size="18" />
+                  <div class="flex items-start gap-3 border-t border-neutral-200/60 pt-3 dark:border-neutral-700">
+                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-neutral-100 bg-white text-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-500">
+                      <MapPin :size="16" />
                     </div>
-                    <div class="flex-1">
-                      <p class="text-[9px] font-black text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-0.5">Primary Address</p>
-                      <p class="text-sm font-medium text-slate-700 dark:text-neutral-300 leading-relaxed">{{ selectedUser.address || 'No address provided' }}</p>
-                    </div>
+                    <p class="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">{{ selectedUser.address || 'No address provided' }}</p>
                   </div>
                 </div>
               </div>
 
-              <div class="flex items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest pt-4">
+              <p class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-400 dark:text-neutral-500">
                 <Calendar :size="12" />
-                <span>Joined on {{ formatDate(selectedUser.createdAt) }}</span>
-              </div>
+                <span>Joined {{ formatDate(selectedUser.createdAt) }}</span>
+              </p>
             </div>
           </div>
-          
-          <div class="px-8 py-6 border-t border-slate-50 dark:border-neutral-800 bg-slate-50/30 dark:bg-neutral-800/30 flex justify-end shrink-0">
-            <button 
+
+          <div class="flex shrink-0 justify-end border-t border-neutral-100 px-5 py-4 dark:border-neutral-800 sm:px-6">
+            <button
               @click="selectedUser = null"
-              class="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-neutral-400 text-white dark:text-neutral-950 text-xs font-bold hover:bg-slate-800 dark:hover:bg-neutral-300 transition-all   "
+              class="admin-btn admin-btn-quiet"
             >
-              Close Profile
+              Close
             </button>
           </div>
         </div>
@@ -245,6 +234,7 @@ import {
   MapPin
 } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
+import AdminPageHead from '../../components/AdminPageHead.vue'
 import Pagination from '../../components/Pagination.vue'
 import { subscribeToAllUsers, markUserAsSeen, deleteUser } from '../../services/userService'
 import { formatDate } from '../../utils/format'
@@ -294,94 +284,16 @@ const handleDeleteUser = (user) => {
 
 const getRoleClass = (role) => {
   switch (role) {
-    case 'admin': return 'bg-rose-50 text-rose-600 border-rose-100'
-    case 'customer': return 'bg-blue-50 text-blue-600 border-blue-100'
-    case 'guest': return 'bg-slate-50 text-slate-600 border-slate-100'
-    default: return 'bg-slate-50 text-slate-600 border-slate-100'
+    case 'admin': return 'border-rose-100 bg-rose-50 text-rose-600 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400'
+    case 'customer': return 'border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400'
+    case 'guest': return 'border-neutral-200 bg-neutral-100 text-neutral-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400'
+    default: return 'border-neutral-200 bg-neutral-100 text-neutral-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400'
   }
 }
 </script>
 
 <style scoped>
-.modal-enter-from { opacity: 0; transform: scale(0.95) translateY(20px); }
-.modal-enter-to { opacity: 1; transform: scale(1) translateY(0); }
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-@media (max-width: 767px) {
-  .admin-card-table-wrap {
-    overflow-x: visible;
-  }
-
-  .admin-card-table,
-  .admin-card-table thead,
-  .admin-card-table tbody,
-  .admin-card-table tr,
-  .admin-card-table td {
-    display: block;
-    width: 100%;
-  }
-
-  .admin-card-table thead {
-    display: none;
-  }
-
-  .admin-card-table tbody {
-    display: grid;
-    gap: 12px;
-    padding: 12px;
-  }
-
-  .admin-card-table tbody tr {
-    border: 1px solid rgb(226 232 240);
-    border-radius: 18px;
-    background: white;
-    box-shadow: 0 10px 24px rgb(15 23 42 / 0.06);
-    overflow: hidden;
-  }
-
-  .dark .admin-card-table tbody tr {
-    border-color: rgb(38 38 38);
-    background: rgb(23 23 23);
-    box-shadow: none;
-  }
-
-  .admin-card-table tbody tr > td:not([colspan]) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 14px;
-    text-align: right;
-    white-space: normal;
-    border-bottom: 1px solid rgb(241 245 249);
-  }
-
-  .dark .admin-card-table tbody tr > td:not([colspan]) {
-    border-bottom-color: rgb(38 38 38 / 0.75);
-  }
-
-  .admin-card-table tbody tr > td:not([colspan])::before {
-    content: attr(data-label);
-    flex: 0 0 auto;
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgb(148 163 184);
-  }
-
-  .admin-card-table tbody tr > td:first-child {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .admin-card-table tbody tr > td:first-child::before {
-    display: none;
-  }
-
-  .admin-card-table tbody tr > td:last-child {
-    border-bottom: 0;
-  }
-}
+/* Table-to-card responsive rules live in style.css (.admin-card-table). */
+.modal-enter-from { opacity: 0; transform: scale(0.96); }
+.modal-enter-to { opacity: 1; transform: scale(1); }
 </style>

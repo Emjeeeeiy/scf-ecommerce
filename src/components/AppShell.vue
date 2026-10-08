@@ -132,7 +132,7 @@
           v-for="item in mobileNavigation"
           :key="item.to"
           :to="item.to"
-          class="relative flex min-h-11 flex-col items-center justify-center px-5 py-2 transition-all active:scale-95"
+          class="relative flex min-h-11 flex-col items-center justify-center px-4 py-2 transition-all active:scale-95"
           :class="route.path === item.to ? 'text-neutral-900 dark:text-amber-400' : 'text-neutral-400 hover:text-neutral-900 dark:text-neutral-500 dark:hover:text-white'"
         >
           <!-- Icon -->
@@ -147,6 +147,18 @@
           <!-- Label -->
           <span class="text-[9px] font-bold mt-1 tracking-tight leading-none">{{ item.label }}</span>
         </router-link>
+        <button
+          v-if="isAuthenticated"
+          type="button"
+          aria-label="Logout"
+          class="relative flex min-h-11 flex-col items-center justify-center px-4 py-2 transition-all active:scale-95 text-neutral-400 hover:text-rose-500 dark:text-neutral-500 dark:hover:text-rose-400"
+          @click="handleLogout"
+        >
+          <div class="flex items-center justify-center">
+            <LogOut :size="20" />
+          </div>
+          <span class="text-[9px] font-bold mt-1 tracking-tight leading-none">Logout</span>
+        </button>
       </div>
     </nav>
   </div>

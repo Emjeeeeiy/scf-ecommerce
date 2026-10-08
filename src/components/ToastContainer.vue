@@ -12,10 +12,10 @@
       <div
         v-for="toast in toasts"
         :key="toast.id"
-        class="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white p-4   ring-1 ring-neutral-100"
+        class="pointer-events-auto flex items-start gap-3 rounded-lg bg-white p-4   ring-1 ring-neutral-100"
       >
         <div
-          class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl"
+          class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md"
           :class="{
             'bg-emerald-50 text-emerald-600': toast.type === 'success',
             'bg-rose-50 text-rose-600': toast.type === 'error',

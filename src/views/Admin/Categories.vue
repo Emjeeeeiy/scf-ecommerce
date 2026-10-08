@@ -1,73 +1,73 @@
 <template>
-  <AdminPanelLayout subtitle="Create and remove storefront categories">
-    <section class="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6  ring-1 ring-slate-100 dark:ring-neutral-800">
-        <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">
-          <PlusCircle :size="14" />
-          <span>Taxonomy setup</span>
-        </div>
-        <h2 class="mt-2 text-xl font-black text-slate-900 dark:text-white tracking-tight">Add category</h2>
-        <p class="mt-2 text-xs font-medium text-slate-500 dark:text-neutral-400 leading-relaxed">
-          Create customer-facing categories that keep the storefront organized.
+  <AdminPanelLayout>
+  <div class="space-y-4 sm:space-y-5">
+    <AdminPageHead
+      eyebrow="Catalog"
+      title="Categories"
+      description="Organize the labels customers browse on the storefront."
+    />
+
+    <section class="grid gap-4 sm:gap-5 xl:grid-cols-[0.8fr_1.2fr]">
+      <div class="admin-card h-fit p-4 sm:p-5">
+        <p class="admin-eyebrow flex items-center gap-1.5">
+          <PlusCircle :size="12" />
+          <span>New category</span>
+        </p>
+        <h2 class="admin-card-title mt-0.5">Add category</h2>
+        <p class="admin-muted mt-1.5">
+          Customer-facing labels that keep the storefront organized.
         </p>
 
-        <form class="mt-6 space-y-4" @submit.prevent="handleCreateCategory">
+        <form class="mt-5 space-y-3" @submit.prevent="handleCreateCategory">
           <label class="block">
-              <span class="mb-2 block text-[11px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Category name</span>
-              <input v-model="name" class="w-full rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50 px-4 py-3 text-sm font-semibold text-neutral-900 dark:text-white focus:border-neutral-400 focus:ring-1 focus:ring-neutral-400 transition-all" placeholder="Example: Accessories" required />
-            </label>
-            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 dark:bg-neutral-400 px-4 py-3.5 text-sm font-bold text-white dark:text-neutral-950 transition hover:bg-neutral-800 dark:hover:bg-neutral-300 active:scale-[0.98]   ">
-            <Save :size="16" />
+            <span class="admin-eyebrow mb-2 block">Name</span>
+            <input v-model="name" class="admin-field" placeholder="Example: Accessories" required />
+          </label>
+          <button type="submit" class="admin-btn admin-btn-primary w-full">
+            <Save :size="14" />
             Save category
           </button>
         </form>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-neutral-900 p-6  ring-1 ring-slate-100 dark:ring-neutral-800">
-        <div class="flex items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 dark:text-neutral-500">
-              <Layers :size="14" />
-              <span>Existing categories</span>
-            </div>
-            <h2 class="mt-1 text-xl font-black text-slate-900 dark:text-white tracking-tight">{{ categories.length }} categories</h2>
-          </div>
-          <div class="rounded-xl bg-slate-50 dark:bg-neutral-800 px-4 py-2 text-[10px] font-bold text-slate-500 dark:text-neutral-400 uppercase tracking-tight border border-slate-100 dark:border-neutral-800">
-            Storefront Labels
-          </div>
-        </div>
+      <div class="admin-card h-fit p-4 sm:p-5">
+        <p class="admin-eyebrow flex items-center gap-1.5">
+          <Layers :size="12" />
+          <span>Existing</span>
+        </p>
+        <h2 class="admin-card-title mt-0.5">{{ categories.length }} {{ categories.length === 1 ? 'category' : 'categories' }}</h2>
 
-        <div class="mt-6 grid gap-2.5">
+        <div class="mt-4 grid gap-2">
           <div
             v-for="category in categories"
             :key="category.id"
-            class="group flex items-center justify-between rounded-xl border border-slate-50 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 transition hover:border-slate-200 dark:hover:border-neutral-700 hover:bg-slate-50/30 dark:hover:bg-neutral-800/50"
+            class="group flex items-center justify-between gap-3 rounded-lg border border-neutral-100 bg-white p-3 transition hover:border-neutral-200 hover:bg-neutral-50/60 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/40"
           >
-            <div class="flex items-center gap-3">
-              <div class="h-8 w-8 rounded-lg bg-slate-50 dark:bg-neutral-800 flex items-center justify-center text-slate-400 group-hover:bg-white dark:group-hover:bg-neutral-700 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+            <div class="flex min-w-0 items-center gap-2.5">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-neutral-100 text-neutral-400 transition group-hover:bg-white group-hover:text-neutral-700 dark:bg-neutral-800 dark:text-neutral-500 dark:group-hover:bg-neutral-700 dark:group-hover:text-white">
                 <Tag :size="14" />
               </div>
-              <div>
-                <span class="block text-sm font-bold text-slate-900 dark:text-white">{{ category.name }}</span>
-              </div>
+              <span class="truncate text-sm font-bold text-neutral-900 dark:text-white">{{ category.name }}</span>
             </div>
             <button
               type="button"
-              class="flex items-center gap-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-[10px] font-bold text-red-600 dark:text-red-400 transition hover:bg-red-100 dark:hover:bg-red-500/20 active:scale-95"
+              title="Delete category"
+              aria-label="Delete category"
+              class="admin-icon-btn h-8 w-8 text-rose-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-300"
               @click="handleDeleteCategory(category.id)"
             >
-              <Trash2 :size="12" />
-              Delete
+              <Trash2 :size="14" />
             </button>
           </div>
 
-          <div v-if="!categories.length" class="flex flex-col items-center justify-center rounded-xl bg-slate-50/50 dark:bg-neutral-800/50 py-12 text-slate-300 dark:text-neutral-600 border border-dashed border-slate-200 dark:border-neutral-700">
-            <PackageSearch :size="32" class="opacity-20 mb-2" />
-            <p class="text-xs font-medium">No categories created yet</p>
+          <div v-if="!categories.length" class="flex flex-col items-center justify-center rounded-lg border border-dashed border-neutral-200 bg-neutral-50/50 py-12 text-neutral-300 dark:border-neutral-700 dark:bg-neutral-800/40 dark:text-neutral-600">
+            <PackageSearch :size="28" stroke-width="1.5" class="mb-2 opacity-60" />
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em]">No categories yet</p>
           </div>
         </div>
       </div>
     </section>
+  </div>
   </AdminPanelLayout>
 </template>
 
@@ -75,6 +75,7 @@
 import { onMounted, ref } from 'vue'
 import { PlusCircle, Save, Layers, Tag, Trash2, PackageSearch } from 'lucide-vue-next'
 import AdminPanelLayout from '../../components/AdminPanelLayout.vue'
+import AdminPageHead from '../../components/AdminPageHead.vue'
 import { useCatalogStore } from '../../stores/catalogStore'
 import { useConfirmAction } from '../../composables/useConfirmAction'
 
@@ -93,5 +94,3 @@ const handleDeleteCategory = (categoryId) =>
 
 onMounted(refreshCategories)
 </script>
-
-

@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="totalPages > 1"
-    class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 dark:border-neutral-800 px-1 py-4"
+    class="flex items-center justify-between gap-3 border-t border-neutral-100 px-4 py-3 dark:border-neutral-800 sm:px-5"
   >
-    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-neutral-500">
+    <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500">
       Page {{ page }} of {{ totalPages }}
-      <span class="text-slate-300 dark:text-neutral-600">&middot;</span>
+      <span class="text-neutral-300 dark:text-neutral-600">&middot;</span>
       {{ totalItems }} total
     </p>
 
@@ -13,7 +13,7 @@
       <button
         type="button"
         :disabled="page <= 1"
-        class="flex items-center gap-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-1.5 text-[10px] font-bold text-slate-600 dark:text-neutral-300 transition hover:bg-slate-50 dark:hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+        class="inline-flex items-center gap-1 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-bold text-neutral-600 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
         @click="$emit('update:page', page - 1)"
       >
         <ChevronLeft :size="14" />
@@ -22,7 +22,7 @@
       <button
         type="button"
         :disabled="page >= totalPages"
-        class="flex items-center gap-1 rounded-lg border border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-1.5 text-[10px] font-bold text-slate-600 dark:text-neutral-300 transition hover:bg-slate-50 dark:hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+        class="inline-flex items-center gap-1 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-bold text-neutral-600 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
         @click="$emit('update:page', page + 1)"
       >
         Next

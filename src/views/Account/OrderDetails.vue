@@ -26,7 +26,7 @@
               class="text-[11px] font-semibold uppercase tracking-[0.18em]"
               :class="[getOrderStatusClasses(order.status), {
                 'dark:text-blue-400': order.status === 'received',
-                'dark:text-amber-400': order.status === 'processing',
+                'dark:text-blue-400': order.status === 'processing',
                 'dark:text-indigo-400': order.status === 'shipped',
                 'dark:text-emerald-400': order.status === 'completed',
               }]"

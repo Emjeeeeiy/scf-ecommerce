@@ -7,8 +7,7 @@ const settingsDoc = doc(db, 'settings', SETTINGS_DOC_ID)
 export const DEFAULT_LANDING_PAGE_SETTINGS = {
   hero: {
     title: 'Silangan Christian Fellowship',
-    description: 'Silangan Christian Fellowship is a community of believers dedicated to sharing the love of Christ and serving our local community.',
-    logoUrl: '/images/scfLogo.png'
+    description: 'Silangan Christian Fellowship is a community of believers dedicated to sharing the love of Christ and serving our local community.'
   },
   mission: {
     title: 'Our Mission',
@@ -28,6 +27,22 @@ export const DEFAULT_LANDING_PAGE_SETTINGS = {
       { name: 'Mark Villanueva', position: 'Auditor', photoBase64: '' },
     ]
   },
+  basisOfFaith: {
+    title: 'Basis of Faith',
+    points: [
+      'The unity of the Father, Son and Holy Spirit in the Godhead.',
+      'The sovereignty of God in creation, revelation, redemption and final judgment.',
+      'The divine inspiration and the entire trustworthiness of the Holy Scriptures, as originally given, and its supreme authority in all matters of faith and conduct.',
+      'The universal sinfulness and guilt of all men since the fall, rendering them subject to God\u2019s wrath and condemnation.',
+      'Redemption from the guilt, penalty, dominion and pollution of sin, solely through the sacrificial death (as our Representative and Substitute) of the Lord Jesus Christ, the Incarnate Son of God.',
+      'The bodily resurrection of the Lord Jesus Christ from the dead and His ascension to the right hand of God the Father.',
+      'The presence and power of the Holy Spirit in the work of regeneration.',
+      'The justification of the sinner by the grace of God through faith alone.',
+      'The indwelling and work of the Holy Spirit in the believer.',
+      'The one Holy Universal Church which is the Body of Christ and to which all true believers belong.',
+      'The expectation of the personal return of the Lord Jesus Christ.',
+    ]
+  },
   about: {
     title: 'About SCF',
     description: "Silangan Christian Fellowship started with a small group of believers committed to making a difference. Our fundraising shop isn't just about merchandise—it's a creative outlet for our members to design shirts that reflect our values. 100% of the proceeds go directly into our building fund and outreach projects."
@@ -35,7 +50,9 @@ export const DEFAULT_LANDING_PAGE_SETTINGS = {
   contact: {
     email: 'hello@silanganchristian.org',
     address: 'Silangan, Philippines',
-    facebook: 'https://www.facebook.com/scfellowsh1p'
+    facebook: 'https://www.facebook.com/scfellowsh1p',
+    title: 'Get in touch',
+    intro: 'Have questions about your order, sizing, or how to get involved with SCF? We\u2019d love to hear from you.'
   }
 }
 
