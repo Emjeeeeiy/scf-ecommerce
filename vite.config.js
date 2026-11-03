@@ -10,6 +10,10 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Vercel Deployment Protection guards preview URLs with a login cookie,
+      // and browsers fetch the manifest without cookies by default, so it was
+      // bounced to vercel.com/sso-api (CORS error). Send credentials along.
+      useCredentials: true,
       // Custom worker (src/sw.js): Workbox precaching + Firebase Messaging
       // merged in one file so push notifications never evict the PWA worker.
       strategies: 'injectManifest',
