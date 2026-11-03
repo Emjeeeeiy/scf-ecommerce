@@ -16,29 +16,25 @@
         :style="{ opacity: headerProgress }"
       ></div>
       <div class="relative flex min-h-17 w-full items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-12">
-        <div class="group flex items-center gap-1">
-          <div class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg">
-            <img
-              src="/images/scfLogo.png"
-              alt="SCF Logo"
-              class="h-6 w-6"
-            />
-          </div>
-          <div class="flex flex-col leading-none">
-            <span :class="isOverlay ? 'text-base font-black tracking-tighter text-white' : 'text-base font-black tracking-tighter text-neutral-900 dark:text-white'">SCF</span>
-          </div>
-        </div>
+        <router-link to="/" aria-label="SCF home" class="flex items-center gap-1 rounded-lg" :class="overlayFocus">
+          <span class="flex h-9 w-9 items-center justify-center">
+            <img src="/images/scfLogo.png" alt="" class="h-6 w-6" />
+          </span>
+          <span
+            class="text-base font-bold leading-none tracking-tighter"
+            :class="isOverlay ? 'text-white' : 'text-neutral-900 dark:text-white'"
+          >SCF</span>
+        </router-link>
 
         <!-- Main Desktop Nav: absolutely centered so it never shifts when cart/actions appear -->
-        <nav class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 md:flex">
+        <nav aria-label="Main" class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 md:flex">
           <router-link
             v-for="item in mainDesktopNavigation"
             :key="item.to"
             :to="item.to"
+            :aria-current="route.path === item.to ? 'page' : undefined"
             class="relative pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:content-[''] after:transition-all"
-            :class="isOverlay
-              ? (route.path === item.to ? 'text-white after:bg-amber-400' : 'text-white/60 after:bg-transparent hover:text-white hover:after:bg-white/40')
-              : (route.path === item.to ? 'text-neutral-900 after:bg-amber-500 dark:text-white dark:after:bg-amber-400' : 'text-neutral-400 after:bg-transparent hover:text-neutral-900 hover:after:bg-neutral-300 dark:text-neutral-500 dark:hover:text-white')"
+            :class="[desktopNavClass(item.to), overlayFocus]"
           >
             {{ item.label }}
           </router-link>
@@ -46,49 +42,50 @@
 
         <!-- Right Side Nav/Actions -->
         <div class="flex items-center gap-2">
-          <!-- Cart Link (icon only, visible on mobile too; only on shop-related pages) -->
+          <!-- Cart: always on shopping pages, and everywhere once it holds items -->
           <router-link
             v-if="showCart"
             to="/cart"
-            class="flex relative h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-all"
-            :class="route.path === '/cart' ? 'bg-amber-400 text-neutral-900' : (isOverlay ? 'text-white/80 hover:bg-white/10 hover:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
+            :aria-label="cartLabel"
+            :aria-current="route.path === '/cart' ? 'page' : undefined"
+            class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors"
+            :class="[cartClass, overlayFocus]"
           >
             <ShoppingCart :size="18" />
-            <span v-if="cartCount > 0" class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-neutral-900 text-[8px] font-black text-white  dark:border-neutral-900">
-              {{ cartCount }}
+            <span
+              v-if="cartCount > 0"
+              class="absolute -right-1 -top-1 flex h-4.5 min-w-4.5 items-center justify-center rounded-full border-2 border-white bg-neutral-900 px-1 text-[10px] font-bold leading-none text-white dark:border-neutral-900"
+              :class="{ 'cart-badge-bump': badgeBump }"
+            >
+              {{ cartBadge }}
             </span>
           </router-link>
 
-          <div v-if="showCart" :class="isOverlay ? 'h-5 w-px mx-1.5 bg-white/20' : 'h-5 w-px bg-neutral-300 mx-1.5 dark:bg-neutral-700'"></div>
+          <div v-if="showCart" class="mx-1.5 h-5 w-px" :class="dividerClass"></div>
 
           <!-- User Section -->
           <div class="flex items-center gap-1.5">
             <template v-if="isAuthenticated">
               <router-link
-                to="/account/orders"
-                class="hidden md:flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all"
-                :class="isOverlay ? (route.path === '/account/orders' ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white') : (route.path === '/account/orders' ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
+                v-for="link in accountLinks"
+                :key="link.to"
+                :to="link.to"
+                :aria-label="link.label"
+                :aria-current="route.path === link.to ? 'page' : undefined"
+                class="hidden items-center gap-2 rounded-lg px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest transition-colors md:flex"
+                :class="[actionClass(isCurrent(link.to)), overlayFocus]"
               >
-                <Package :size="12" />
-                <span class="hidden lg:inline">Order History</span>
+                <component :is="link.icon" :size="14" />
+                <span class="hidden lg:inline">{{ link.label }}</span>
               </router-link>
 
-              <router-link
-                to="/account/profile"
-                class="hidden md:flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all"
-                :class="isOverlay ? (route.path === '/account/profile' ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white') : (route.path === '/account/profile' ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white')"
-              >
-                <User :size="12" />
-                <span class="hidden lg:inline">Profile</span>
-              </router-link>
-
-              <div :class="isOverlay ? 'h-5 w-px mx-1.5 hidden md:block bg-white/20' : 'h-5 w-px bg-neutral-300 mx-1.5 hidden md:block dark:bg-neutral-700'"></div>
+              <div class="mx-1.5 hidden h-5 w-px md:block" :class="dividerClass"></div>
 
               <button
                 type="button"
-                :class="isOverlay ? 'flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest text-white/70 transition-all hover:bg-white/10 hover:text-rose-300 active:scale-95' : 'flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest text-neutral-400 transition-all hover:bg-rose-50 hover:text-rose-600 active:scale-95 dark:text-neutral-500 dark:hover:bg-rose-500/10 dark:hover:text-rose-400'"
+                class="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest transition-colors active:scale-95"
+                :class="[logoutClass, overlayFocus]"
                 @click="handleLogout"
-                title="Logout"
               >
                 <LogOut :size="14" />
                 <span>Logout</span>
@@ -98,15 +95,17 @@
             <template v-else>
               <router-link
                 to="/register"
-                :class="isOverlay ? 'hidden items-center gap-2 rounded-lg border border-white/30 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-white/10 active:scale-95 sm:flex sm:px-5' : 'hidden items-center gap-2 rounded-lg border border-neutral-200 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-neutral-600 transition-all hover:bg-neutral-50 active:scale-95 sm:flex sm:px-5 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800'"
+                class="hidden items-center gap-2 rounded-lg border px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest transition-colors active:scale-95 sm:flex sm:px-5"
+                :class="[registerClass, overlayFocus]"
               >
                 <UserPlus :size="14" />
-                <span class="hidden xs:inline sm:inline">Register</span>
+                <span>Register</span>
               </router-link>
 
               <router-link
                 to="/login"
-                :class="isOverlay ? 'flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-neutral-950 transition-all hover:bg-amber-300 active:scale-95 sm:px-6' : 'flex items-center gap-2 rounded-lg bg-neutral-900 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-neutral-800 active:scale-95 sm:px-6   dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300'"
+                class="flex items-center gap-2 rounded-lg px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest transition-colors active:scale-95 sm:px-6"
+                :class="[loginClass, overlayFocus]"
               >
                 <LogIn :size="14" />
                 <span>Login</span>
@@ -124,6 +123,7 @@
 
     <!-- Mobile Navigation -->
     <nav
+      aria-label="Primary"
       :class="(transparentHeader && headerProgress < 0.05) ? 'pointer-events-none translate-y-24 opacity-0' : 'translate-y-0 opacity-100'"
       class="fixed bottom-4 left-1/2 z-40 w-fit -translate-x-1/2 rounded-full border border-neutral-200 bg-white/70 shadow-xl backdrop-blur-md transition-all duration-500 md:hidden dark:border-neutral-700 dark:bg-neutral-900/60"
     >
@@ -132,32 +132,26 @@
           v-for="item in mobileNavigation"
           :key="item.to"
           :to="item.to"
-          class="relative flex min-h-11 flex-col items-center justify-center px-4 py-2 transition-all active:scale-95"
-          :class="route.path === item.to ? 'text-neutral-900 dark:text-amber-400' : 'text-neutral-400 hover:text-neutral-900 dark:text-neutral-500 dark:hover:text-white'"
+          :aria-current="route.path === item.to ? 'page' : undefined"
+          class="relative flex min-h-11 flex-col items-center justify-center rounded-full px-4 py-2 transition-all active:scale-95"
+          :class="isCurrent(item.to) ? 'text-neutral-900 dark:text-amber-400' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'"
         >
-          <!-- Icon -->
-          <div class="flex items-center justify-center">
-            <template v-if="item.to === '/'"><Home :size="20" /></template>
-            <template v-else-if="item.to === '/shop'"><Store :size="20" /></template>
-            <template v-else-if="item.to === '/login' || item.to === '/account/profile'"><User :size="20" /></template>
-            <template v-else-if="item.to === '/register'"><UserPlus :size="20" /></template>
-            <template v-else-if="item.to === '/account/orders'"><Package :size="20" /></template>
-            <template v-else-if="item.to.startsWith('/admin')"><LayoutDashboard :size="20" /></template>
-          </div>
-          <!-- Label -->
-          <span class="text-[9px] font-bold mt-1 tracking-tight leading-none">{{ item.label }}</span>
+          <component :is="item.icon" :size="20" :stroke-width="isCurrent(item.to) ? 2.25 : 2" />
+          <span class="mt-1 text-[11px] font-semibold leading-none tracking-tight">{{ item.label }}</span>
+          <span
+            v-if="isCurrent(item.to)"
+            class="absolute bottom-0.5 h-1 w-1 rounded-full bg-amber-500"
+            aria-hidden="true"
+          ></span>
         </router-link>
         <button
           v-if="isAuthenticated"
           type="button"
-          aria-label="Logout"
-          class="relative flex min-h-11 flex-col items-center justify-center px-4 py-2 transition-all active:scale-95 text-neutral-400 hover:text-rose-500 dark:text-neutral-500 dark:hover:text-rose-400"
+          class="relative flex min-h-11 flex-col items-center justify-center rounded-full px-4 py-2 text-neutral-500 transition-all hover:text-rose-500 active:scale-95 dark:text-neutral-400 dark:hover:text-rose-400"
           @click="handleLogout"
         >
-          <div class="flex items-center justify-center">
-            <LogOut :size="20" />
-          </div>
-          <span class="text-[9px] font-bold mt-1 tracking-tight leading-none">Logout</span>
+          <LogOut :size="20" />
+          <span class="mt-1 text-[11px] font-semibold leading-none tracking-tight">Logout</span>
         </button>
       </div>
     </nav>
@@ -165,7 +159,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { logoutUser } from '../services/authService'
 import { useSession } from '../composables/useSession'
@@ -192,6 +186,11 @@ const props = defineProps({
     default: false,
   },
 })
+
+const route = useRoute()
+const router = useRouter()
+const { isAuthenticated, isAdmin } = useSession()
+const { cartCount } = useCartStore()
 
 // Sticky overlay header: transparent over hero, fades to solid white once past hero.
 // headerProgress 0 = fully transparent (inside hero top), 1 = fully solid (outside hero).
@@ -224,81 +223,141 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', updateHeaderProgress)
   window.removeEventListener('resize', updateHeaderProgress)
+  clearTimeout(bumpTimer)
 })
 
 const headerSolid = computed(() => headerProgress.value > 0.5)
 // True while the header is still overlaid on the hero (white text); false once solid (dark text).
 const isOverlay = computed(() => props.transparentHeader && !headerSolid.value)
 
-// Cart is only relevant on shopping-related pages.
-const showCart = computed(() =>
+// The default dark focus ring disappears on the hero photo; switch to white there.
+const overlayFocus = computed(() => (isOverlay.value ? 'focus-visible:outline-white' : ''))
+
+// "/shop" stays active on product pages, "/account/orders" on an order's details.
+const isCurrent = (to) =>
+  to === '/' ? route.path === '/' : route.path === to || route.path.startsWith(`${to}/`)
+
+const isShopRoute = computed(() =>
   route.path.startsWith('/shop') || route.path === '/cart' || route.path === '/checkout'
 )
 
-const route = useRoute()
-const router = useRouter()
-const { isAuthenticated, isAdmin } = useSession()
-const { cartCount } = useCartStore()
+// Cart belongs on shopping pages, and follows the shopper everywhere once it holds items.
+const showCart = computed(() => isShopRoute.value || cartCount.value > 0)
+const cartBadge = computed(() => (cartCount.value > 99 ? '99+' : String(cartCount.value)))
+const cartLabel = computed(() =>
+  cartCount.value > 0
+    ? `Cart, ${cartCount.value} ${cartCount.value === 1 ? 'item' : 'items'}`
+    : 'Cart'
+)
 
-const navigation = computed(() => {
-  const base = [{ to: '/', label: 'Home' }, { to: '/shop', label: 'Shop' }]
-
-  if (isAuthenticated.value) {
-    base.push(
-      { to: '/account/profile', label: 'Profile' },
-      { to: '/account/orders', label: 'Orders' },
-    )
-  } else {
-    base.push(
-      { to: '/register', label: 'Register' },
-      { to: '/login', label: 'Login' }
-    )
-  }
-
-  if (isAdmin.value) {
-    base.push(
-      { to: '/admin/dashboard', label: 'Admin' },
-      { to: '/admin/categories', label: 'Categories' },
-      { to: '/admin/products', label: 'Products' },
-      { to: '/admin/orders', label: 'Manage Orders' },
-    )
-  }
-
-  return base
+// Small bump on the badge whenever something is added.
+const badgeBump = ref(false)
+let bumpTimer = null
+watch(cartCount, (next, prev) => {
+  if (next <= prev) return
+  badgeBump.value = false
+  // Re-adding the class on the next frame restarts the animation for rapid adds.
+  requestAnimationFrame(() => {
+    badgeBump.value = true
+  })
+  clearTimeout(bumpTimer)
+  bumpTimer = setTimeout(() => {
+    badgeBump.value = false
+  }, 600)
 })
+
+const mainDesktopNavigation = [
+  { to: '/', label: 'Home' },
+  { to: '/shop', label: 'Shop' },
+]
+
+const accountLinks = computed(() => [
+  ...(isAdmin.value ? [{ to: '/admin/dashboard', label: 'Admin', icon: LayoutDashboard }] : []),
+  { to: '/account/orders', label: 'Order History', icon: Package },
+  { to: '/account/profile', label: 'Profile', icon: User },
+])
 
 const mobileNavigation = computed(() => {
   const items = [
-    navigation.value.find(i => i.to === '/'),
-    navigation.value.find(i => i.to === '/shop'),
+    { to: '/', label: 'Home', icon: Home },
+    { to: '/shop', label: 'Shop', icon: Store },
   ]
 
   if (isAuthenticated.value) {
-    items.push(navigation.value.find(i => i.to === '/account/orders'))
-    if (isAdmin.value) {
-      items.push(navigation.value.find(i => i.to === '/admin/dashboard'))
-    } else {
-      items.push(navigation.value.find(i => i.to === '/account/profile'))
-    }
+    items.push({ to: '/account/orders', label: 'Orders', icon: Package })
+    items.push(
+      isAdmin.value
+        ? { to: '/admin/dashboard', label: 'Admin', icon: LayoutDashboard }
+        : { to: '/account/profile', label: 'Profile', icon: User }
+    )
   }
 
-  return items.filter(Boolean).slice(0, 5)
+  return items
 })
 
-const mainDesktopNavigation = computed(() => {
-  return navigation.value.filter(item =>
-    item.to === '/' || item.to === '/shop'
-  )
+// Header styling has two states: overlaid on the hero photo, or the solid bar.
+const desktopNavClass = (to) => {
+  const active = isCurrent(to)
+  if (isOverlay.value) {
+    return active
+      ? 'text-white after:bg-amber-400'
+      : 'text-white/60 after:bg-transparent hover:text-white hover:after:bg-white/40'
+  }
+  return active
+    ? 'text-neutral-900 after:bg-amber-500 dark:text-white dark:after:bg-amber-400'
+    : 'text-neutral-500 after:bg-transparent hover:text-neutral-900 hover:after:bg-neutral-300 dark:text-neutral-400 dark:hover:text-white'
+}
+
+const actionClass = (active) => {
+  if (isOverlay.value) {
+    return active ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
+  }
+  return active
+    ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white'
+    : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'
+}
+
+const cartClass = computed(() => {
+  if (route.path === '/cart') return 'bg-amber-400 text-neutral-900'
+  return isOverlay.value
+    ? 'text-white/80 hover:bg-white/10 hover:text-white'
+    : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white'
 })
 
-const rightDesktopNavigation = computed(() => {
-  return navigation.value.filter(item =>
-    !item.to.startsWith('/admin') && item.to !== '/' && item.to !== '/shop'
-  )
-})
+const logoutClass = computed(() =>
+  isOverlay.value
+    ? 'text-white/70 hover:bg-white/10 hover:text-rose-300'
+    : 'text-neutral-500 hover:bg-rose-50 hover:text-rose-600 dark:text-neutral-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400'
+)
+
+const registerClass = computed(() =>
+  isOverlay.value
+    ? 'border-white/30 text-white hover:bg-white/10'
+    : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800'
+)
+
+const loginClass = computed(() =>
+  isOverlay.value
+    ? 'bg-amber-400 text-neutral-950 hover:bg-amber-300'
+    : 'bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300'
+)
+
+const dividerClass = computed(() => (isOverlay.value ? 'bg-white/20' : 'bg-neutral-300 dark:bg-neutral-700'))
 
 const handleLogout = async () => {
   await logoutUser()
   router.push('/login')
 }
 </script>
+
+<style scoped>
+.cart-badge-bump {
+  animation: cart-badge-bump 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cart-badge-bump {
+  40% {
+    transform: scale(1.35);
+  }
+}
+</style>

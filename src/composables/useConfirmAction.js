@@ -12,11 +12,13 @@ export function useConfirmAction() {
   const confirmAndRun = async (message, action, options = {}) => {
     const {
       title = 'Are you sure?',
+      tone,
+      confirmLabel,
       successMessage = '',
       errorMessage = 'Something went wrong. Please try again.',
     } = options
 
-    const confirmed = await confirm(message, title)
+    const confirmed = await confirm(message, title, { tone, confirmLabel })
     if (!confirmed) return false
 
     try {

@@ -1,6 +1,6 @@
 <template>
   <AppShell transparent-header>
-    <div class="space-y-10 pb-16 sm:space-y-16">
+    <div class="space-y-10 sm:space-y-16">
       <!-- Hero Section: full-screen photo background extending under transparent header -->
       <section
         id="hero"
@@ -43,6 +43,17 @@
           </router-link>
         </div>
 
+        <!-- Scroll cue: tells visitors there is more below the fold. Hidden on
+             very short screens (landscape phones) where it would sit on the CTA. -->
+        <button
+          type="button"
+          class="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 rounded-md px-3 py-1 text-white/70 transition-colors hover:text-white focus-visible:outline-white sm:bottom-8 [@media(max-height:34rem)]:hidden"
+          @click="scrollPastHero"
+        >
+          <!-- pl matches the tracking so the label stays optically centered -->
+          <span class="pl-[0.3em] text-[11px] font-semibold uppercase tracking-[0.3em]">Scroll down</span>
+          <ChevronDown :size="20" stroke-width="1.5" class="scroll-cue-icon" />
+        </button>
       </section>
 
       <!-- Latest Arrivals -->
@@ -206,78 +217,93 @@
         </div>
       </section>
 
-      <!-- Contact — minimalist -->
-      <section class="mx-auto w-full max-w-5xl px-2 sm:px-6">
-        <div class="border-t border-neutral-200 pt-16 dark:border-neutral-800 sm:pt-20">
-          <div class="grid gap-12 md:grid-cols-2 md:gap-16">
-            <div>
-              <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">Contact</p>
-              <h2 class="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl dark:text-white">{{ contactTitle }}</h2>
-              <p class="mt-4 max-w-sm text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400">
-                {{ contactIntro }}
-              </p>
+      <!-- Contact — full-bleed black band, like the hero. It bleeds past
+           <main>'s side gutters and cancels its bottom padding so it sits
+           flush with the end of the page. `dark` makes it a dark island: the
+           storefront kit and the focus ring use their dark variants in here
+           regardless of the page theme. -->
+      <section
+        id="contact"
+        class="dark -mx-4 -mb-24 mt-16 bg-neutral-950 scheme-dark sm:-mx-6 sm:mt-20 md:-mb-8 lg:-mx-12"
+      >
+        <div class="mx-auto grid w-full max-w-7xl gap-12 px-6 pb-28 pt-20 sm:px-10 sm:pt-24 md:grid-cols-2 md:gap-16 md:pb-24 lg:gap-24 lg:px-16">
+          <div>
+            <p class="store-eyebrow">Contact</p>
+            <h2 class="store-title mt-3">{{ contactTitle }}</h2>
+            <div class="mt-5 h-px w-12 bg-amber-400/80"></div>
+            <p class="mt-5 max-w-sm text-[15px] leading-relaxed text-neutral-300">
+              {{ contactIntro }}
+            </p>
 
-              <ul class="mt-10 space-y-7">
-                <li class="flex items-start gap-4">
-                  <Mail :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-400" />
+            <ul class="mt-10 space-y-7">
+              <li class="flex items-start gap-4">
+                <Mail :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-500" />
+                <div>
+                  <p class="store-label">Email</p>
+                  <p class="mt-1 text-sm text-white">{{ settings.contact.email }}</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <MapPin :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-500" />
+                <div>
+                  <p class="store-label">Location</p>
+                  <p class="mt-1 text-sm text-white">{{ settings.contact.address }}</p>
+                </div>
+              </li>
+              <li>
+                <a :href="settings.contact.facebook" target="_blank" rel="noopener" class="group flex w-fit items-start gap-4 rounded-sm">
+                  <Facebook :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-500 transition-colors group-hover:text-white" />
                   <div>
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Email</p>
-                    <p class="mt-1 text-sm text-neutral-900 dark:text-white">{{ settings.contact.email }}</p>
+                    <p class="store-label">Social</p>
+                    <p class="mt-1 text-sm text-white underline decoration-neutral-600 underline-offset-4 transition-colors group-hover:decoration-white">Facebook Page</p>
                   </div>
-                </li>
-                <li class="flex items-start gap-4">
-                  <MapPin :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-400" />
-                  <div>
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Location</p>
-                    <p class="mt-1 text-sm text-neutral-900 dark:text-white">{{ settings.contact.address }}</p>
-                  </div>
-                </li>
-                <li>
-                  <a :href="settings.contact.facebook" target="_blank" rel="noopener" class="group flex items-start gap-4">
-                    <Facebook :size="16" stroke-width="1.5" class="mt-0.5 shrink-0 text-neutral-400 transition-colors group-hover:text-neutral-900 dark:group-hover:text-white" />
-                    <div>
-                      <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Social</p>
-                      <p class="mt-1 text-sm text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors group-hover:decoration-neutral-900 dark:text-white dark:decoration-neutral-700 dark:group-hover:decoration-white">Facebook Page</p>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <form @submit.prevent class="h-fit border border-neutral-200 bg-white p-6 sm:p-8 dark:border-neutral-800 dark:bg-neutral-900">
-              <div class="space-y-6">
-                <div>
-                  <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Name</label>
-                  <input type="text" placeholder="Full name" class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white" />
-                </div>
-                <div>
-                  <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Email</label>
-                  <input type="email" placeholder="Email address" class="mt-2 w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white" />
-                </div>
-                <div>
-                  <label class="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500">Message</label>
-                  <textarea placeholder="How can we help?" rows="4" class="mt-2 w-full resize-none border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:focus:border-white"></textarea>
-                </div>
-                <button class="w-full bg-neutral-900 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200">
-                  Send message
-                </button>
-              </div>
-            </form>
+                </a>
+              </li>
+            </ul>
           </div>
+
+          <form class="store-card h-fit p-6 sm:p-8" @submit.prevent>
+            <div class="space-y-6">
+              <div>
+                <label for="contact-name" class="store-label">Name</label>
+                <input id="contact-name" type="text" autocomplete="name" placeholder="Full name" class="store-field mt-2" />
+              </div>
+              <div>
+                <label for="contact-email" class="store-label">Email</label>
+                <input id="contact-email" type="email" autocomplete="email" placeholder="Email address" class="store-field mt-2" />
+              </div>
+              <div>
+                <label for="contact-message" class="store-label">Message</label>
+                <textarea id="contact-message" rows="4" placeholder="How can we help?" class="store-field mt-2 resize-none"></textarea>
+              </div>
+              <button type="submit" class="store-btn w-full bg-amber-400 text-neutral-950 hover:bg-amber-300">
+                Send message
+              </button>
+            </div>
+          </form>
         </div>
       </section>
+    </div>
 
+    <!-- Kept outside the sections wrapper: if it were the wrapper's last child,
+         `space-y` would give the contact band a bottom margin and leave a light
+         strip under it. -->
+    <Transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="translate-y-3 opacity-0"
+      leave-active-class="transition duration-200 ease-in"
+      leave-to-class="translate-y-3 opacity-0"
+    >
       <button
         v-show="showScrollToTopButton"
         type="button"
         aria-label="Return to hero section"
-        class="fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400 text-neutral-900 transition-all duration-300 hover:scale-105 hover:bg-amber-300 sm:right-6 sm:h-14 sm:w-14 md:bottom-6"
-        :class="showScrollToTopButton ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'"
+        class="fixed bottom-24 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400 text-neutral-900 transition-all duration-300 hover:scale-105 hover:bg-amber-300 focus-visible:outline-white sm:right-6 sm:h-14 sm:w-14 md:bottom-6"
         @click="scrollToHero"
       >
         <ArrowUp :size="20" class="sm:h-6 sm:w-6" />
       </button>
-    </div>
+    </Transition>
   </AppShell>
 </template>
 
@@ -298,7 +324,8 @@ import {
   Facebook,
   Image,
   ArrowRight,
-  ArrowUp
+  ArrowUp,
+  ChevronDown
 } from 'lucide-vue-next'
 
 const { isAuthenticated } = useSession()
@@ -323,13 +350,30 @@ const heroWords = computed(() => {
   return source.split(/\s+/).filter(Boolean)
 })
 const showScrollToTopButton = ref(false)
+// The back-to-top button waits a beat at the bottom of the page instead of
+// popping in the moment the last section comes into view.
+const SCROLL_TOP_DELAY_MS = 1500
+let scrollTopTimer = null
 
 const updateScrollState = () => {
   const scrollTop = window.scrollY || window.pageYOffset
   const windowHeight = window.innerHeight
   const documentHeight = document.documentElement.scrollHeight
+  const atBottom = scrollTop + windowHeight >= documentHeight - 8
 
-  showScrollToTopButton.value = scrollTop + windowHeight >= documentHeight - 8
+  if (!atBottom) {
+    clearTimeout(scrollTopTimer)
+    scrollTopTimer = null
+    showScrollToTopButton.value = false
+    return
+  }
+
+  if (!showScrollToTopButton.value && !scrollTopTimer) {
+    scrollTopTimer = setTimeout(() => {
+      scrollTopTimer = null
+      showScrollToTopButton.value = true
+    }, SCROLL_TOP_DELAY_MS)
+  }
 }
 
 const scrollToHero = () => {
@@ -338,6 +382,22 @@ const scrollToHero = () => {
     lenis.scrollTo('#hero', { duration: 1.4 })
   } else {
     document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+// Scroll cue target: just below the hero, with the (by then solid) header
+// clear of the first section.
+const scrollPastHero = () => {
+  const hero = document.getElementById('hero')
+  if (!hero) return
+  const headerHeight = document.querySelector('header')?.offsetHeight || 68
+  const top = window.scrollY + hero.getBoundingClientRect().bottom - headerHeight
+  const lenis = getLenis()
+  if (lenis) {
+    lenis.scrollTo(top, { duration: 1.2 })
+  } else {
+    // Lenis is only absent under "reduce motion", so jump instead of animating.
+    window.scrollTo({ top })
   }
 }
 
@@ -360,6 +420,7 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
+  clearTimeout(scrollTopTimer)
   window.removeEventListener('scroll', updateScrollState)
   window.removeEventListener('resize', updateScrollState)
 })
@@ -374,5 +435,22 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
+}
+
+/* Gentle bob on the scroll cue chevron (stilled by the global reduced-motion rule). */
+.scroll-cue-icon {
+  animation: scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
 }
 </style>

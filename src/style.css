@@ -66,22 +66,52 @@ h1, h2, h3, h4, h5, h6 {
 
 body {
   font-family: var(--font-sans);
+  /* Matches the storefront/admin canvas so overscroll never flashes white. */
+  background-color: rgb(250 250 250);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Hide scrollbar globally but keep scrolling functional */
+/* Scrollbars.
+   The page itself keeps its hidden scrollbar (Lenis drives the storefront's
+   smooth scroll). Inner scroll areas — the admin content pane, tables, modals,
+   long lists — get a thin, low-contrast bar so people can still tell they
+   scroll. Add `.scrollbar-hide` to rails that should stay bare (category
+   chips, the landing product rail). */
 * {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(212 212 212) transparent;
 }
 
+.dark,
+.dark * {
+  scrollbar-color: rgb(64 64 64) transparent;
+}
+
+/* Safari (Chromium/Firefox use the standard properties above). */
 *::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  width: 8px;
+  height: 8px;
 }
 
-html, body {
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-clip: content-box;
+  background-color: rgb(212 212 212);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgb(64 64 64);
+}
+
+html,
+body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -91,18 +121,40 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* Force any custom scrollbar utilities in components to also be invisible */
-.custom-scrollbar::-webkit-scrollbar,
-.scrollbar-hide::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.custom-scrollbar,
-.scrollbar-hide {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Respect the OS "reduce motion" setting: transitions and animations finish
+   instantly. Spinners keep turning so loading states still read as loading. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-spin {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* One keyboard focus ring for every control, in the base layer so a control
+   that sets `outline-none` (underline/boxed inputs) keeps its own
+   border-color focus treatment instead. */
+@layer base {
+  :where(a[href], button, input, select, textarea, summary, [tabindex]):focus-visible {
+    @apply outline-2 outline-offset-2 outline-neutral-900 dark:outline-neutral-200;
+  }
 }
 
 ::view-transition-old(root),
@@ -117,15 +169,139 @@ body::-webkit-scrollbar {
   z-index: 2;
 }
 
-/* ------------------------------------------------------------------
-   Admin kit — mirrors the storefront language (single 6px radius,
-   neutral-only surfaces, 11px semibold eyebrows) so every admin view
-   reads as one system instead of six one-off styles.
-------------------------------------------------------------------- */
 @layer components {
+  /* ------------------------------------------------------------------
+     Storefront kit — the customer-facing twin of the admin kit below.
+     It is the language the pages already speak (11px tracked eyebrows,
+     underline fields, uppercase buttons), defined once so every page
+     reads as one system. Corners come from `.store-scope` (6px). Dark
+     variants are included so storefront dark mode can be enabled later.
+  ------------------------------------------------------------------- */
+
+  /* Page width. AppShell's <main> already supplies the side gutters. */
+  .store-container {
+    @apply mx-auto w-full max-w-7xl;
+  }
+  .store-container-narrow {
+    @apply mx-auto w-full max-w-5xl;
+  }
+
+  /* Small uppercase label above titles and sections */
+  .store-eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400;
+  }
+
+  /* Page title (h1) and landing section titles */
+  .store-title {
+    @apply font-heading text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl dark:text-white;
+  }
+
+  /* Card, dialog and empty-state title */
+  .store-section-title {
+    @apply font-heading text-xl font-semibold tracking-tight text-neutral-900 dark:text-white;
+  }
+
+  /* Short accent rule under a title */
+  .store-rule {
+    @apply h-px w-12 bg-neutral-900 dark:bg-white;
+  }
+  .store-rule-muted {
+    @apply h-px w-12 bg-neutral-300 dark:bg-neutral-700;
+  }
+
+  /* Default surface */
+  .store-card {
+    @apply rounded-lg border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900;
+  }
+
+  /* Field label */
+  .store-label {
+    @apply block text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400;
+  }
+
+  /* Underline text input / textarea */
+  .store-field {
+    @apply w-full border-0 border-b border-neutral-200 bg-transparent px-0 py-2.5 text-sm text-neutral-900 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-900 dark:border-neutral-700 dark:text-white dark:placeholder:text-neutral-500 dark:focus:border-white;
+  }
+  .store-field-error {
+    @apply border-rose-400 focus:border-rose-600 dark:border-rose-500/60 dark:focus:border-rose-400;
+  }
+  /* Helper and error text under a field */
+  .store-field-hint {
+    @apply mt-1.5 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400;
+  }
+  .store-field-message {
+    @apply mt-1.5 text-xs leading-relaxed text-rose-600 dark:text-rose-400;
+  }
+
+  /* Buttons — always compose `store-btn` with one variant */
+  .store-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .store-btn-sm {
+    @apply px-4 py-2.5;
+  }
+  .store-btn-primary {
+    @apply bg-neutral-900 text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200;
+  }
+  .store-btn-secondary {
+    @apply border border-neutral-200 bg-white text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:bg-transparent dark:text-neutral-300 dark:hover:border-white dark:hover:text-white;
+  }
+
+  /* Quiet underlined text action (Remove, Clear cart, Edit profile) */
+  .store-btn-link {
+    @apply inline-flex items-center gap-1.5 text-xs text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 hover:decoration-neutral-900 dark:text-neutral-400 dark:decoration-neutral-700 dark:hover:text-white dark:hover:decoration-white;
+  }
+
+  /* Selectable chip (category filters, product colors and sizes).
+     Mark the selected one with aria-pressed="true". */
+  .store-chip {
+    @apply inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-xs font-semibold text-neutral-600 transition-colors dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300;
+  }
+  .store-chip:not(:disabled):not([aria-pressed='true']):hover {
+    @apply border-neutral-900 text-neutral-900 dark:border-white dark:text-white;
+  }
+  .store-chip[aria-pressed='true'] {
+    @apply border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900;
+  }
+  .store-chip:disabled {
+    @apply cursor-not-allowed opacity-40;
+  }
+
+  /* Card-style choice (price tier, payment method). Selected when it has
+     aria-pressed="true" or wraps a checked radio. */
+  .store-option {
+    @apply relative flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg border border-neutral-200 bg-white p-4 text-left transition-colors dark:border-neutral-700 dark:bg-transparent;
+  }
+  .store-option:not([aria-pressed='true']):not(:has(input:checked)):hover {
+    @apply border-neutral-400 dark:border-neutral-500;
+  }
+  .store-option[aria-pressed='true'],
+  .store-option:has(input:checked) {
+    @apply border-neutral-900 dark:border-white;
+  }
+  /* The radio inside is visually hidden, so the card shows its focus ring. */
+  .store-option:has(input:focus-visible) {
+    @apply outline-2 outline-offset-2 outline-neutral-900 dark:outline-neutral-200;
+  }
+
+  /* Inline notice; compose with a tone for errors */
+  .store-alert {
+    @apply flex items-start gap-3 rounded-lg border border-neutral-200 bg-white p-4 text-[13px] leading-relaxed text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300;
+  }
+  .store-alert-error {
+    @apply border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-400;
+  }
+
+  /* ------------------------------------------------------------------
+     Admin kit — mirrors the storefront language (single 6px radius,
+     neutral-only surfaces, 11px semibold eyebrows) so every admin view
+     reads as one system instead of six one-off styles.
+  ------------------------------------------------------------------- */
+
   /* Eyebrow label over card / page titles */
   .admin-eyebrow {
-    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500;
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400;
   }
 
   /* Page H1 rendered by AdminPanelLayout */
@@ -177,15 +353,26 @@ body::-webkit-scrollbar {
   .admin-btn-quiet {
     @apply border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white;
   }
+  .admin-btn-danger {
+    @apply bg-rose-600 text-white hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-400;
+  }
+  /* "Add another" row actions (officers, faith points, product colors) */
+  .admin-btn-dashed {
+    @apply border border-dashed border-neutral-300 text-neutral-500 hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-neutral-400 dark:hover:text-white;
+  }
 
   /* Quiet 36px icon button; compose with a color override when needed */
   .admin-icon-btn {
     @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700 active:scale-95 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-200;
   }
+  /* Destructive tone for `admin-icon-btn` (delete / remove) */
+  .admin-icon-btn-danger {
+    @apply text-rose-500 hover:bg-rose-50 hover:text-rose-600 dark:text-rose-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-300;
+  }
 
   /* Table header cell */
   .admin-th {
-    @apply whitespace-nowrap px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500;
+    @apply whitespace-nowrap px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-neutral-400;
   }
 
   /* Status / tier pill base — compose with color classes */
@@ -254,6 +441,10 @@ body::-webkit-scrollbar {
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: rgb(115 115 115);
+  }
+
+  .dark .admin-card-table tbody tr > td:not([colspan])::before {
     color: rgb(163 163 163);
   }
 
