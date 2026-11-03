@@ -1,17 +1,21 @@
 import { ref } from 'vue'
 
 const toasts = ref([])
+// Monotonic ids: Date.now() collided when two toasts fired in the same ms.
+let nextId = 0
 
 export const useToast = () => {
-  const addToast = (message, type = 'success', duration = 3000) => {
-    const id = Date.now()
+  // Errors stay up longer than confirmations so they can actually be read.
+  const addToast = (message, type = 'success', duration) => {
+    const id = ++nextId
     const toast = { id, message, type }
     toasts.value.push(toast)
 
-    if (duration > 0) {
+    const ms = duration ?? (type === 'error' ? 5000 : 3500)
+    if (ms > 0) {
       setTimeout(() => {
         removeToast(id)
-      }, duration)
+      }, ms)
     }
   }
 

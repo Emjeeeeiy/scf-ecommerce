@@ -4,15 +4,30 @@ const confirmState = ref({
   show: false,
   title: '',
   message: '',
+  tone: 'default',
+  confirmLabel: 'Confirm',
+  cancelLabel: 'Cancel',
   resolve: null,
 })
 
 export const useConfirm = () => {
-  const confirm = (message, title = 'Are you sure?') => {
+  /**
+   * @param {string} message
+   * @param {string} [title]
+   * @param {{ tone?: 'default' | 'danger', confirmLabel?: string, cancelLabel?: string }} [options]
+   *   tone 'danger' renders the destructive (rose) variant and defaults the
+   *   confirm button to "Delete".
+   */
+  const confirm = (message, title = 'Are you sure?', options = {}) => {
+    const tone = options.tone === 'danger' ? 'danger' : 'default'
+
     confirmState.value = {
       show: true,
       title,
       message,
+      tone,
+      confirmLabel: options.confirmLabel || (tone === 'danger' ? 'Delete' : 'Confirm'),
+      cancelLabel: options.cancelLabel || 'Cancel',
     }
 
     return new Promise((resolve) => {
@@ -20,15 +35,15 @@ export const useConfirm = () => {
     })
   }
 
-  const onConfirm = () => {
-    if (confirmState.value.resolve) confirmState.value.resolve(true)
+  const settle = (result) => {
+    const { resolve } = confirmState.value
     confirmState.value.show = false
+    confirmState.value.resolve = null
+    if (resolve) resolve(result)
   }
 
-  const onCancel = () => {
-    if (confirmState.value.resolve) confirmState.value.resolve(false)
-    confirmState.value.show = false
-  }
+  const onConfirm = () => settle(true)
+  const onCancel = () => settle(false)
 
   return { confirmState, confirm, onConfirm, onCancel }
 }

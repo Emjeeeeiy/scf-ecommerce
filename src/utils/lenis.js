@@ -7,6 +7,9 @@ let lenis = null
 // momentum, while staying responsive. Singleton so router + views share it.
 export function initLenis() {
   if (lenis) return lenis
+  // Respect the OS "reduce motion" setting: no smooth scrolling at all, the
+  // browser scrolls natively (every caller already handles a null instance).
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return null
   lenis = new Lenis({
     lerp: 0.09,
     smoothWheel: true,

@@ -16,6 +16,10 @@ export const formatDate = (timestamp, { withTime = false } = {}) => {
   })
 }
 
+// Short, human-friendly order reference shown everywhere an order id appears
+// (customer history, admin tables, toasts) so both sides quote the same thing.
+export const formatOrderRef = (id) => (id ? `#${String(id).slice(0, 8).toUpperCase()}` : '')
+
 // Shared badge styling for the order fulfillment pipeline (received -> processing -> shipped -> completed).
 export const getOrderStatusClasses = (status) => {
   switch (status) {
